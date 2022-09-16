@@ -113,7 +113,7 @@ NavMeshAgent:
   m_AngularSpeed: 220
   m_StoppingDistance: 3
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
+  m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 0
@@ -133,6 +133,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   chaseRangeBase: 5
+  crouchRangeBase: 3
   turnSpeedBase: 5
   isPatrolling: 1
   patrollingSpeedBase: 0.7

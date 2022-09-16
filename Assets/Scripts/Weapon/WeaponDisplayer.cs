@@ -57,12 +57,12 @@ public class WeaponDisplayer : MonoBehaviour
     {
         getCurrentWeapon();
         
-        ammoInSlot.text = ammos.GetAmmo(currentWeapon.AmmoType).ToString();
+        ammoInSlot.text = ammos.GetAmmoInSlot(currentWeapon.AmmoType).ToString();
 
         //which means that weapon has been changed or reloaded
-        if(totalAmmo.text != ammos.GetTotalAmmo(currentWeapon.AmmoType).ToString())
+        if(totalAmmo.text != ammos.GetAmmoAmount(currentWeapon.AmmoType).ToString())
         {
-            totalAmmo.text = ammos.GetTotalAmmo(currentWeapon.AmmoType).ToString();
+            totalAmmo.text = ammos.GetAmmoAmount(currentWeapon.AmmoType).ToString();
             
         }
         

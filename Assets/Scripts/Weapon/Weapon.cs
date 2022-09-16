@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 public class Weapon : MonoBehaviour
 {
+    public int weaponIndex;
     [SerializeField] ParticleSystem shootVFX;
     [SerializeField] GameObject hitEffect;
     public Sprite weaponIcon;
@@ -14,6 +15,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] float damage;
     [SerializeField] float shootingDelay;
     [SerializeField] bool canConstantShoot = false;
+    public float timeToReload;
     public bool CanConstantShoot{get{return canConstantShoot;}}
     private bool constantShooting;
     public bool ConstantShooting{get{return constantShooting;}set{constantShooting = value;}}
@@ -30,6 +32,7 @@ public class Weapon : MonoBehaviour
     private void Awake() 
     {
         ammoSlot = GetComponentInParent<Ammo>();
+        weaponIndex = transform.GetSiblingIndex();
         constantShooting = canConstantShoot;
     }
 
@@ -53,7 +56,7 @@ public class Weapon : MonoBehaviour
     IEnumerator Shooting()
     {
         canShoot = false;
-        if(ammoSlot.GetAmmo(ammoType) > 0)
+        if(ammoSlot.GetAmmoInSlot(ammoType) > 0)
         {
             Debug.Log("Shooting!");
             PlayMuzzleFlash();

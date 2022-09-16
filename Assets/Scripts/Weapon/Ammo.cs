@@ -34,13 +34,17 @@ public class Ammo : MonoBehaviour
 
         }
     }
-    public int GetAmmo(AmmoType ammoType)
+    public int GetAmmoInSlot(AmmoType ammoType)
     {
         return GetAmmoSlot(ammoType).ammoInSlot;
     }
-    public int GetTotalAmmo(AmmoType ammoType)
+    public int GetAmmoAmount(AmmoType ammoType)
     {
         return GetAmmoSlot(ammoType).ammoAmount;
+    }
+    public int GetAmmoPerSlot(AmmoType ammoType)
+    {
+        return GetAmmoSlot(ammoType).ammoPerSlot;
     }
     public void ReloadAmmo(AmmoType ammoType)
     {
@@ -52,9 +56,7 @@ public class Ammo : MonoBehaviour
     }
     public void PickupAmmo(AmmoType ammoType,int ammoCount)
     {
-         Debug.Log("You picked ammo"+"("+ammoType+")"+"! +'\n' increased from "+ GetAmmo(ammoType));
          GetAmmoSlot(ammoType).ammoAmount+=ammoCount;
-         Debug.Log(" to "+GetAmmo(ammoType));
 
     }
     private AmmoSlot GetAmmoSlot(AmmoType ammoType)

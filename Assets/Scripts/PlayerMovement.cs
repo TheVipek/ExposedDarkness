@@ -20,7 +20,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Components")]
     [SerializeField] Camera _mCamera;
     [SerializeField] CharacterController controller;
-
+    [SerializeField] Rigidbody rb;
 
     [Header("Camera Settings")]
     [SerializeField] float defaultHeight;
@@ -45,6 +45,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Other meaningfull movement stuff")]
     [SerializeField] bool crouch = false;
+    public bool Crouch{get{return crouch;}}
     [SerializeField] bool jumping = false;
     Coroutine crouchTransition;
     float gravity = -9.81f;
@@ -52,19 +53,32 @@ public class PlayerMovement : MonoBehaviour
     float verticalMove;
     Vector3 velocity;
 
+
+    public static PlayerMovement instance;
+    private void Awake() {
+        if(instance!= this && instance != null)
+        {
+            Destroy(this);
+        }else
+        {
+            instance = this;
+        }
+    }
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         controller.height = defaultHeight;
-        
     }
 
     void Update()
     {
         CameraMouseLook();
-        Movement();
-        Crouch();
+        ProcessCrouch();
 
+    }
+    private void FixedUpdate() {
+        Movement();
+        
     }
     void CameraMouseLook()
     {
@@ -105,14 +119,13 @@ public class PlayerMovement : MonoBehaviour
         {
             velocity.y = Mathf.Sqrt(jumpStrength * -2f* gravity);
         }
-
         velocity.y += gravity * Time.deltaTime;
         //Moving
         controller.Move(position * Time.deltaTime);
         controller.Move(velocity * Time.deltaTime);
     }
 
-    void Crouch()
+    void ProcessCrouch()
     {
         //Debug.Log(crouchTransition);
         if (Input.GetKeyDown(KeyCode.LeftControl) && crouchTransition == null)

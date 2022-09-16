@@ -7,6 +7,7 @@ public class enemyAI : MonoBehaviour
 {
     [SerializeField] Transform target;
     [SerializeField] float chaseRangeBase = 5f;
+    [SerializeField] float crouchRangeBase = 3f;
     [SerializeField] float turnSpeedBase = 5f;
     
 
@@ -65,7 +66,6 @@ public class enemyAI : MonoBehaviour
     }
     void Update()
     {
-        distanceToTarget = Vector3.Distance(target.position, transform.position);
         if(isPatrolling == true && isOnBreak == false  && isProvoked == false)
         {
             PatrollingArea();
@@ -79,10 +79,23 @@ public class enemyAI : MonoBehaviour
         {
             BackToStartingPos();
         }
-        if(distanceToTarget <= chaseRangeBase)
+        distanceToTarget = Vector3.Distance(target.position, transform.position);
+        
+        if(PlayerMovement.instance.Crouch == false)
         {
-            isProvoked = true;
+            if(distanceToTarget <= chaseRangeBase)
+                {
+                    isProvoked = true;
+                }
         }
+        else
+        {
+            if(distanceToTarget <= crouchRangeBase)
+            {
+                isProvoked = true;
+            }
+        }
+        
     }
 
     
@@ -247,6 +260,8 @@ public class enemyAI : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position,chaseRangeBase);
+        Gizmos.DrawWireSphere(transform.position,crouchRangeBase);
+
     }
         /*private void FocusArea()
         Debug.Log("Focus area!");
