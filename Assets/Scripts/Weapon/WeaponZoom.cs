@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class WeaponZoom : MonoBehaviour
 {
-    [SerializeField] Camera _camera;
+    [SerializeField] Camera weaponCamera;
+    [SerializeField] Camera viewCamera;
+
     [SerializeField] PlayerMovement playerController;
     [SerializeField] GameObject crosshair;
     
@@ -76,7 +78,7 @@ public class WeaponZoom : MonoBehaviour
         if(crosshair == null) return;
         zoomedIn = true;
         transform.localPosition = weaponZoomOutPosition;
-        _camera.fieldOfView = zoomOutField;
+        weaponCamera.fieldOfView = zoomOutField;
         playerController.xSensitivity = zoomOutSensitivity;
         playerController.ySensitivity = zoomOutSensitivity;
         crosshair.SetActive(false);
@@ -114,7 +116,8 @@ public class WeaponZoom : MonoBehaviour
         float timeElapsed = 0f;
         while(timeElapsed <= durationZoom && zooming == _zooming)
         {
-            _camera.fieldOfView = Mathf.Lerp(_camera.fieldOfView,desiredFOV,timeElapsed/durationZoom);
+            weaponCamera.fieldOfView = Mathf.Lerp(weaponCamera.fieldOfView,desiredFOV,timeElapsed/durationZoom);
+            viewCamera.fieldOfView = weaponCamera.fieldOfView;
             timeElapsed+=Time.deltaTime;
             yield return null;
         }
@@ -123,7 +126,8 @@ public class WeaponZoom : MonoBehaviour
         {
             yield break;
         }
-        _camera.fieldOfView=desiredFOV;
+        weaponCamera.fieldOfView=desiredFOV;
+        viewCamera.fieldOfView = desiredFOV;
         yield return null;
     }
 }

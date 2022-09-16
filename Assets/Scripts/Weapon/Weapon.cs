@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.Events;
 public class Weapon : MonoBehaviour
 {
-    [SerializeField] Camera FPCamera;
     [SerializeField] ParticleSystem shootVFX;
     [SerializeField] GameObject hitEffect;
     public Sprite weaponIcon;
