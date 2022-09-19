@@ -47,6 +47,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] bool crouch = false;
     public bool Crouch{get{return crouch;}}
     [SerializeField] bool jumping = false;
+    [SerializeField] bool moving = false;
+    public bool Moving{get{return moving;}}
+    [SerializeField] bool sprinting = false;
+    public bool Sprinting{get{return sprinting;}}
+    [SerializeField] bool gaiting = false;
+    public bool Gaiting{get{return gaiting;}}
     Coroutine crouchTransition;
     float gravity = -9.81f;
     float horizontalMove;
@@ -98,6 +104,13 @@ public class PlayerMovement : MonoBehaviour
 
         //Horizontal - X-axis
         horizontalMove = Input.GetAxis("Horizontal") * movingSidesSpeed;
+        if(verticalMove != 0 || horizontalMove != 0)
+        {
+            moving = true;
+        }else
+        {
+            moving = false;
+        }
 
         //Applying position and gravity
         Vector3 position = _mCamera.transform.forward * verticalMove + _mCamera.transform.right * horizontalMove;
@@ -106,10 +119,17 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(sprintKey))
         {
             position *= sprintMultiplier;
+            sprinting = true;
         }
         else if(Input.GetKey(gaitKey) && crouch == false)
         {
             position /= 1.5f;
+            gaiting = true;
+            
+        }else
+        {
+            sprinting = false;
+            gaiting = false;
         }
         if(crouch == true)
         {

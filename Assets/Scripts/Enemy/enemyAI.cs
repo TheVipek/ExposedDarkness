@@ -30,12 +30,15 @@ public class enemyAI : MonoBehaviour
 
     [SerializeField] float nextActionBreakBase = 5f;
     [SerializeField] float tryingCatchTargetBase = 5f;
-    float tryingCatchTarget;
-    bool isOnBreak = false;
+    
+    public float tryingCatchTarget;
+    public bool isOnBreak = false;
+    public bool isProvoked = false;
 
+    public bool isAttacking = false;
+    [SerializeField] public float attackingRange = 0.75f;
     EnemyAttack enemyAttack;
     Animator animator;
-    bool isProvoked;
 
     bool isOnStartingPosition = true;
     AIState enemyState  = AIState.Idling;
@@ -79,7 +82,8 @@ public class enemyAI : MonoBehaviour
         {
             BackToStartingPos();
         }
-        distanceToTarget = Vector3.Distance(target.position, transform.position);
+        distanceToTarget = Vector3.Distance(new Vector3(transform.position.x,0,transform.position.z)
+        , new Vector3(target.position.x,0,target.position.z));
         
         if(PlayerMovement.instance.Crouch == false)
         {
@@ -103,6 +107,8 @@ public class enemyAI : MonoBehaviour
     {
         //time ended or distance is over possible and player not catched
         //Debug.Log(tryingCatchTarget);
+       // Debug.Log(distanceToTarget);
+
         if(tryingCatchTarget <= 0)
         {
             //Debug.Log(tryingCatchTarget + "lower than 0");
@@ -125,7 +131,7 @@ public class enemyAI : MonoBehaviour
             }
         }
         FaceTarget();
-        if(distanceToTarget >= navMeshAgent.stoppingDistance)
+        if(distanceToTarget >= navMeshAgent.stoppingDistance && isAttacking == false)
         {
             ChaseTarget();
 
@@ -133,12 +139,23 @@ public class enemyAI : MonoBehaviour
 
             tryingCatchTarget-=Time.deltaTime;
         }
-        else if(distanceToTarget < navMeshAgent.stoppingDistance)
-        {
-            navMeshAgent.isStopped =true;
-            navMeshAgent.ResetPath();
-            AttackTarget(true);
-            if(tryingCatchTarget!=tryingCatchTargetBase) tryingCatchTarget = tryingCatchTargetBase;
+        else if(distanceToTarget <= navMeshAgent.stoppingDistance || isAttacking == true)
+        {   
+            if(isAttacking == false)
+            {
+                isAttacking = true;
+                Debug.Log("distance lower than stoppinDistance");
+                navMeshAgent.isStopped =true;
+                navMeshAgent.ResetPath();
+                AttackTarget(true);
+                if(tryingCatchTarget!=tryingCatchTargetBase) tryingCatchTarget = tryingCatchTargetBase;
+            }else
+            {
+                if(distanceToTarget >= navMeshAgent.stoppingDistance + attackingRange)
+                {
+                    isAttacking = false;
+                }
+            }
         }
         
 
@@ -162,7 +179,7 @@ public class enemyAI : MonoBehaviour
     private void AttackTarget(bool isAttacking)
     {
         animator.SetBool("attack",isAttacking);
-        Debug.Log("Attacking!");
+        //Debug.Log("Attacking!");
     }
     private void FaceTarget()
     {

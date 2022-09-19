@@ -12,15 +12,15 @@ GameObject:
   - component: {fileID: 1190657466454892298}
   - component: {fileID: 1199534261113303956}
   - component: {fileID: 8926907554157513771}
-  - component: {fileID: 1694016886841115822}
+  - component: {fileID: 875745954}
   - component: {fileID: 1694016888246948000}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Pistol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1216001255471311812
 Transform:
   m_ObjectHideFlags: 0
@@ -28,7 +28,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1221728325957719288}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.49800003, y: -0.583, z: 1.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -99,16 +99,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 614f6d989ff8192439a8d0b19f34fc29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FPCamera: {fileID: 0}
+  weaponIndex: 0
   shootVFX: {fileID: 4575862268317161631}
   hitEffect: {fileID: 7564172096902744805, guid: c1a7fb52c355c314fafe11903c10d1f9, type: 3}
+  weaponIcon: {fileID: 21300010, guid: 0bd96f6f4899f644ea1ffd9b4735a5e6, type: 3}
+  bulletIcon: {fileID: 21300000, guid: 309ac3eb4cc441349b63128366ca98b6, type: 3}
   range: 25
   damage: 20
   shootingDelay: 0.2
   canConstantShoot: 0
+  timeToReload: 1
   ammoSlot: {fileID: 0}
   ammoType: 0
---- !u!114 &1694016886841115822
+--- !u!114 &875745954
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -117,11 +120,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1221728325957719288}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4df03bdf1dc6eeb43870722dc311aa16, type: 3}
+  m_Script: {fileID: 11500000, guid: f84e008268963db408058346dabc7790, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponUI: {fileID: 21300010, guid: 0bd96f6f4899f644ea1ffd9b4735a5e6, type: 3}
-  bulletUI: {fileID: 21300000, guid: 309ac3eb4cc441349b63128366ca98b6, type: 3}
+  showWeaponOffset: -0.5
+  desiredPosition: {x: 0, y: 0, z: 0}
+  movementYRange: 0.0289
+  rotationXRange: 0
+  timeToAccomplish: 1
 --- !u!114 &1694016888246948000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134,7 +140,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3344024077305a64986844ee358ca397, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _camera: {fileID: 0}
+  weaponCamera: {fileID: 0}
+  viewCamera: {fileID: 0}
   playerController: {fileID: 0}
   crosshair: {fileID: 0}
   zoomInField: 20
@@ -142,6 +149,7 @@ MonoBehaviour:
   weaponZoomInPosition: {x: 0, y: -0.18, z: 1}
   zoomOutField: 60
   zoomOutSensitivity: 2
+  weaponZoomOutPosition: {x: 0, y: 0, z: 0}
   zoomTime: 3
   weaponZoomTime: 0.1
 --- !u!1001 &5828082601023859862
@@ -206,6 +214,10 @@ PrefabInstance:
     - target: {fileID: 2983886244797718871, guid: 20abc4b2bf36c4a47900c5134de726a8, type: 3}
       propertyPath: m_Name
       value: shootVFX
+      objectReference: {fileID: 0}
+    - target: {fileID: 2983886244797718871, guid: 20abc4b2bf36c4a47900c5134de726a8, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8025757869074887689, guid: 20abc4b2bf36c4a47900c5134de726a8, type: 3}
       propertyPath: lengthInSec

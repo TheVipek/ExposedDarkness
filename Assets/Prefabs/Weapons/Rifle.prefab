@@ -12,9 +12,8 @@ GameObject:
   - component: {fileID: 1012213283055963972}
   - component: {fileID: 3070483194134046431}
   - component: {fileID: 3155235399563438688}
-  - component: {fileID: 3223061343050190713}
   - component: {fileID: 3223061344329108310}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rifle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,29 +98,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 614f6d989ff8192439a8d0b19f34fc29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FPCamera: {fileID: 0}
+  weaponIndex: 0
   shootVFX: {fileID: 4947377512776391530}
   hitEffect: {fileID: 7564172096902744805, guid: c1a7fb52c355c314fafe11903c10d1f9, type: 3}
+  weaponIcon: {fileID: 21300030, guid: 0bd96f6f4899f644ea1ffd9b4735a5e6, type: 3}
+  bulletIcon: {fileID: 21300012, guid: 309ac3eb4cc441349b63128366ca98b6, type: 3}
   range: 40
   damage: 10
   shootingDelay: 0.1
   canConstantShoot: 1
+  timeToReload: 2
   ammoSlot: {fileID: 0}
   ammoType: 2
---- !u!114 &3223061343050190713
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8586996864150822057}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4df03bdf1dc6eeb43870722dc311aa16, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponUI: {fileID: 21300030, guid: 0bd96f6f4899f644ea1ffd9b4735a5e6, type: 3}
-  bulletUI: {fileID: 21300010, guid: 309ac3eb4cc441349b63128366ca98b6, type: 3}
 --- !u!114 &3223061344329108310
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134,7 +122,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3344024077305a64986844ee358ca397, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _camera: {fileID: 0}
+  weaponCamera: {fileID: 0}
+  viewCamera: {fileID: 0}
   playerController: {fileID: 0}
   crosshair: {fileID: 0}
   zoomInField: 20
@@ -142,6 +131,7 @@ MonoBehaviour:
   weaponZoomInPosition: {x: 0, y: -0.205, z: 1}
   zoomOutField: 60
   zoomOutSensitivity: 2
+  weaponZoomOutPosition: {x: 0, y: 0, z: 0}
   zoomTime: 3
   weaponZoomTime: 0.1
 --- !u!1001 &3155235398751088483
@@ -426,6 +416,10 @@ PrefabInstance:
     - target: {fileID: 2983886244797718871, guid: 20abc4b2bf36c4a47900c5134de726a8, type: 3}
       propertyPath: m_Name
       value: shootVFX
+      objectReference: {fileID: 0}
+    - target: {fileID: 2983886244797718871, guid: 20abc4b2bf36c4a47900c5134de726a8, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8025757869074887689, guid: 20abc4b2bf36c4a47900c5134de726a8, type: 3}
       propertyPath: lengthInSec
