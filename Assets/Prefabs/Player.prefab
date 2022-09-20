@@ -167,6 +167,7 @@ GameObject:
   - component: {fileID: 69388306}
   - component: {fileID: 1667432347}
   - component: {fileID: 1667432348}
+  - component: {fileID: 868258882}
   m_Layer: 0
   m_Name: MainCamera
   m_TagString: MainCamera
@@ -181,8 +182,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 536835279746954485}
-  m_LocalRotation: {x: -0.079072215, y: 0.8710934, z: -0.14934537, w: -0.4611288}
-  m_LocalPosition: {x: 0, y: 0.503, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.537, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -205,9 +206,9 @@ Camera:
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
-  m_SensorSize: {x: 36, y: 24}
+  m_SensorSize: {x: 1, y: 1}
   m_LensShift: {x: 0, y: 0}
-  m_FocalLength: 50
+  m_FocalLength: 0.86602545
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -340,6 +341,40 @@ MonoBehaviour:
   entryBump: 0
   maxBump: 0.25
   speed: 1.5
+--- !u!114 &868258882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 536835279746954485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72ece51f2901e7445ab60da3685d6b5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShowDebugText: 0
+  m_ShowCameraFrustum: 1
+  m_IgnoreTimeScale: 0
+  m_WorldUpOverride: {fileID: 0}
+  m_UpdateMethod: 2
+  m_BlendUpdateMethod: 1
+  m_DefaultBlend:
+    m_Style: 1
+    m_Time: 2
+    m_CustomCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  m_CustomBlends: {fileID: 0}
+  m_CameraCutEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_CameraActivatedEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &536835279746954487
 GameObject:
   m_ObjectHideFlags: 0
@@ -351,7 +386,9 @@ GameObject:
   - component: {fileID: 536835279746590931}
   - component: {fileID: 1850273173}
   - component: {fileID: 536835280683943630}
-  - component: {fileID: 553284527984504280}
+  - component: {fileID: 845382123}
+  - component: {fileID: 845382119}
+  - component: {fileID: 845382118}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -396,8 +433,8 @@ MonoBehaviour:
   gaitKey: 308
   jumpKey: 32
   _mCamera: {fileID: 536835279746102993}
-  controller: {fileID: 553284527984504280}
-  rb: {fileID: 0}
+  rb: {fileID: 845382123}
+  capsuleCollider: {fileID: 0}
   defaultHeight: 1.8
   crouchHeight: 1
   crouchDuration: 0.5
@@ -409,6 +446,7 @@ MonoBehaviour:
   moving: 0
   sprinting: 0
   gaiting: 0
+  isGrounded: 0
 --- !u!114 &536835280683943630
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -426,8 +464,24 @@ MonoBehaviour:
   bloodOverFaceValue: 35
   timeToRegenerate: 5
   regenerationSpeed: 0.2
---- !u!143 &553284527984504280
-CharacterController:
+--- !u!54 &845382123
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 536835279746954487}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
+--- !u!136 &845382119
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -436,14 +490,30 @@ CharacterController:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Height: 1.8
   m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.1
-  m_MinMoveDistance: 0.001
+  m_Height: 1.8
+  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!95 &845382118
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 536835279746954487}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5fc93ee1fd4f63245be03c99bfbb63ec, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &536835279943692642
 GameObject:
   m_ObjectHideFlags: 0

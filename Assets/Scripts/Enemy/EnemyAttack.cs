@@ -7,6 +7,7 @@ public class EnemyAttack : MonoBehaviour
     //[SerializeField] Transform target;
     [SerializeField] float damage;
     [SerializeField] PlayerHealth target;
+    [SerializeField] AnimationClip attackAnimation;
     public bool isAttackOver =true;
 
     private void Start() {
@@ -15,6 +16,7 @@ public class EnemyAttack : MonoBehaviour
     public void AttackHitEvent()
     {
         if(target==null) return;
+        Debug.Log(PlayerHealth.instance.IsDead);
         target.TakeDamage(damage);
         Debug.Log("Hit!");
     }

@@ -17,10 +17,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] KeyCode gaitKey = KeyCode.LeftAlt;
     [SerializeField] KeyCode jumpKey = KeyCode.Space;
 
+    [SerializeField] KeyCode crouchKey = KeyCode.LeftControl;
+
     [Header("Components")]
     [SerializeField] Camera _mCamera;
-    [SerializeField] CharacterController controller;
     [SerializeField] Rigidbody rb;
+    [SerializeField] CapsuleCollider capsuleCollider;
 
     [Header("Camera Settings")]
     [SerializeField] float defaultHeight;
@@ -53,13 +55,13 @@ public class PlayerMovement : MonoBehaviour
     public bool Sprinting{get{return sprinting;}}
     [SerializeField] bool gaiting = false;
     public bool Gaiting{get{return gaiting;}}
+    [SerializeField] bool isGrounded = false;
     Coroutine crouchTransition;
     float gravity = -9.81f;
     float horizontalMove;
     float verticalMove;
     Vector3 velocity;
-
-
+    float rigidbodySpeed;
     public static PlayerMovement instance;
     private void Awake() {
         if(instance!= this && instance != null)
@@ -72,18 +74,24 @@ public class PlayerMovement : MonoBehaviour
     }
     void Start()
     {
+        if(capsuleCollider == null) gameObject.GetComponent<CapsuleCollider>();
+        if(rb == null) GetComponent<Rigidbody>();
+        if(_mCamera == null) PlayerCamera.instance.gameObject.GetComponent<Camera>();
         Cursor.lockState = CursorLockMode.Locked;
-        controller.height = defaultHeight;
+        capsuleCollider.height = defaultHeight;
     }
 
     void Update()
     {
         CameraMouseLook();
         ProcessCrouch();
-
-    }
-    private void FixedUpdate() {
         Movement();
+        
+
+        if(rb.velocity.y > 0)
+        {
+            isGrounded = false;
+        }
         
     }
     void CameraMouseLook()
@@ -94,7 +102,7 @@ public class PlayerMovement : MonoBehaviour
         xRotation -= yMouse;
         xRotation = Mathf.Clamp(xRotation, -maxXAngle, maxXAngle);
         _mCamera.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-        transform.Rotate(Vector3.up * xMouse);
+        transform.Rotate(Vector3.up * xMouse,Space.Self);
     }
     void Movement()
     {
@@ -112,48 +120,83 @@ public class PlayerMovement : MonoBehaviour
             moving = false;
         }
 
-        //Applying position and gravity
-        Vector3 position = _mCamera.transform.forward * verticalMove + _mCamera.transform.right * horizontalMove;
+        //Get local camera direction ,by using forward we get space ahead of us , by right we get on side and inverse those vectors to player direction
+         Vector3 cameraForward = transform.InverseTransformVector(_mCamera.transform.forward);
+         Vector3 cameraSides = transform.InverseTransformVector(_mCamera.transform.right);
+    
+        // this is changed to 0 to get rid of going unnecesary down or up 
+        cameraForward.y = 0;
+        cameraSides.y = 0;
+        cameraForward = cameraForward.normalized;
+        cameraSides = cameraSides.normalized;
+
+        Vector3 position = cameraForward * verticalMove + cameraSides * horizontalMove;
 
         //Checking for sprint
-        if (Input.GetKey(sprintKey))
+        if(moving == true)
         {
-            position *= sprintMultiplier;
-            sprinting = true;
+            if (Input.GetKey(sprintKey))
+            {
+                position *= sprintMultiplier;
+                sprinting = true;
+            }
+            else if(Input.GetKey(gaitKey) && crouch == false)
+            {
+                position /= 1.5f;
+                gaiting = true;
+                
+            }
+            else
+            {
+                sprinting = false;
+                gaiting = false;
+            }
         }
-        else if(Input.GetKey(gaitKey) && crouch == false)
-        {
-            position /= 1.5f;
-            gaiting = true;
-            
-        }else
+        else
         {
             sprinting = false;
             gaiting = false;
         }
+        
+
         if(crouch == true)
         {
             position /= 2f;
         }
-        if(Input.GetKeyDown(jumpKey) && controller.isGrounded)
+        if(Input.GetKeyDown(jumpKey) && isGrounded == true)
         {
-            velocity.y = Mathf.Sqrt(jumpStrength * -2f* gravity);
+            // formula 
+           rb.AddForce(new Vector3(0,Mathf.Sqrt(jumpStrength * -2 * Physics.gravity.y),0),ForceMode.Impulse);
+      
+           //isGrounded = false;
+           // velocity.y = Mathf.Sqrt(jumpStrength * -2 * gravity);
+        
         }
-        velocity.y += gravity * Time.deltaTime;
-        //Moving
-        controller.Move(position * Time.deltaTime);
-        controller.Move(velocity * Time.deltaTime);
+        // multiplying it by Time.deltaTime to make it frame-independent
+        //velocity.y += gravity * Time.deltaTime;
+        
+        //Moving it
+
+        //frame independent
+        transform.Translate(position * Time.deltaTime);
+        // physics of free fall
+        /*if(isGrounded == false)
+        {
+            //transform.Translate(velocity * Time.deltaTime);
+
+        }*/
     }
 
     void ProcessCrouch()
     {
         //Debug.Log(crouchTransition);
-        if (Input.GetKeyDown(KeyCode.LeftControl) && crouchTransition == null)
+        if (Input.GetKeyDown(crouchKey) && crouchTransition == null && isGrounded == true)
         {
             crouch = !crouch;
 
             if (crouch == true)
             {
+                Debug.Log("Crouching!");
                 crouchTransition = StartCoroutine(CrouchTransition(crouchHeight, crouchDuration));
             }
             else
@@ -169,21 +212,16 @@ public class PlayerMovement : MonoBehaviour
         float timeElapsed = 0f;
         while (timeElapsed <= durationCrouch)
         {
-            controller.height = Mathf.Lerp(controller.height, desiredValue, timeElapsed / durationCrouch);
+            capsuleCollider.height = Mathf.Lerp(capsuleCollider.height, desiredValue, timeElapsed / durationCrouch);
             timeElapsed += Time.deltaTime;
             yield return null;
         }
-        controller.height = desiredValue;
+        capsuleCollider.height = desiredValue;
         crouchTransition = null;
-        /*while(controller.height != desiredValue)
-        {
-            controller.height = Mathf.SmoothDamp(controller.height,desiredValue,ref crouchVelocity,smoothTime);
-            Debug.Log("Changing controller height: "+controller.height);
-            yield return null;
-        }
-        Debug.Log("Setting desired after all: "+ controller.height);
-        controller.height = desiredValue;
-        crouchTransition = null;*/
+    }
+
+    private void OnCollisionStay(Collision other) {
+        isGrounded=true;
     }
 }
 

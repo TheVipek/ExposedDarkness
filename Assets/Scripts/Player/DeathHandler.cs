@@ -31,11 +31,17 @@ public class DeathHandler : MonoBehaviour
     {
         if(PlayerHealth.instance.CurrentHealth<=0)
         {
-            gameOverCanvas.enabled = true;
-            Time.timeScale=0;
-            WeaponSwitcher.instance.enabled = false;
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            PlayerHealth.instance.animator.enabled = true;
+            
+            PlayerHealth.instance.IsDead = true;
+            PlayerMovement.instance.enabled = false;
+            WeaponSwitcher.instance.gameObject.SetActive(false);
+            
+            // gameOverCanvas.enabled = true;
+            // Time.timeScale=0;
+            // Cursor.lockState = CursorLockMode.None;
+            // Cursor.visible = true;
+            
         }
         
     }

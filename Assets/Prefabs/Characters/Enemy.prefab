@@ -195,6 +195,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 5
   target: {fileID: 0}
+  attackAnimation: {fileID: 7400000, guid: de559bbb071ebfd40ab5af80881e75e8, type: 2}
   isAttackOver: 1
 --- !u!114 &693319315
 MonoBehaviour:

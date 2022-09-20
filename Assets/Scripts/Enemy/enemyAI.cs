@@ -74,7 +74,7 @@ public class enemyAI : MonoBehaviour
             PatrollingArea();
         }
 
-        if(isProvoked == true)
+        if(isProvoked == true && PlayerHealth.instance.IsDead == false)
         {
             EngageTarget();
         }
@@ -144,10 +144,10 @@ public class enemyAI : MonoBehaviour
             if(isAttacking == false)
             {
                 isAttacking = true;
-                Debug.Log("distance lower than stoppinDistance");
                 navMeshAgent.isStopped =true;
                 navMeshAgent.ResetPath();
                 AttackTarget(true);
+            
                 if(tryingCatchTarget!=tryingCatchTargetBase) tryingCatchTarget = tryingCatchTargetBase;
             }else
             {
@@ -178,7 +178,9 @@ public class enemyAI : MonoBehaviour
 
     private void AttackTarget(bool isAttacking)
     {
+
         animator.SetBool("attack",isAttacking);
+        
         //Debug.Log("Attacking!");
     }
     private void FaceTarget()
@@ -260,7 +262,7 @@ public class enemyAI : MonoBehaviour
         }
         animator.SetTrigger("idle");
     }
-    IEnumerator BreakOnNextAction(Vector3 newDestination)
+    public IEnumerator BreakOnNextAction(Vector3 newDestination)
     {
         //Debug.Log("Break...");
 
