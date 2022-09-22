@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class DamageDisplay : MonoBehaviour
 {
-    Canvas impactCanvas;
+    [SerializeField] Canvas impactCanvas;
+    [SerializeField] Image bloodImage;
+    [SerializeField] float currentAlpha;
     [SerializeField] float impactTime = 2f;
+    [SerializeField] float elapsedTime;
     Coroutine showingBloodCoroutine; 
     
     private void OnEnable() {
@@ -16,7 +19,8 @@ public class DamageDisplay : MonoBehaviour
 
     }
     private void Awake() {
-        impactCanvas = GetComponent<Canvas>();
+        //impactCanvas = GetComponent<Canvas>();
+        currentAlpha = bloodImage.color.a;
     }
     void Start() {
 
@@ -27,19 +31,36 @@ public class DamageDisplay : MonoBehaviour
         if(showingBloodCoroutine != null)
         {
             StopCoroutine(showingBloodCoroutine);
-            showingBloodCoroutine = StartCoroutine(startBleeding());
+            showingBloodCoroutine = StartCoroutine(Bleeding(0,1));
             
         }
         else
         {
-            showingBloodCoroutine = StartCoroutine(startBleeding());
+            showingBloodCoroutine = StartCoroutine(Bleeding(0,1));
         }
         
     }
-    IEnumerator startBleeding()
+    IEnumerator Bleeding(float fromValue,float toValue)
     {
         impactCanvas.enabled = true;
-        yield return new WaitForSeconds(impactTime);
-        impactCanvas.enabled = false;
+        elapsedTime = 0;
+        if(currentAlpha == toValue)
+        {
+            yield return new WaitForSeconds(impactTime);
+        }
+        while(currentAlpha != toValue)
+        {
+            //Debug.Log("Increasing alpha...");
+            currentAlpha = Mathf.Lerp(currentAlpha,toValue,elapsedTime/impactTime);
+            bloodImage.color = new Color(bloodImage.color.r,bloodImage.color.g,bloodImage.color.b,currentAlpha);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        currentAlpha = toValue;
+        bloodImage.color = new Color(bloodImage.color.r,bloodImage.color.g,bloodImage.color.b,currentAlpha);
+        yield return showingBloodCoroutine = StartCoroutine(Bleeding(1,0));
+        
+        
     }
+    
 }

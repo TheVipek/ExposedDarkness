@@ -7,6 +7,12 @@ public class TimeCounter : MonoBehaviour
     [SerializeField] TMP_Text timerText;
     [SerializeField] float startingTime;
     [SerializeField] float remainingTime;
+    bool startedPoisoning = false;
+    public float RemainingTime{get{return remainingTime;}}
+    public static TimeCounter instance;
+    private void Awake() {
+        instance = this;
+    }
     private void OnEnable() {
         StartCoroutine(Timer());
     }
@@ -17,6 +23,14 @@ public class TimeCounter : MonoBehaviour
         {
             remainingTime-=1;
             displayTimer();
+            if(remainingTime <= 60 && startedPoisoning == false)
+            {
+                VingetteBumping.instance.StopAllCoroutines();
+                PlayerHealth.instance.poisonTriggered = true;
+                StartCoroutine(VingetteBumping.instance.smoothColorChange(VingetteBumping.instance.poisonColor));
+                StartCoroutine(VingetteBumping.instance.TriggerPoison(VingetteBumping.instance.maxPoisonValue));
+                ChromaticAberrationTrigger.instance.enabled = true;
+            }
             yield return new WaitForSeconds(1);
         }
         DeathHandler.instance.OutOfTime();

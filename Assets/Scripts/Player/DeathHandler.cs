@@ -6,7 +6,8 @@ public class DeathHandler : MonoBehaviour
 {
     Canvas gameOverCanvas;
     [SerializeField] TMP_Text deathText;
-
+    [SerializeField] Animator animator;
+    [SerializeField] AnimationClip deathUI;
     public static DeathHandler instance;
     private void OnEnable() {
         PlayerHealth.onDamageTaken+=HandleDeath;
@@ -31,26 +32,30 @@ public class DeathHandler : MonoBehaviour
     {
         if(PlayerHealth.instance.CurrentHealth<=0)
         {
-            PlayerHealth.instance.animator.enabled = true;
-            
             PlayerHealth.instance.IsDead = true;
+            PlayerHealth.instance.animator.enabled = true;
             PlayerMovement.instance.enabled = false;
             WeaponSwitcher.instance.gameObject.SetActive(false);
+            gameOverCanvas.enabled = true;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
             
-            // gameOverCanvas.enabled = true;
             // Time.timeScale=0;
-            // Cursor.lockState = CursorLockMode.None;
-            // Cursor.visible = true;
-            
         }
         
     }
+    public void DeathUIanimation()
+    {
+        animator.SetTrigger("deathUI");
+    }
     public void OutOfTime()
     {
+        PlayerHealth.instance.IsDead = true;
         deathText.text = "YOU HAVE"+"\n"+"BEEN"+"\n"+"POISONED";
+        PlayerHealth.instance.animator.enabled = true;
+        PlayerMovement.instance.enabled = false;
+        WeaponSwitcher.instance.gameObject.SetActive(false);
         gameOverCanvas.enabled = true;
-        Time.timeScale=0;
-        WeaponSwitcher.instance.enabled = false;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }

@@ -15,10 +15,8 @@ public class EnemyAttack : MonoBehaviour
     }
     public void AttackHitEvent()
     {
-        if(target==null) return;
-        Debug.Log(PlayerHealth.instance.IsDead);
+        if(target == null || target.IsDead == true) return;
         target.TakeDamage(damage);
-        Debug.Log("Hit!");
     }
     public IEnumerator Attack()
     {

@@ -9,9 +9,15 @@ public class PlayerHealth : MonoBehaviour
     public float MaxHealth{get{return maxHealth;}}
     [SerializeField] float currentHealth;
     public float CurrentHealth{get{return currentHealth;}}
+    
+    
     public bool IsDead{get{return animator.GetBool("death");} set{animator.SetBool("death",value);}}
+    public bool IsDeadCasted{get{return animator.GetBool("deathCasted");} set{animator.SetBool("deathCasted",value);}}
+
     public static PlayerHealth instance;
-    private bool bloodOverFace = false;
+    public bool bloodOverFace = false;
+    public bool poisonTriggered = false;
+
     [SerializeField] float bloodOverFaceValue = 35f;
 
 
@@ -50,8 +56,7 @@ public class PlayerHealth : MonoBehaviour
             timer+=Time.deltaTime;
             yield return new WaitForSeconds(Time.deltaTime);
         }
-
-        yield return regenerationProcess = StartCoroutine(RegeneratingProcess());
+        if(IsDead == false) yield return regenerationProcess = StartCoroutine(RegeneratingProcess());
     }
     IEnumerator RegeneratingProcess()
     {
@@ -59,9 +64,8 @@ public class PlayerHealth : MonoBehaviour
         {
             currentHealth +=1;
             onFightOver();
-            if(currentHealth > bloodOverFaceValue && bloodOverFace)
+            if(currentHealth > bloodOverFaceValue && bloodOverFace && poisonTriggered == false)
             {
-                StartCoroutine(VingetteBumping.instance.StopBloodBumping());
                 bloodOverFace = false;
             }
             yield return new WaitForSeconds(regenerationSpeed);
@@ -71,7 +75,12 @@ public class PlayerHealth : MonoBehaviour
     public void TakeDamage(float damage){
 
         currentHealth-=damage;
-        if(currentHealth >= 0)
+        if(currentHealth <= 0)
+        {
+            onDamageTaken();
+            return;
+        }
+        else if(currentHealth > 0)
         {
             //CAMERA SHAKE EFFECT
             StartCoroutine(PlayerCamera.instance.shakeCamera());
@@ -81,10 +90,10 @@ public class PlayerHealth : MonoBehaviour
 
             //VINGETTE EFFECT
             //which means if player has less than x Hp and dont have already blood over face casted
-            if(currentHealth < bloodOverFaceValue && !bloodOverFace)
+            if(currentHealth < bloodOverFaceValue && bloodOverFace == false && poisonTriggered == false)
             {
-                StartCoroutine(VingetteBumping.instance.StartBloodBumping());
                 bloodOverFace = true;
+                StartCoroutine(VingetteBumping.instance.BloodBumping(VingetteBumping.instance.maxBloodValue));
             }
             //Every time player is attacked by enemy timer starts counting and if it reach x value regenerating process starts
             FightOver();
@@ -93,6 +102,7 @@ public class PlayerHealth : MonoBehaviour
     }
     public void FightOver()
     {
+        
         if(regenerationChecker!=null)
         {
             StopCoroutine(regenerationChecker);
@@ -102,7 +112,14 @@ public class PlayerHealth : MonoBehaviour
             StopCoroutine(regenerationProcess);
         }
         regenerationChecker = StartCoroutine(RegeneratingChecker());
+        
     }
-    
-    
+    public void SetDeathCasted()
+    {
+        IsDeadCasted = true;
+    }
+    public void CallDeathUI()
+    {
+        DeathHandler.instance.DeathUIanimation();
+    }
 }

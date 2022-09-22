@@ -74,7 +74,7 @@ public class enemyAI : MonoBehaviour
             PatrollingArea();
         }
 
-        if(isProvoked == true && PlayerHealth.instance.IsDead == false)
+        if(isProvoked == true)
         {
             EngageTarget();
         }
@@ -85,18 +85,21 @@ public class enemyAI : MonoBehaviour
         distanceToTarget = Vector3.Distance(new Vector3(transform.position.x,0,transform.position.z)
         , new Vector3(target.position.x,0,target.position.z));
         
-        if(PlayerMovement.instance.Crouch == false)
+        if(PlayerHealth.instance.IsDead == false)
         {
-            if(distanceToTarget <= chaseRangeBase)
+            if(PlayerMovement.instance.Crouch == false)
+            {
+                if(distanceToTarget <= chaseRangeBase)
                 {
                     isProvoked = true;
                 }
-        }
-        else
-        {
-            if(distanceToTarget <= crouchRangeBase)
+            }
+            else
             {
-                isProvoked = true;
+                if(distanceToTarget <= crouchRangeBase)
+                {
+                    isProvoked = true;
+                }
             }
         }
         
@@ -105,6 +108,14 @@ public class enemyAI : MonoBehaviour
     
     private void EngageTarget()
     {
+        if(PlayerHealth.instance.IsDead == true)
+        {
+            ChaseAnimateState(false);
+            isProvoked = false;
+            AttackTarget(false);
+            StartCoroutine(BreakOnNextAction(patrollingWaypoints[lastWaypoint].Position));
+            return;
+        }
         //time ended or distance is over possible and player not catched
         //Debug.Log(tryingCatchTarget);
        // Debug.Log(distanceToTarget);
@@ -131,6 +142,7 @@ public class enemyAI : MonoBehaviour
             }
         }
         FaceTarget();
+        
         if(distanceToTarget >= navMeshAgent.stoppingDistance && isAttacking == false)
         {
             ChaseTarget();
@@ -157,6 +169,7 @@ public class enemyAI : MonoBehaviour
                 }
             }
         }
+        
         
 
            
