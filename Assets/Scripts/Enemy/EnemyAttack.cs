@@ -16,6 +16,7 @@ public class EnemyAttack : MonoBehaviour
     public void AttackHitEvent()
     {
         if(target == null || target.IsDead == true) return;
+        PlayerCamera.instance.TriggerShake();
         target.TakeDamage(damage);
     }
     public IEnumerator Attack()

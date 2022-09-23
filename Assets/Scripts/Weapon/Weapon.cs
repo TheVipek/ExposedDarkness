@@ -47,6 +47,7 @@ public class Weapon : MonoBehaviour
             Shoot();
 
         }
+        Debug.DrawRay(transform.position,transform.forward*range);
     }
     private void Shoot()
     {

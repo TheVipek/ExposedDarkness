@@ -64,7 +64,7 @@ public class PlayerHealth : MonoBehaviour
         {
             currentHealth +=1;
             onFightOver();
-            if(currentHealth > bloodOverFaceValue && bloodOverFace && poisonTriggered == false)
+            if(currentHealth > bloodOverFaceValue && bloodOverFace == true && poisonTriggered == false)
             {
                 bloodOverFace = false;
             }
@@ -77,14 +77,14 @@ public class PlayerHealth : MonoBehaviour
         currentHealth-=damage;
         if(currentHealth <= 0)
         {
+            currentHealth = 0;
             onDamageTaken();
             return;
         }
         else if(currentHealth > 0)
         {
             //CAMERA SHAKE EFFECT
-            StartCoroutine(PlayerCamera.instance.shakeCamera());
-
+            //StartCoroutine(PlayerCamera.instance.shakeCamera());
             //CALLS ALL FUNCTIONS SUBSCRIBED TO EVENT
             onDamageTaken();
 
@@ -93,7 +93,7 @@ public class PlayerHealth : MonoBehaviour
             if(currentHealth < bloodOverFaceValue && bloodOverFace == false && poisonTriggered == false)
             {
                 bloodOverFace = true;
-                StartCoroutine(VingetteBumping.instance.BloodBumping(VingetteBumping.instance.maxBloodValue));
+                StartCoroutine(VingetteBumping.instance.BloodBumping(VingetteBumping.instance.maxBloodValue,VingetteBumping.instance.entryValue));
             }
             //Every time player is attacked by enemy timer starts counting and if it reach x value regenerating process starts
             FightOver();

@@ -277,7 +277,7 @@ public class enemyAI : MonoBehaviour
     }
     public IEnumerator BreakOnNextAction(Vector3 newDestination)
     {
-        //Debug.Log("Break...");
+        Debug.Log("Break...");
 
         isOnBreak = true;
         IdleAnimteState(true);

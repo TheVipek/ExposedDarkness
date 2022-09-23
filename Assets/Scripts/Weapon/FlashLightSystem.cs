@@ -9,8 +9,9 @@ public class FlashLightSystem : MonoBehaviour
     [SerializeField] float angleDecay = 1f;
     [SerializeField] float minimumAngle = 40f;
     [SerializeField] float decreasingSpeed = 10f;
-    bool isDecreasing = false;
+    [SerializeField] bool isDecreasing = false;
     Light Mylight;
+    
     void Start()
     {
         Mylight = GetComponent<Light>();
@@ -19,8 +20,11 @@ public class FlashLightSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       DecreaseLightIntensity();
-       DecreaseLightAngle();
+        if(isDecreasing == true)
+        {
+            DecreaseLightIntensity();
+            DecreaseLightAngle();
+        }
 
         
     }

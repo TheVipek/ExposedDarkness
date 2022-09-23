@@ -8,7 +8,11 @@ public class PlayerCamera : MonoBehaviour
     public static PlayerCamera instance;
     [SerializeField] float shakeDuration = .5f;
     [SerializeField] float shakePower = 1f;
-
+    [SerializeField] Animator animator;
+    public void TriggerShake()
+    {
+        animator.SetTrigger("Shake");
+    }
 
     private void Awake() {
         if(instance!=this && instance != null)
@@ -23,9 +27,9 @@ public class PlayerCamera : MonoBehaviour
            
     public IEnumerator shakeCamera()
     {
-        Vector3 originalPos = transform.localPosition;
+        Vector3 originalPos = new Vector3(transform.localPosition.x,transform.localPosition.y,transform.localPosition.z);
+        Debug.Log(originalPos);
         float timeElapsed = shakeDuration;
-
         while(timeElapsed > 0)
         {
             float x = Random.Range(-1f,1f) * shakePower;
@@ -35,6 +39,8 @@ public class PlayerCamera : MonoBehaviour
             yield return null;
         }
         transform.localPosition = originalPos;
+        Debug.Log(transform.localPosition);
+
         
     }
 }

@@ -6,7 +6,7 @@ public class VingetteBumping : MonoBehaviour
 {
     [SerializeField] PostProcessVolume volume;
     Vignette vingette;
-    public float entryValue = 0f;
+    public float entryValue = 0.1f;
     public float maxBloodValue = 0.25f;
     public float maxPoisonValue = 0.5f;
     public float currentBump;
@@ -43,12 +43,17 @@ public class VingetteBumping : MonoBehaviour
        }
        currentBump = toVal;
        vingette.intensity.value = currentBump;
-
-        if(PlayerHealth.instance.bloodOverFace == false && currentBump == entryValue)
-        {
+       if(PlayerHealth.instance.bloodOverFace == false && currentBump != 0)
+       {
+            yield return StartCoroutine(BloodBumping(fromVal:toVal,toVal:0));
+       }
+       else if(PlayerHealth.instance.bloodOverFace == false && currentBump == 0)
+       {
             yield break;
-        }
-        yield return StartCoroutine(BloodBumping(fromVal:toVal,toVal:fromVal));
+       }else
+       {
+            yield return StartCoroutine(BloodBumping(fromVal:toVal,toVal:fromVal));
+       }
 
        
     }
