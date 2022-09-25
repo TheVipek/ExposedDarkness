@@ -15,8 +15,9 @@ public class WeaponDisplayer : MonoBehaviour
     [SerializeField] float maxWeaponImageHeight;
     [SerializeField] float maxWeaponImageWidth;
 
-    private Weapon currentWeapon;
-    private Ammo ammos;
+
+    Ammo ammos;
+    WeaponSwitcher weaponSwitcher;
 
     public static WeaponDisplayer instance;
     private void Awake() {
@@ -26,10 +27,11 @@ public class WeaponDisplayer : MonoBehaviour
         }else
         {
             instance = this;
-            ammos = weaponsParent.GetComponent<Ammo>();
         }
     }
     private void OnEnable() {
+
+        
         WeaponSwitcher.onWeaponChange += DisplayChangeWeapon;
         WeaponSwitcher.onWeaponChange += DisplayChangeAmunition;
         WeaponReloader.onWeaponReload += DisplayChangeAmunition;
@@ -43,86 +45,70 @@ public class WeaponDisplayer : MonoBehaviour
 
     }
     private void Start() {
-    }
-    void Update()
-    {
-        
-    }
-    private void getCurrentWeapon()
-    {
-        int _currentWeapon = weaponsParent.GetComponent<WeaponSwitcher>().CurrentWeapon;
-        currentWeapon = weaponsParent.transform.GetChild(_currentWeapon).GetComponent<Weapon>();
+        ammos = Ammo.instance;
+        weaponSwitcher = WeaponSwitcher.Instance;
     }
     public void DisplayChangeAmunition()
     {
-        getCurrentWeapon();
-        
-        ammoInSlot.text = ammos.GetAmmoInSlot(currentWeapon.AmmoType).ToString();
-
+        ammoInSlot.text = ammos.GetAmmoInSlot(weaponSwitcher.CurrentWeapon.AmmoType).ToString();
         //which means that weapon has been changed or reloaded
-        if(totalAmmo.text != ammos.GetAmmoAmount(currentWeapon.AmmoType).ToString())
+        if(totalAmmo.text != ammos.GetAmmoAmount(weaponSwitcher.CurrentWeapon.AmmoType).ToString())
         {
-            totalAmmo.text = ammos.GetAmmoAmount(currentWeapon.AmmoType).ToString();
-            
+            totalAmmo.text = ammos.GetAmmoAmount(weaponSwitcher.CurrentWeapon.AmmoType).ToString();
         }
-        
-
     }
+   
     public void DisplayChangeWeapon()
     {
-        getCurrentWeapon();
-        if(weaponName.text != currentWeapon.name)
+        if(weaponName.text != weaponSwitcher.CurrentWeapon.name)
             {
-                weaponName.text = currentWeapon.name;
-                weaponArt.sprite = currentWeapon.weaponIcon;
+                weaponName.text = weaponSwitcher.CurrentWeapon.name;
+                weaponArt.sprite = weaponSwitcher.CurrentWeapon.weaponIcon;
                 float imageWidth = weaponArt.sprite.rect.width/2 > maxWeaponImageWidth ? maxWeaponImageWidth : weaponArt.sprite.rect.width;
                 weaponArt.GetComponent<RectTransform>().sizeDelta = new Vector2(imageWidth,maxWeaponImageHeight);
-                if(currentWeapon.ConstantShooting == false)
+                if(weaponSwitcher.CurrentWeapon.ConstantShooting == false)
                 {
                     bulletArt.ForEach(x => x.gameObject.SetActive(false));
                     bulletArt[0].gameObject.SetActive(true);
-                    bulletArt[0].sprite = currentWeapon.bulletIcon;
+                    bulletArt[0].sprite = weaponSwitcher.CurrentWeapon.bulletIcon;
                 }
                 else
                 {
                     foreach (var item in bulletArt)
                     {
                         item.gameObject.SetActive(true);
-                        item.sprite = currentWeapon.bulletIcon;
+                        item.sprite = weaponSwitcher.CurrentWeapon.bulletIcon;
                     }
                 }
-                
-                
             }
     }
     public void DisplayChangeShootingType()
     {
-        getCurrentWeapon();
-        Debug.Log(currentWeapon.CanConstantShoot);
-        if(currentWeapon.CanConstantShoot == true)
+        if(weaponSwitcher.CurrentWeapon.CanConstantShoot == true)
             {
-                if(currentWeapon.ConstantShooting == true)
+                if(weaponSwitcher.CurrentWeapon.ConstantShooting == true)
                 {
                     bulletArt.ForEach(x => x.gameObject.SetActive(false));
                     bulletArt[0].gameObject.SetActive(true);
-                    bulletArt[0].sprite = currentWeapon.bulletIcon;
+                    bulletArt[0].sprite = weaponSwitcher.CurrentWeapon.bulletIcon;
                 }
                 else
                 {
                     foreach (var item in bulletArt)
                     {
                         item.gameObject.SetActive(true);
-                        item.sprite = currentWeapon.bulletIcon;
+                        item.sprite = weaponSwitcher.CurrentWeapon.bulletIcon;
                     }
                 }
                 
-                currentWeapon.ConstantShooting = !currentWeapon.ConstantShooting;
+                weaponSwitcher.CurrentWeapon.SwapConstantShooting();
+                
             }
         else
             {
                 bulletArt.ForEach(x => x.gameObject.SetActive(false));
                 bulletArt[0].gameObject.SetActive(true);
-                bulletArt[0].sprite = currentWeapon.bulletIcon;
+                bulletArt[0].sprite = weaponSwitcher.CurrentWeapon.bulletIcon;
 
             }
     }

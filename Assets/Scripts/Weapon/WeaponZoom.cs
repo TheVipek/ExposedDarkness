@@ -30,10 +30,14 @@ public class WeaponZoom : MonoBehaviour
     [SerializeField] float zoomTime = 2f;
     [SerializeField] float weaponZoomTime = 2f;
     [Header("Booleans")]
-    bool tryingZooming = false;
-    bool zoomed = false;
+    bool tryingZooming;
+    bool zoomed;
     public bool isZoomed{get{return zoomed;}}
     Animator animator;
+    private void OnEnable() {
+        tryingZooming = false;
+        zoomed = false;
+    }
     private void Awake() {
         animator = GetComponent<Animator>();
         //weaponZoomOutPosition = transform.localPosition;
@@ -50,7 +54,7 @@ public class WeaponZoom : MonoBehaviour
     public void ZoomWeapon()
     {
         //if theres no crosshair set in inspector then it wont work
-        if(crosshair == null) return;
+        //if(crosshair == null) return;
         //Purpose of this line is that when player change weapon he needs to press again input(1) to zoom 
         if(Input.GetMouseButtonDown(1))
         {
@@ -77,20 +81,20 @@ public class WeaponZoom : MonoBehaviour
         StartCoroutine(cameraToZoom(zoomOutField,zoomTime));
         playerController.xSensitivity = zoomOutSensitivity;
         playerController.ySensitivity = zoomOutSensitivity;
-        crosshair.SetActive(false);
+      //  crosshair.SetActive(false);
     }
     private void InstaZoomOut()
     {
         if(animator.enabled == false) animator.enabled = true;
         tryingZooming = false;
-        if(crosshair == null) return;
+       // if(crosshair == null) return;
         transform.localPosition = weaponZoomOutPosition;
         weaponCamera.fieldOfView = zoomOutField;
         viewCamera.fieldOfView = zoomOutField;
 
         playerController.xSensitivity = zoomOutSensitivity;
         playerController.ySensitivity = zoomOutSensitivity;
-        crosshair.SetActive(false);
+       // crosshair.SetActive(false);
     }
     private void ZoomIn()
     {
@@ -102,7 +106,7 @@ public class WeaponZoom : MonoBehaviour
         StartCoroutine(cameraToZoom(zoomInField,zoomTime));
         playerController.xSensitivity = zoomInSensitivity;
         playerController.ySensitivity = zoomInSensitivity;
-        crosshair.SetActive(true);
+      //  crosshair.SetActive(true);
     }
     IEnumerator weaponToZoom(Vector3 desiredPosition,float zoomOverTime,bool isZoomingIn)
     {

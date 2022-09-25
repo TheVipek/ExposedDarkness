@@ -9,13 +9,16 @@ public class WeaponReloader : MonoBehaviour
     public Image reloadImage;
     public Image bgImage;
     public bool currentlyReloading= false;
+    WeaponSwitcher weaponSwitcher;
+    private void Start() {
+        weaponSwitcher = WeaponSwitcher.Instance;
+    }
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.R) && currentlyReloading == false) 
         {
-            int currentWeapon = GetComponent<WeaponSwitcher>().CurrentWeapon;
             //will work if hierarchy is the same as ammo slots sequence
-            Weapon weapon = transform.GetChild(currentWeapon).GetComponent<Weapon>();
+            Weapon weapon = weaponSwitcher.CurrentWeapon;
             if(weapon.ammoSlot.GetAmmoInSlot(weapon.AmmoType) != weapon.ammoSlot.GetAmmoPerSlot(weapon.AmmoType))
             {
                 StartCoroutine(reloadInitialization(weapon,weapon.timeToReload));
@@ -26,6 +29,8 @@ public class WeaponReloader : MonoBehaviour
     }
     IEnumerator reloadInitialization(Weapon weapon,float timeToReload)
     {
+
+        AudioManager.Instance.playSound(weapon.audioSource,weapon.Reload);
         currentlyReloading = true;
         float leftTime = timeToReload;
         
@@ -35,7 +40,11 @@ public class WeaponReloader : MonoBehaviour
         {
             leftTime-= Time.deltaTime;
             reloadImage.fillAmount = leftTime/timeToReload;
-            if(weapon.weaponIndex != WeaponSwitcher.instance.CurrentWeapon) break;
+            if(weapon.weaponIndex !=weaponSwitcher.CurrentWeaponIndex)
+            {
+                weapon.audioSource.Stop();
+                break;
+            }
             yield return null;
         }
         if(leftTime <= 0)
@@ -43,6 +52,7 @@ public class WeaponReloader : MonoBehaviour
             Ammo ammos = GetComponent<Ammo>();
             ammos.ReloadAmmo(weapon.AmmoType);
             onWeaponReload();
+            weapon.EmptyAmmo = false;
         }
         reloadImage.enabled = false;
         bgImage.enabled = false;

@@ -2339,7 +2339,7 @@ GameObject:
   - component: {fileID: 4608776340570662142}
   - component: {fileID: 17964533136155759}
   m_Layer: 5
-  m_Name: nameOfWeapon
+  m_Name: flashlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4230,7 +4230,7 @@ GameObject:
   - component: {fileID: 5439207264899444494}
   - component: {fileID: 8575406132353029618}
   m_Layer: 5
-  m_Name: ammoInSlot
+  m_Name: state
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4678,7 +4678,7 @@ GameObject:
   - component: {fileID: 623019251976364621}
   - component: {fileID: 9060558652118933419}
   m_Layer: 5
-  m_Name: weaponArt
+  m_Name: lightArt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4889,7 +4889,7 @@ GameObject:
   - component: {fileID: 7702264425013005851}
   - component: {fileID: 4905856456177175941}
   m_Layer: 5
-  m_Name: totalAmmo
+  m_Name: switched
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

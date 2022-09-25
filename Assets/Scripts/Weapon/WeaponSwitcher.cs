@@ -5,16 +5,21 @@ using UnityEngine;
 using UnityEngine.Events;
 public class WeaponSwitcher : MonoBehaviour
 {
-    [SerializeField] int currentWeapon = 0;
-    public int CurrentWeapon{get { return currentWeapon; } }
+    [SerializeField] int currentWeaponIndex = 0;
+    public int CurrentWeaponIndex{get { return currentWeaponIndex; } }
+
+    [SerializeField] Weapon currentWeapon;
+    public Weapon CurrentWeapon{get{return currentWeapon;}}
     int previousWeapon;
-    public static WeaponSwitcher instance;
+    static WeaponSwitcher instance;
+    public static WeaponSwitcher Instance{get{return instance;}}
     public delegate void OnWeaponChange();
     public static event OnWeaponChange onWeaponChange;
     
      [Header("Get onWeaponChange so it may be"+"\n"+" called every time player shoots.")]
     public UnityEvent weaponEvent;
-
+    [Header("Audio")]
+    public string weaponSwitch; 
     private void Awake() {
         if(instance != null && instance != this)
         {
@@ -22,12 +27,16 @@ public class WeaponSwitcher : MonoBehaviour
         }else
         {
             instance = this;
+
         }
+    }
+    private void OnEnable() {
     }
     void Start() 
     {
-        previousWeapon = currentWeapon;
+        previousWeapon = currentWeaponIndex;
         SetWeaponActive();    
+        getCurrentWeapon();
         onWeaponChange();
     }
     void Update() 
@@ -35,10 +44,11 @@ public class WeaponSwitcher : MonoBehaviour
         ProcessKeyInput();
         ProcessScrollWheel();
 
-        if(previousWeapon!=currentWeapon)
+        if(previousWeapon!=currentWeaponIndex)
         {
-            previousWeapon=currentWeapon;
+            previousWeapon=currentWeaponIndex;
             SetWeaponActive();
+            getCurrentWeapon();
             onWeaponChange();
         }
     }
@@ -50,23 +60,25 @@ public class WeaponSwitcher : MonoBehaviour
     {
         if(Input.GetAxis("Mouse ScrollWheel") > 0)
         {
-            if(currentWeapon >= transform.childCount-1)
+            if(currentWeaponIndex >= transform.childCount-1)
             {
-                currentWeapon = 0;
+                currentWeaponIndex = 0;
             }else
             {
-                currentWeapon+=1;
+                currentWeaponIndex+=1;
             }
+            
         }
         if(Input.GetAxis("Mouse ScrollWheel") < 0)
         {
-            if(currentWeapon <= 0)
+            if(currentWeaponIndex <= 0)
             {
-                currentWeapon = transform.childCount-1;
+                currentWeaponIndex = transform.childCount-1;
             }else
             {
-                currentWeapon-=1;
+                currentWeaponIndex-=1;
             }
+
         }
     }
 
@@ -74,13 +86,13 @@ public class WeaponSwitcher : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Alpha1))
         {
-            currentWeapon=0;
+            currentWeaponIndex=0;
         }else if(Input.GetKeyDown(KeyCode.Alpha2))
         {
-            currentWeapon=1;
+            currentWeaponIndex=1;
         }else if(Input.GetKeyDown(KeyCode.Alpha3))
         {
-            currentWeapon=2;
+            currentWeaponIndex=2;
         }
     }
 
@@ -89,7 +101,7 @@ public class WeaponSwitcher : MonoBehaviour
         int weaponIndex =0;
         foreach (Transform weapon in transform)
         {
-            if(weaponIndex == currentWeapon)
+            if(weaponIndex == currentWeaponIndex)
             {
                 weapon.gameObject.SetActive(true);
                 
@@ -99,5 +111,9 @@ public class WeaponSwitcher : MonoBehaviour
             }
             weaponIndex+=1;
         }
+    }
+        private void getCurrentWeapon()
+    {
+        currentWeapon = transform.GetChild(currentWeaponIndex).GetComponent<Weapon>();
     }
 }
