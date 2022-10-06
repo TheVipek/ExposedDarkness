@@ -1,74 +1,95 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEditor.VersionControl;
-public class enemyAI : MonoBehaviour
+using UnityEngine.Assertions;
+[RequireComponent(typeof(NavMeshAgent),typeof(Waypoints))]
+
+public abstract class enemyAI : MonoBehaviour
 {
-    [SerializeField] Transform target;
-    [SerializeField] float chaseRangeBase = 5f;
-    [SerializeField] float crouchRangeBase = 3f;
-    [SerializeField] float turnSpeedBase = 5f;
+    [SerializeField] EnemyStats statsScriptable;
+    Enemy enemy;
+    protected Transform target;
+    [Tooltip("Range for player when is walking/running")]
+    [SerializeField] float chaseRange = 5f;
+    [Tooltip("Range for player when is crouching")]
+    [SerializeField] float crouchRange = 3f;
+    [Tooltip("How fast zombie is rotating when detect player")]
+    [SerializeField] float rotateSpeed = 5f;
+    
+    //Is set to infinity so there wont be any problem when AI script is initializing
+    float distanceToTarget = Mathf.Infinity;
     
 
-    /*[Tooltip("Layer on which sphere cast has to be")]
-    [SerializeField] LayerMask layerMask;
-    int layerMaskValue;
-    */
-
     NavMeshAgent navMeshAgent;
-    float distanceToTarget = Mathf.Infinity;
-    Vector3 startingPosition;
     Waypoint[] patrollingWaypoints;
+    Vector3 startingPosition;
+
     int lastWaypoint;
     int currentWaypoint = 0;
 
-    [Tooltip("This is something like global variable that defines whether this gameobject WILL patrol anything or not ")]
-    [SerializeField] bool isPatrolling;
-    [SerializeField] float patrollingSpeedBase = 0.7f;
-    [SerializeField] float chaseSpeedBase = 4f;
+
+    float patrollingSpeedBase;
+    float chaseSpeedBase;
 
     [SerializeField] float nextActionBreakBase = 5f;
     [SerializeField] float tryingCatchTargetBase = 5f;
-    
     public float tryingCatchTarget;
+
+    public bool isPatrolling;
     public bool isOnBreak = false;
     public bool isProvoked = false;
-
     public bool isAttacking = false;
-    [SerializeField] public float attackingRange = 0.75f;
-    EnemyAttack enemyAttack;
+
+    [Tooltip("Distance in which zombie is attacking its target")]
+    float attackingRange;
     Animator animator;
 
     bool isOnStartingPosition = true;
     AIState enemyState  = AIState.Idling;
 
-    
+    protected virtual void OnEnable(){
+        enemy.onDamageTaken += ProvokeTrigger;
+    }
+    protected virtual void OnDisable() {
+        enemy.onDamageTaken -= ProvokeTrigger;
+    }
 
-    void Start()
-    {
-        //layerMaskValue = layerMask.value;
-
+    protected virtual void Awake() {
+        InitStats();
         navMeshAgent = GetComponent<NavMeshAgent>();
-        animator = GetComponent<Animator>();
-        enemyAttack = GetComponent<EnemyAttack>();
-        target = PlayerHealth.instance.transform;
+        //navMeshAgent.stoppingDistance = attackingRange;
         startingPosition = gameObject.transform.position;
         tryingCatchTarget = tryingCatchTargetBase;
         lastWaypoint = currentWaypoint;
         patrollingWaypoints = GetComponent<Waypoints>().waypoints;
+        enemy = GetComponent<Enemy>();
+    }
+    protected virtual void InitStats()
+    {
+        patrollingSpeedBase = statsScriptable.baseSpeed * 0.15f;
+        chaseSpeedBase = statsScriptable.baseSpeed;
+        attackingRange = statsScriptable.baseAttackRange;
+
+    }
+    protected virtual void Start()
+    {
+        //OVERRIDE IN EVERY SUBCLASS
+        animator = enemy.getAnimator;
+        target = PlayerHealth.instance.transform;
+        Assert.IsNotNull(target,gameObject.name + " not set target");
         if(patrollingWaypoints.Length>1)
         {
             isPatrolling = true;
-            //Debug.Log(gameObject.name +" has +1 waypoints. Patrolling: "+isPatrolling);
         }else
         {
             isPatrolling = false;
-            //Debug.Log(gameObject.name +" has <1 waypoints ,if you want this zombie to patrol set at least 2 waypoints! Patrolling: "+isPatrolling);
         }
     }
-    void Update()
+    protected virtual void Update()
     {
+        distanceToTarget = Vector3.Distance(
+            new Vector3(transform.position.x,0,transform.position.z),
+            new Vector3(target.position.x,0,target.position.z));
         if(isPatrolling == true && isOnBreak == false  && isProvoked == false)
         {
             PatrollingArea();
@@ -82,21 +103,19 @@ public class enemyAI : MonoBehaviour
         {
             BackToStartingPos();
         }
-        distanceToTarget = Vector3.Distance(new Vector3(transform.position.x,0,transform.position.z)
-        , new Vector3(target.position.x,0,target.position.z));
         
         if(PlayerHealth.instance.IsDead == false)
         {
             if(PlayerMovement.instance.Crouch == false)
             {
-                if(distanceToTarget <= chaseRangeBase)
+                if(distanceToTarget <= chaseSpeedBase)
                 {
                     isProvoked = true;
                 }
             }
             else
             {
-                if(distanceToTarget <= crouchRangeBase)
+                if(distanceToTarget <= crouchRange)
                 {
                     isProvoked = true;
                 }
@@ -106,7 +125,7 @@ public class enemyAI : MonoBehaviour
     }
 
     
-    private void EngageTarget()
+    public virtual void EngageTarget()
     {
         if(PlayerHealth.instance.IsDead == true)
         {
@@ -116,10 +135,11 @@ public class enemyAI : MonoBehaviour
             StartCoroutine(BreakOnNextAction(patrollingWaypoints[lastWaypoint].Position));
             return;
         }
+
+        
         //time ended or distance is over possible and player not catched
         //Debug.Log(tryingCatchTarget);
-       // Debug.Log(distanceToTarget);
-
+        //Debug.Log(distanceToTarget);
         if(tryingCatchTarget <= 0)
         {
             //Debug.Log(tryingCatchTarget + "lower than 0");
@@ -151,19 +171,21 @@ public class enemyAI : MonoBehaviour
 
             tryingCatchTarget-=Time.deltaTime;
         }
-        else if(distanceToTarget <= navMeshAgent.stoppingDistance || isAttacking == true)
-        {   
+        else if(distanceToTarget < navMeshAgent.stoppingDistance || isAttacking == true)
+        { 
+            Debug.Log("Get to point");  
+            navMeshAgent.ResetPath();
             if(isAttacking == false)
             {
                 isAttacking = true;
-                navMeshAgent.isStopped =true;
-                navMeshAgent.ResetPath();
+                //navMeshAgent.isStopped =true;
                 AttackTarget(true);
             
                 if(tryingCatchTarget!=tryingCatchTargetBase) tryingCatchTarget = tryingCatchTargetBase;
-            }else
+            }
+            else
             {
-                if(distanceToTarget >= navMeshAgent.stoppingDistance + attackingRange)
+                if(distanceToTarget > navMeshAgent.stoppingDistance + attackingRange)
                 {
                     isAttacking = false;
                 }
@@ -176,11 +198,11 @@ public class enemyAI : MonoBehaviour
         
     }
 
-    public void ProvokeTrigger()
+    public virtual void ProvokeTrigger()
     {
         isProvoked = true;
     }
-    private void ChaseTarget()
+    public virtual void ChaseTarget()
     {
         isOnStartingPosition = false;
         AttackTarget(false);
@@ -188,22 +210,13 @@ public class enemyAI : MonoBehaviour
         ChaseAnimateState(true);
         navMeshAgent.SetDestination(target.position);
     }
-
-    private void AttackTarget(bool isAttacking)
-    {
-
-        animator.SetBool("attack",isAttacking);
-        
-        //Debug.Log("Attacking!");
-    }
-    private void FaceTarget()
+    public virtual void FaceTarget()
     {
         Vector3 direction = (target.position - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x,0,direction.z));
-        transform.rotation = Quaternion.Slerp(transform.rotation,lookRotation,Time.deltaTime*turnSpeedBase);
+        transform.rotation = Quaternion.Slerp(transform.rotation,lookRotation,Time.deltaTime*rotateSpeed);
     }
-    
-    private void BackToStartingPos()
+    public virtual void BackToStartingPos()
     {
         if(navMeshAgent.remainingDistance > navMeshAgent.stoppingDistance && enemyState == 0) return;
         Debug.Log("Heading towards starting position!");
@@ -219,7 +232,7 @@ public class enemyAI : MonoBehaviour
             isOnStartingPosition = true;
         }
     }
-    private void PatrollingArea()
+    public virtual void PatrollingArea()
     {
         if(navMeshAgent.remainingDistance > navMeshAgent.stoppingDistance && enemyState == 0) return;
         
@@ -247,35 +260,7 @@ public class enemyAI : MonoBehaviour
 
         }
     }
-    private void PatrollingAnimateState(bool state)
-    {
-        //Debug.Log("Patrolling settings...");
-
-        if(state == true)
-        {
-            navMeshAgent.speed = patrollingSpeedBase;
-            enemyState = AIState.Patrolling;
-        }
-        animator.SetBool("patrol",state);
-    }
-    private void ChaseAnimateState(bool state)
-    {
-        if(state)
-        {
-         enemyState = AIState.Chasing;
-            navMeshAgent.speed = chaseSpeedBase;
-        }
-        animator.SetBool("chase",state);
-    }
-    private void IdleAnimteState(bool state)
-    {
-        if(state)
-        {
-            enemyState = AIState.Idling;
-        }
-        animator.SetTrigger("idle");
-    }
-    public IEnumerator BreakOnNextAction(Vector3 newDestination)
+    public virtual IEnumerator BreakOnNextAction(Vector3 newDestination)
     {
         Debug.Log("Break...");
 
@@ -288,23 +273,47 @@ public class enemyAI : MonoBehaviour
 
 
     }
-    private void OnDrawGizmosSelected() 
+    protected void AttackTarget(bool isAttacking)
+    {
+
+        animator.SetBool("attack",isAttacking);
+        
+      //Debug.Log("Attacking!");  
+    }
+    protected void PatrollingAnimateState(bool state)
+    {
+        //Debug.Log("Patrolling settings...");
+
+        if(state == true)
+        {
+            navMeshAgent.speed = patrollingSpeedBase;
+            enemyState = AIState.Patrolling;
+        }
+        animator.SetBool("patrol",state);
+    }
+    protected void ChaseAnimateState(bool state)
+    {
+        if(state)
+        {
+            enemyState = AIState.Chasing;
+            navMeshAgent.speed = chaseSpeedBase;
+        }
+        animator.SetBool("chase",state);
+    }
+    protected void IdleAnimteState(bool state)
+    {
+        if(state)
+        {
+            enemyState = AIState.Idling;
+        }
+        animator.SetTrigger("idle");
+    }
+   
+    protected virtual void OnDrawGizmosSelected() 
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position,chaseRangeBase);
-        Gizmos.DrawWireSphere(transform.position,crouchRangeBase);
+        Gizmos.DrawWireSphere(transform.position,chaseRange);
+        Gizmos.DrawWireSphere(transform.position,crouchRange);
 
     }
-        /*private void FocusArea()
-        Debug.Log("Focus area!");
-        if(Physics.CheckSphere(
-            position:transform.position,
-            radius:chaseRange,
-            layerMask:layerMaskValue))
-        {
-            
-            Debug.Log("Bullet triggered zombie!");
-            isProvoked = true;
-        }
-    }*/
 }

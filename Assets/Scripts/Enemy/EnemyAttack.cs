@@ -7,7 +7,6 @@ public class EnemyAttack : MonoBehaviour
     //[SerializeField] Transform target;
     [SerializeField] float damage;
     [SerializeField] PlayerHealth target;
-    [SerializeField] AnimationClip attackAnimation;
     public bool isAttackOver =true;
 
     private void Start() {

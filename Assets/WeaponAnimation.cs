@@ -27,7 +27,9 @@ public class WeaponAnimation : MonoBehaviour
     }
     private void OnEnable() {
         StartCoroutine(showWeapon(desiredPosition));
-        
+        transform.localRotation = Quaternion.Euler(0,0,0);
+
+        Debug.Log("Enabling");
     }
 
     // Update is called once per frame
@@ -46,7 +48,14 @@ public class WeaponAnimation : MonoBehaviour
             animator.SetBool("sprinting" , true);
         }else
         {
-            animator.SetBool("sprinting" , false);
+            if(animator.GetBool("sprinting") == true)
+            {
+                animator.SetBool("sprinting" , false);
+               // transform.localRotation = Quaternion.Euler(0,0,0);
+               // transform.localPosition = desiredPosition;
+
+
+            }
         }
 
         

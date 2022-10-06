@@ -34,12 +34,19 @@ public class Weapon : MonoBehaviour
     [SerializeField] string empty;    
     
     [SerializeField] List<string> shoot;
-
+    private bool firstEnable = true;
 
 
     void OnEnable() {
+        if(firstEnable == true)
+        {
+            firstEnable = false;
+        }else
+        {
+            AudioManager.Instance.playSound(audioSource,WeaponSwitcher.Instance.weaponSwitch);
+
+        }
         canShoot = true;
-        AudioManager.Instance.playSound(audioSource,WeaponSwitcher.Instance.weaponSwitch);
 
     }
     void OnDisable() {
@@ -107,7 +114,7 @@ public class Weapon : MonoBehaviour
             if (hit.transform.tag == "Enemy")
             {
                 CreateHitImpact(hit);
-                EnemyHealth target = hit.transform.gameObject.GetComponent<EnemyHealth>();
+                Enemy target = hit.transform.gameObject.GetComponent<Enemy>();
                 target.TakeDamage(damage);
             }
             

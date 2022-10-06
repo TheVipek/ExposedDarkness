@@ -45,9 +45,6 @@ public class WeaponZoom : MonoBehaviour
     void Update() {
         ZoomWeapon();
     }
-    private void FixedUpdate() {
-        
-    }
     void OnDisable() {
         InstaZoomOut();
     }
@@ -60,7 +57,7 @@ public class WeaponZoom : MonoBehaviour
         {
            tryingZooming = true;
         }
-        if(Input.GetMouseButton(1) && tryingZooming == true)
+        if(Input.GetMouseButton(1) && tryingZooming == true && zoomed == false)
         {
            ZoomIn();
         }
@@ -75,31 +72,35 @@ public class WeaponZoom : MonoBehaviour
     private void ZoomOut()
     { 
 
-        //no longer zooming
+        //no longer trying
         tryingZooming = false;
+    
         StartCoroutine(weaponToZoom(weaponZoomOutPosition,weaponZoomTime,false));
         StartCoroutine(cameraToZoom(zoomOutField,zoomTime));
         playerController.xSensitivity = zoomOutSensitivity;
         playerController.ySensitivity = zoomOutSensitivity;
+        animator.enabled = true;
       //  crosshair.SetActive(false);
     }
     private void InstaZoomOut()
     {
         if(animator.enabled == false) animator.enabled = true;
         tryingZooming = false;
-       // if(crosshair == null) return;
+
         transform.localPosition = weaponZoomOutPosition;
         weaponCamera.fieldOfView = zoomOutField;
         viewCamera.fieldOfView = zoomOutField;
 
         playerController.xSensitivity = zoomOutSensitivity;
         playerController.ySensitivity = zoomOutSensitivity;
+
+
+       // if(crosshair == null) return;
        // crosshair.SetActive(false);
     }
     private void ZoomIn()
     {
-        GetComponent<Animator>().enabled = false;
-        
+        animator.enabled = false;
         transform.localPosition = weaponZoomOutPosition;
         transform.localRotation = Quaternion.Euler(0,0,0);
         StartCoroutine(weaponToZoom(weaponZoomInPosition,weaponZoomTime,true));
@@ -130,7 +131,7 @@ public class WeaponZoom : MonoBehaviour
         if(isZoomingIn == false)
         {
             zoomed = false;
-            animator.enabled = true;
+           // animator.enabled = true;
             Debug.Log("Starting play animation!");
         }
 
@@ -142,10 +143,6 @@ public class WeaponZoom : MonoBehaviour
         transform.localPosition = desiredPosition;
 
         yield return null;
-    }
-    void swapTryingZooming()
-    {
-        zoomed = !zoomed;
     }
     IEnumerator cameraToZoom(float desiredFOV,float zoomOverTime)
     {
