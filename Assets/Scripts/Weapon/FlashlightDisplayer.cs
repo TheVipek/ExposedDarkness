@@ -24,6 +24,9 @@ public class FlashlightDisplayer : MonoBehaviour
     private void OnEnable() {
         WeaponSwitcher.onWeaponChange+=DisplayFlashlighter;
     }
+     private void OnDisable() {
+        WeaponSwitcher.onWeaponChange-=DisplayFlashlighter;
+    }
     private void Update() {
         
     }

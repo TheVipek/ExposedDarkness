@@ -254,7 +254,7 @@ public abstract class enemyAI : MonoBehaviour
 
         if(navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
         {
-            Debug.Log("Patrolling next waypoint...");
+            //Debug.Log("Patrolling next waypoint...");
             PatrollingAnimateState(false);
             StartCoroutine(BreakOnNextAction(patrollingWaypoints[currentWaypoint].Position));
 
@@ -262,13 +262,13 @@ public abstract class enemyAI : MonoBehaviour
     }
     public virtual IEnumerator BreakOnNextAction(Vector3 newDestination)
     {
-        Debug.Log("Break...");
+        //Debug.Log("Break...");
 
         isOnBreak = true;
         IdleAnimteState(true);
         yield return new WaitForSeconds(nextActionBreakBase);
         navMeshAgent.destination = newDestination;
-        Debug.Log(navMeshAgent.destination);
+        //Debug.Log(navMeshAgent.destination);
         isOnBreak = false;
 
 
