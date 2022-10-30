@@ -19,7 +19,7 @@ public class WeaponReloader : MonoBehaviour
         {
             //will work if hierarchy is the same as ammo slots sequence
             Weapon weapon = weaponSwitcher.CurrentWeapon;
-            if(weapon.ammoSlot.GetAmmoInSlot(weapon.AmmoType) != weapon.ammoSlot.GetAmmoPerSlot(weapon.AmmoType))
+            if(weapon.ammoSlot.GetAmmoInSlot(weapon.AmmoType) != weapon.ammoSlot.GetAmmoPerSlot(weapon.AmmoType) && weapon.ammoSlot.GetAmmoAmount(weapon.AmmoType) > 0)
             {
                 StartCoroutine(reloadInitialization(weapon,weapon.timeToReload));
             }
