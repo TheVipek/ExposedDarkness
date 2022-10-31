@@ -19,12 +19,15 @@ public abstract class Enemy : MonoBehaviour {
     PlayerHealth target;
 
     //Data backpack
-    [SerializeField] EnemyStats statsScriptable;
+    public EnemyStats statsScriptable; 
+    public float chaseSpeedBase{get; private set;}
+    [Range(1,10)]
+    public float chaseSpeedMultiplier;
     [SerializeField] string attackSound;
     [SerializeField] string patrollingSound;
     [SerializeField] string deathSound;
-
     [SerializeField] string provokeSound;
+    
     protected AudioSource audioSource;
     //Properties
     public Animator getAnimator{get{return animator;}}

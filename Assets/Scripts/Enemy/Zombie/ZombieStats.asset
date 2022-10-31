@@ -14,6 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseDamage: 5
   baseHitpoints: 100
-  baseSpeed: 6
+  baseSpeed: 0.2
+  baseChaseSpeed: 0.6
   baseDeathStateLength: 5
-  baseAttackRange: 0.75
+  baseAttackRange: 1
+  baseChaseRange: 5
+  baseCrouchRange: 3
+  baseRotateSpeed: 5

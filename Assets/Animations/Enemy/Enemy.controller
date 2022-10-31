@@ -146,7 +146,7 @@ AnimatorStateMachine:
     m_Position: {x: 180, y: 540, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 7819824675582603335}
-    m_Position: {x: 520, y: 500, z: 0}
+    m_Position: {x: 530, y: 500, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -8254911524313424482}
     m_Position: {x: 720, y: 320, z: 0}
@@ -380,7 +380,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Chase
-  m_Speed: 2.5
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 2875199053878353731}

@@ -7,7 +7,19 @@ public class EnemyStats : ScriptableObject {
     public float baseDamage;
     public float baseHitpoints;
     public float baseSpeed;
-    //How long should enemy lie at ground until disabling
+    public float baseChaseSpeed;
+
+    [Tooltip("How long should enemy lie at ground until disabling")]
     public float baseDeathStateLength;
+    [Tooltip("Distance in which enemy can attack player (lower for meele ,higher for range types)")]
     public float baseAttackRange;
+    [Tooltip("Range for player when is walking/running")]
+    //5
+    public float baseChaseRange;
+    [Tooltip("Range for player when is crouching")]
+    //3
+    public float baseCrouchRange;
+    [Tooltip("How fast zombie is rotating when detect player")]
+    //5
+    public float baseRotateSpeed;
 }

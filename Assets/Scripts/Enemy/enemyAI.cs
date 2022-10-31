@@ -6,19 +6,13 @@ using UnityEngine.Assertions;
 
 public abstract class enemyAI : MonoBehaviour
 {
-    [SerializeField] EnemyStats statsScriptable;
     Enemy enemy;
+    EnemyStats enemyStats;
     protected Transform target;
-    [Tooltip("Range for player when is walking/running")]
-    [SerializeField] float chaseRange = 5f;
-    [Tooltip("Range for player when is crouching")]
-    [SerializeField] float crouchRange = 3f;
-    [Tooltip("How fast zombie is rotating when detect player")]
-    [SerializeField] float rotateSpeed = 5f;
+    
     
     //Is set to infinity so there wont be any problem when AI script is initializing
     float distanceToTarget = Mathf.Infinity;
-    
 
     NavMeshAgent navMeshAgent;
     Waypoint[] patrollingWaypoints;
@@ -28,20 +22,17 @@ public abstract class enemyAI : MonoBehaviour
     int currentWaypoint = 0;
 
 
-    float patrollingSpeedBase;
-    float chaseSpeedBase;
+    
 
     [SerializeField] float nextActionBreakBase = 5f;
     [SerializeField] float tryingCatchTargetBase = 5f;
-    public float tryingCatchTarget;
+    float tryingCatchTarget;
 
-    public bool isPatrolling;
-    public bool isOnBreak = false;
-    public bool isProvoked = false;
-    public bool isAttacking = false;
+    bool isPatrolling;
+    bool isOnBreak = false;
+    bool isProvoked = false;
+    bool isAttacking = false;
 
-    [Tooltip("Distance in which zombie is attacking its target")]
-    float attackingRange;
     Animator animator;
 
     bool isOnStartingPosition = true;
@@ -55,7 +46,7 @@ public abstract class enemyAI : MonoBehaviour
     }
 
     protected virtual void Awake() {
-        InitStats();
+        // InitStats();
         navMeshAgent = GetComponent<NavMeshAgent>();
         //navMeshAgent.stoppingDistance = attackingRange;
         startingPosition = gameObject.transform.position;
@@ -63,14 +54,15 @@ public abstract class enemyAI : MonoBehaviour
         lastWaypoint = currentWaypoint;
         patrollingWaypoints = GetComponent<Waypoints>().waypoints;
         enemy = GetComponent<Enemy>();
+        enemyStats = enemy.statsScriptable;
     }
-    protected virtual void InitStats()
-    {
-        patrollingSpeedBase = statsScriptable.baseSpeed * 0.15f;
-        chaseSpeedBase = statsScriptable.baseSpeed;
-        attackingRange = statsScriptable.baseAttackRange;
+    // protected virtual void InitStats()
+    // {
+    //     patrollingSpeedBase = statsScriptable.baseSpeed;
+    //     chaseSpeedBase = statsScriptable.baseSpeed*3;
+    //     attackingRange = statsScriptable.baseAttackRange;
 
-    }
+    // }
     protected virtual void Start()
     {
         //OVERRIDE IN EVERY SUBCLASS
@@ -108,14 +100,14 @@ public abstract class enemyAI : MonoBehaviour
         {
             if(PlayerMovement.instance.Crouch == false)
             {
-                if(distanceToTarget <= chaseSpeedBase)
+                if(distanceToTarget <= enemyStats.baseChaseSpeed)
                 {
                     isProvoked = true;
                 }
             }
             else
             {
-                if(distanceToTarget <= crouchRange)
+                if(distanceToTarget <= enemyStats.baseCrouchRange)
                 {
                     isProvoked = true;
                 }
@@ -185,7 +177,7 @@ public abstract class enemyAI : MonoBehaviour
             }
             else
             {
-                if(distanceToTarget > navMeshAgent.stoppingDistance + attackingRange)
+                if(distanceToTarget > navMeshAgent.stoppingDistance + enemyStats.baseAttackRange)
                 {
                     isAttacking = false;
                 }
@@ -214,7 +206,7 @@ public abstract class enemyAI : MonoBehaviour
     {
         Vector3 direction = (target.position - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x,0,direction.z));
-        transform.rotation = Quaternion.Slerp(transform.rotation,lookRotation,Time.deltaTime*rotateSpeed);
+        transform.rotation = Quaternion.Slerp(transform.rotation,lookRotation,Time.deltaTime*enemyStats.baseRotateSpeed);
     }
     public virtual void BackToStartingPos()
     {
@@ -286,7 +278,7 @@ public abstract class enemyAI : MonoBehaviour
 
         if(state == true)
         {
-            navMeshAgent.speed = patrollingSpeedBase;
+            navMeshAgent.speed = enemyStats.baseSpeed;
             enemyState = AIState.Patrolling;
         }
         animator.SetBool("patrol",state);
@@ -296,7 +288,7 @@ public abstract class enemyAI : MonoBehaviour
         if(state)
         {
             enemyState = AIState.Chasing;
-            navMeshAgent.speed = chaseSpeedBase;
+            navMeshAgent.speed = enemyStats.baseChaseSpeed;
         }
         animator.SetBool("chase",state);
     }
@@ -312,8 +304,8 @@ public abstract class enemyAI : MonoBehaviour
     protected virtual void OnDrawGizmosSelected() 
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position,chaseRange);
-        Gizmos.DrawWireSphere(transform.position,crouchRange);
+        Gizmos.DrawWireSphere(transform.position,enemyStats.baseChaseRange);
+        Gizmos.DrawWireSphere(transform.position,enemyStats.baseCrouchRange);
 
     }
 }

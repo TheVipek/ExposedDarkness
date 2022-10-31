@@ -51,7 +51,7 @@ public class WeaponAnimation : MonoBehaviour
             if(animator.GetBool("sprinting") == true)
             {
                 animator.SetBool("sprinting" , false);
-               // transform.localRotation = Quaternion.Euler(0,0,0);
+                // transform.localRotation = Quaternion.Euler(0,0,0);
                // transform.localPosition = desiredPosition;
 
 
