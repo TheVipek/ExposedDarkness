@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+
 public class renderTexture : MonoBehaviour
 {
     Camera _camera;
@@ -25,7 +26,9 @@ public class renderTexture : MonoBehaviour
             takeScreenshot($"{Application.dataPath}/{path}/{i}_Icon.png");
             yield return null;
             obj.gameObject.SetActive(false);
+        #if UNITY_EDITOR
             Sprite s = AssetDatabase.LoadAssetAtPath<Sprite>($"Assets/{path}/{i}_Icon.png");
+        #endif
             yield return null;
         }
     }

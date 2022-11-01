@@ -35,12 +35,15 @@ public class WeaponDisplayer : MonoBehaviour
         WeaponSwitcher.onWeaponChange += DisplayChangeWeapon;
         WeaponSwitcher.onWeaponChange += DisplayChangeAmunition;
         WeaponReloader.onWeaponReload += DisplayChangeAmunition;
+        Ammo.onAmmoAdd += DisplayChangeAmunition;
         WeaponShootingTypeChanger.onChangeShootingType += DisplayChangeShootingType;
     }
     private void OnDisable() {
         WeaponSwitcher.onWeaponChange -= DisplayChangeWeapon;
         WeaponSwitcher.onWeaponChange -= DisplayChangeAmunition;
         WeaponReloader.onWeaponReload -= DisplayChangeAmunition;
+        Ammo.onAmmoAdd -= DisplayChangeAmunition;
+
         WeaponShootingTypeChanger.onChangeShootingType -= DisplayChangeShootingType;
 
     }

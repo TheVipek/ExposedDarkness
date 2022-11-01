@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ZombieStats
   m_EditorClassIdentifier: 
   baseDamage: 5
-  baseHitpoints: 100
+  baseHitpoints: 150
   baseSpeed: 0.2
   baseChaseSpeed: 0.6
   baseDeathStateLength: 5

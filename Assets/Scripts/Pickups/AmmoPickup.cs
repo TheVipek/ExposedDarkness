@@ -8,7 +8,7 @@ public class AmmoPickup : MonoBehaviour
     [SerializeField] AmmoType ammoType;
     [SerializeField] int ammoCount;
     private void Start() {
-        ammo = FindObjectOfType<Ammo>();
+        ammo = Ammo.instance;
     }
     private void OnTriggerEnter(Collider other) 
     {
@@ -18,10 +18,10 @@ public class AmmoPickup : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
+    
     public void GetAmmoFromPickup()
     {
-        ammo.PickupAmmo(ammoType,ammoCount);
+        ammo.AddAmmo(ammoType,ammoCount);
 
     }
 }

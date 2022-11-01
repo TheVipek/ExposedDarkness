@@ -7,6 +7,9 @@ public class Ammo : MonoBehaviour
     [Tooltip("Getting reference from inventory to get ammos")]
     [SerializeField] List<AmmoSlot> ammoSlots;
     public static Ammo instance;
+
+    public delegate void OnAmmoAdd();
+    public static event OnAmmoAdd onAmmoAdd;
     private void Awake() {
         if(instance != null && instance != this)
         {
@@ -15,6 +18,12 @@ public class Ammo : MonoBehaviour
         {
             instance = this;
         }
+    }
+    private void OnEnable() {
+        
+    }
+    private void OnDisable() {
+        
     }
     [System.Serializable]
     private class AmmoSlot
@@ -61,10 +70,10 @@ public class Ammo : MonoBehaviour
     {
        GetAmmoSlot(ammoType).ammoInSlot--;
     }
-    public void PickupAmmo(AmmoType ammoType,int ammoCount)
+    public void AddAmmo(AmmoType ammoType,int ammoCount)
     {
-         GetAmmoSlot(ammoType).ammoAmount+=ammoCount;
-
+        GetAmmoSlot(ammoType).ammoAmount+=ammoCount;
+        onAmmoAdd();
     }
     private AmmoSlot GetAmmoSlot(AmmoType ammoType)
     {
