@@ -55,6 +55,10 @@ public abstract class Enemy : MonoBehaviour {
        if(canMove == false) MovePossibility(true);
 
     }
+    protected virtual void OnDisable()
+    {
+        
+    }
     protected virtual void Start()
     {
         AudioManager.Instance.playSound(audioSource,patrollingSound);

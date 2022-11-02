@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - Rock
+  - interactionObject
   layers:
   - Default
   - TransparentFX
