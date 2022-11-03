@@ -112,7 +112,7 @@ public class SceneController : MonoBehaviour
         {
             Debug.Log("Entry GameScene!");
             DialogueController dialogueController = DialogueController.Instance;
-            dialogueController.DialogueStartPhase(dialogueController.entryDialogueText,false);
+            dialogueController.DialogueStartPhase(dialogueController.currentDialogue,false);
         }
     }
 }

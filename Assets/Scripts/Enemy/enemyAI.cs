@@ -50,11 +50,11 @@ public abstract class enemyAI : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
         //navMeshAgent.stoppingDistance = attackingRange;
         startingPosition = gameObject.transform.position;
-        tryingCatchTarget = tryingCatchTargetBase;
         lastWaypoint = currentWaypoint;
         patrollingWaypoints = GetComponent<Waypoints>().waypoints;
         enemy = GetComponent<Enemy>();
         enemyStats = enemy.statsScriptable;
+        NormalMode();
     }
     // protected virtual void InitStats()
     // {
@@ -116,7 +116,14 @@ public abstract class enemyAI : MonoBehaviour
         
     }
 
-    
+    public virtual void SanityMode()
+    {
+        tryingCatchTarget = Mathf.Infinity;
+    }
+    public virtual void NormalMode()
+    {
+        tryingCatchTarget = tryingCatchTargetBase;
+    }
     public virtual void EngageTarget()
     {
         if(PlayerHealth.instance.IsDead == true)
@@ -189,7 +196,6 @@ public abstract class enemyAI : MonoBehaviour
            
         
     }
-
     public virtual void ProvokeTrigger()
     {
         isProvoked = true;
@@ -300,7 +306,6 @@ public abstract class enemyAI : MonoBehaviour
         }
         animator.SetTrigger("idle");
     }
-   
     protected virtual void OnDrawGizmosSelected() 
     {
         Gizmos.color = Color.red;

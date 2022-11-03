@@ -1,10 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
 public class interactionListener : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [SerializeField] GameObject canInteract;
+    [SerializeField] GameObject cantInteract;
+
+    private GameObject lookingAt;
+    private InteractionObject interactionObject;
+    private void OnEnable() {
+        lookingAt = Interaction.Instance.lookingAt;
+        interactionObject = lookingAt.GetComponent<InteractionObject>();
+        if(interactionObject.canInteract == true)
+        {
+            canInteract.SetActive(true);
+        }else
+        {
+            cantInteract.SetActive(true);
+        }
+    }
     private void OnGUI() {
         if(Event.current.isKey)
         {
@@ -14,11 +29,23 @@ public class interactionListener : MonoBehaviour
             {
                 if (currentEvent.type == EventType.KeyDown)
                 {
-                    GameObject lookingAt = Interaction.Instance.lookingAt;
-                    InteractionObject interactionObject = lookingAt.GetComponent<InteractionObject>();
-                    if(interactionObject != null && interactionObject.canInteract == true) interactionObject.interactionContainer.OnInteractionStart();
+                    if(interactionObject != null && interactionObject.canInteract == true)
+                    {
+                        interactionObject.interactionContainer.OnInteractionStart();
+                        interactionObject.canInteract = false;
+                        Interaction.Instance.interactionUI.SetActive(false);
+                    }
                 }
             }
+        }
+    }
+    private void OnDisable() {
+        if(canInteract.activeSelf == true)
+        {
+            canInteract.SetActive(false);
+        }else
+        {
+            cantInteract.SetActive(false);
         }
     }       
 }

@@ -1,17 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using System;
 
 
-
-
-[CreateAssetMenu(fileName = "InteractionDialogue", menuName = "Interaction/Dialogue", order = 0)]
 public class InteractionDialogue : InteractionContainer {
-    public DialogueText textToAppear;
-
+    [SerializeField] dialogueConversation dialogueConversation;
     public override void OnInteractionStart()
     {
-        DialogueController.Instance.DialogueStartPhase(textToAppear,true);
+        
+        DialogueController.Instance.DialogueStartPhase(dialogueConversation.dialogue,true);
     }
 }
 

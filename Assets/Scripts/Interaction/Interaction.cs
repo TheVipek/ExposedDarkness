@@ -4,11 +4,11 @@ using UnityEngine;
 public class Interaction : MonoBehaviour,IResponseInteraction
 {
     public static Interaction Instance { get; private set; }
-    [SerializeField] GameObject interactionUI;
+    public GameObject interactionUI;
     [SerializeField] Camera playerViewCamera;
     [SerializeField] float interactionDistance;
     bool interactionActivated = false;
-    public GameObject lookingAt = null;
+    internal GameObject lookingAt = null;
     Ray ray;
     RaycastHit hit;
 
@@ -47,14 +47,14 @@ public class Interaction : MonoBehaviour,IResponseInteraction
 
     public void OnSelect(GameObject _lookingAt)
     {
-        interactionUI.SetActive(true);
         lookingAt = _lookingAt;
         interactionActivated = true;
+        interactionUI.SetActive(true);
     }
     public void OnDeselect()
     {
-        interactionUI.SetActive(false);
         lookingAt = null;
         interactionActivated = false;
+        interactionUI.SetActive(false);
     }
 }

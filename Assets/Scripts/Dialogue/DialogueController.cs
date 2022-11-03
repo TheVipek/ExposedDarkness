@@ -5,12 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Events;
 using System;
-public enum DialogueState
-{
-    DEFAULT,
-    STARTED,
-    FINISHED
-}
+
 
 public class DialogueController : MonoBehaviour
 {
@@ -21,12 +16,12 @@ public class DialogueController : MonoBehaviour
     [SerializeField] TMP_Text tMP_Text;
     [SerializeField] float timePerCharacter;
     [SerializeField] float timePerSentence;
-    public DialogueState dialogueState = DialogueState.DEFAULT;
 
-    public DialogueText entryDialogueText;
-    public static event Action OnDialogueStarted;
-    public static event Action OnDialogueEnded;
+    public Dialogue currentDialogue;
+    public static event Action OnGlobalDialogueStarted;
+    public static event Action OnGlobalDialogueEnded;
     private void Awake() {
+
         if(Instance != this && Instance != null)
         {
             Destroy(gameObject);
@@ -36,27 +31,28 @@ public class DialogueController : MonoBehaviour
         }
     }
     
-    public void DialogueStartPhase(DialogueText dialogueText, bool transitionInside = true)
+    public void DialogueStartPhase(Dialogue _dialogue, bool transitionInside = true)
     {
-        OnDialogueStarted();
-        dialogueState = DialogueState.STARTED;
+        currentDialogue = _dialogue;
+        OnGlobalDialogueStarted();
+        currentDialogue.callStartEvents();
         if(transitionInside == true) dialogueAnimator.SetTrigger("appear");
         dialoguePanel.SetActive(true);
-        StartCoroutine(textTransition(dialogueText));
+        StartCoroutine(textTransition(currentDialogue));
     }
     public void DialogueShowEnd()
     {
-        dialogueState = DialogueState.FINISHED;
         dialogueEndPossibility.SetActive(true);
     }
     public void DialogueEndPhase()
     {
         dialogueAnimator.SetTrigger("disappear");
-        OnDialogueEnded();
+        OnGlobalDialogueEnded();
+        currentDialogue.callEndEvents();
     }
-    IEnumerator textTransition(DialogueText dialogueText)
+    IEnumerator textTransition(Dialogue _dialogue)
     {
-        string[] text = dialogueText.textToDisplayAtOnce;
+        string[] text = _dialogue.dialogueText.textToDisplayAtOnce;
         for(int i=0;i<text.Length;i++)
         {
           //  Debug.Log(text[i].Length);
@@ -66,6 +62,7 @@ public class DialogueController : MonoBehaviour
             tMP_Text.text = string.Empty;
             while(currentIndex<text[i].Length)
             {
+                currentDialogue.checkForSentenceEvent(i);
                 if(text[i][currentIndex] == '<')
                 {
                     tagStarted = true;
@@ -84,7 +81,6 @@ public class DialogueController : MonoBehaviour
                 {
                     if(tagStorage != string.Empty)
                     {
-                        Debug.Log(tagStorage);
                         tMP_Text.text += tagStorage;
                         tagStorage = string.Empty;
                     }

@@ -42,16 +42,16 @@ public class GameManager : MonoBehaviour
     }
     private void OnEnable() {
         //DialogueController.OnDialogueStarted += freezeTime;
-        DialogueController.OnDialogueStarted += freezePlayerActions;
+        DialogueController.OnGlobalDialogueStarted += freezePlayerActions;
 
         //DialogueController.OnDialogueEnded += unfreezeTime;
-        DialogueController.OnDialogueEnded += unfreezePlayerActions;
+        DialogueController.OnGlobalDialogueEnded += unfreezePlayerActions;
     }
     private void OnDisable() {
         //DialogueController.OnDialogueStarted -= freezeTime;
-        DialogueController.OnDialogueStarted -= freezePlayerActions;
+        DialogueController.OnGlobalDialogueStarted -= freezePlayerActions;
 
         //DialogueController.OnDialogueEnded -= unfreezeTime;
-        DialogueController.OnDialogueEnded -= unfreezePlayerActions;
+        DialogueController.OnGlobalDialogueEnded -= unfreezePlayerActions;
     }
 }

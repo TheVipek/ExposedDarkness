@@ -43,6 +43,10 @@ public abstract class Enemy : MonoBehaviour {
         baseHitpoints = statsScriptable.baseHitpoints;
         deathStateLength = statsScriptable.baseDeathStateLength;
     }
+    public virtual void RevertHp()
+    {
+        baseHitpoints = statsScriptable.baseHitpoints;
+    }
     protected virtual void Awake() {
         InitStats();
         audioSource = GetComponent<AudioSource>();
