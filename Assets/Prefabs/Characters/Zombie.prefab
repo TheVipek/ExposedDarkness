@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 5228307255799560727}
   - component: {fileID: 1077496283045738737}
   - component: {fileID: 1982975518}
+  - component: {fileID: 9024959718931369221}
   m_Layer: 0
   m_Name: Zombie
   m_TagString: Enemy
@@ -164,17 +165,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78923e289405d6345bcd98ee781ccc42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  statsScriptable: {fileID: 11400000, guid: 9b7854703c6cdc740ad4ab3fdef62f5e, type: 2}
-  chaseRange: 5
-  crouchRange: 3
-  rotateSpeed: 5
   nextActionBreakBase: 5
   tryingCatchTargetBase: 5
-  tryingCatchTarget: 0
-  isPatrolling: 0
-  isOnBreak: 0
-  isProvoked: 0
-  isAttacking: 0
 --- !u!95 &1077496283045738737
 Animator:
   serializedVersion: 4
@@ -291,6 +283,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &9024959718931369221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2661494441099815045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a0104b0a29a7243973f43e423eb352, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4193672769961453628
 GameObject:
   m_ObjectHideFlags: 0

@@ -21,8 +21,8 @@ public abstract class Enemy : MonoBehaviour {
     //Data backpack
     public EnemyStats statsScriptable; 
     public float chaseSpeedBase{get; private set;}
-    [Range(1,10)]
-    public float chaseSpeedMultiplier;
+   // [Range(1,10)]
+   // public float chaseSpeedMultiplier;
     [SerializeField] string attackSound;
     [SerializeField] string patrollingSound;
     [SerializeField] string deathSound;
@@ -55,13 +55,13 @@ public abstract class Enemy : MonoBehaviour {
         Assert.IsNotNull(animator.runtimeAnimatorController,gameObject.name + " not set runtimeAnimatorController");
     }
     protected virtual void OnEnable() {
+       
         //calling method with true parameter so if zombie was choosen from pool he'll be able to move
        if(canMove == false) MovePossibility(true);
 
     }
     protected virtual void OnDisable()
     {
-        
     }
     protected virtual void Start()
     {

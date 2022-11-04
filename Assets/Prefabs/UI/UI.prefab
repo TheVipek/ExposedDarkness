@@ -1167,7 +1167,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &700842493
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2558,8 +2558,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -140.96106}
-  m_SizeDelta: {x: 1600, y: 193.4779}
+  m_AnchoredPosition: {x: 0, y: -154.9}
+  m_SizeDelta: {x: 1600, y: 165.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1724899619
 CanvasRenderer:
@@ -2985,7 +2985,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -9.797199}
   m_SizeDelta: {x: -50, y: -50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6045022817855552190
@@ -4079,7 +4079,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -6880,7 +6880,6 @@ GameObject:
   - component: {fileID: 917871481295463770}
   - component: {fileID: 9092654153340726061}
   - component: {fileID: 6950312541853214735}
-  - component: {fileID: 88352004}
   m_Layer: 5
   m_Name: ObjectiveInfoContainer
   m_TagString: Untagged
@@ -6948,33 +6947,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &88352004
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6430549769208509571}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: acc93e100be15f444818475593e71c0e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectivesInGame:
-  - id: 1
-    description: find entrance
-    status: 0
-    objectiveUI: {fileID: 0}
-  - id: 0
-    description: eliminate encountered zombies
-    status: 0
-    objectiveUI: {fileID: 0}
-  - id: 2
-    description: check for survivors in hangar
-    status: 0
-    objectiveUI: {fileID: 0}
-  objectivesUIBox: {fileID: 6835119389428568362}
-  objectivePrefab: {fileID: 3397152224909642247, guid: cf7d91a8bc79d75409aa0c2c0b7d359d, type: 3}
 --- !u!1 &6670685571717576058
 GameObject:
   m_ObjectHideFlags: 0

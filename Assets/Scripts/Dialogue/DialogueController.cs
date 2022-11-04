@@ -42,7 +42,13 @@ public class DialogueController : MonoBehaviour
     }
     public void DialogueShowEnd()
     {
-        dialogueEndPossibility.SetActive(true);
+        if(currentDialogue.forceExitDialogue == true)
+        {  
+            DialogueEndPhase();
+        }else
+        {
+            dialogueEndPossibility.SetActive(true);
+        }
     }
     public void DialogueEndPhase()
     {

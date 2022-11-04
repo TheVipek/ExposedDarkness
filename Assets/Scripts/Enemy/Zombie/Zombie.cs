@@ -19,7 +19,6 @@ public class Zombie : Enemy
     protected override void OnDisable()
     {
         base.OnDisable();
-        EnemiesAliveCounter.Instance.decreaseEnemiesCount();
     }
     protected override void Start()
     {

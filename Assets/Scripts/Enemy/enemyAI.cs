@@ -24,8 +24,8 @@ public abstract class enemyAI : MonoBehaviour
 
     
 
-    [SerializeField] float nextActionBreakBase = 5f;
-    [SerializeField] float tryingCatchTargetBase = 5f;
+    [SerializeField] float nextActionBreakBase = 8f;
+    [SerializeField] float tryingCatchTargetBase = 8f;
     float tryingCatchTarget;
 
     bool isPatrolling;
@@ -82,6 +82,7 @@ public abstract class enemyAI : MonoBehaviour
         distanceToTarget = Vector3.Distance(
             new Vector3(transform.position.x,0,transform.position.z),
             new Vector3(target.position.x,0,target.position.z));
+        
         if(isPatrolling == true && isOnBreak == false  && isProvoked == false)
         {
             PatrollingArea();
@@ -100,7 +101,7 @@ public abstract class enemyAI : MonoBehaviour
         {
             if(PlayerMovement.instance.Crouch == false)
             {
-                if(distanceToTarget <= enemyStats.baseChaseSpeed)
+                if(distanceToTarget <= enemyStats.baseChaseRange)
                 {
                     isProvoked = true;
                 }
@@ -119,6 +120,7 @@ public abstract class enemyAI : MonoBehaviour
     public virtual void SanityMode()
     {
         tryingCatchTarget = Mathf.Infinity;
+        isProvoked = true;
     }
     public virtual void NormalMode()
     {

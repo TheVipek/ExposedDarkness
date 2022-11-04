@@ -7,13 +7,23 @@ public class ObjectiveKiller : MonoBehaviour
     [SerializeField] int objectiveID;
     [SerializeField] ObjectiveList objectiveList;
     private Objective objective;
-    
+
+    private void OnEnable() {
+        EnemiesAliveCounter.onEnemyAliveChange += setCompleted;
+    }
     private void Start() {
         objective = objectiveList.getObjective(objectiveID);
     }
 
     public void setCompleted()
     {
-        objectiveList.setObjectiveStatus(objective,ObjectiveStatus.DONE);
+        if(EnemiesAliveCounter.enemiesCount == 0)
+        {
+            objectiveList.setObjectiveStatus(objective,ObjectiveStatus.DONE);
+            gameObject.SetActive(false);
+        }
+    }
+    private void OnDisable() {
+        EnemiesAliveCounter.onEnemyAliveChange -= setCompleted;
     }
 }

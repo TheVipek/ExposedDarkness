@@ -7,6 +7,7 @@ using UnityEngine.Events;
 public class Dialogue
 {
     public DialogueText dialogueText;
+    public bool forceExitDialogue;
     [NonReorderable]
     public List <UnityEvent> OnLocalDialogueStarted;
     [NonReorderable]
@@ -18,16 +19,16 @@ public class Dialogue
         public UnityEvent sentenceEvent; 
     }
     [NonReorderable]
-    public sentEvents[] sentenceEvents;
+    public sentEvents[] OnSentence;
 
     public void checkForSentenceEvent(int index)
     {
-        for(int i=0;i<sentenceEvents.Length;i++)
+        for(int i=0;i<OnSentence.Length;i++)
         {
-            if(sentenceEvents[i].sentenceIndex == index && sentenceEvents[i].sentenceEvent != null)
+            if(OnSentence[i].sentenceIndex == index && OnSentence[i].sentenceEvent != null)
             {
-                Debug.Log(sentenceEvents[i].sentenceIndex +" = "+index +" and has: "+sentenceEvents[i].sentenceEvent);
-                callEvent(sentenceEvents[i].sentenceEvent);
+                Debug.Log(OnSentence[i].sentenceIndex +" = "+index +" and has: "+OnSentence[i].sentenceEvent);
+                callEvent(OnSentence[i].sentenceEvent);
                 break;
             }
         }
