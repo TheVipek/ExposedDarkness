@@ -302,6 +302,8 @@ GameObject:
   - component: {fileID: 210696641}
   - component: {fileID: 2099811088}
   - component: {fileID: 647778474}
+  - component: {fileID: 594350790}
+  - component: {fileID: 594350791}
   m_Layer: 5
   m_Name: InfoCanvas
   m_TagString: Untagged
@@ -450,6 +452,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stateText: {fileID: 8575406132353029618}
   deactivatedPanel: {fileID: 2897372308606507186}
+--- !u!114 &594350790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 210696636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbbbe0627f4565548a71cc41a565dd1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectiveUIContainer: {fileID: 6430549769208509571}
+--- !u!114 &594350791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 210696636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bac5998f6cc4294883187cbd6fa87dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timerUIContainer: {fileID: 873709305807532227}
 --- !u!1 &224168183
 GameObject:
   m_ObjectHideFlags: 0
@@ -1161,13 +1189,14 @@ GameObject:
   - component: {fileID: 700842496}
   - component: {fileID: 700842495}
   - component: {fileID: 700842494}
+  - component: {fileID: 1417287084}
   m_Layer: 5
   m_Name: waveCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &700842493
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1250,6 +1279,19 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &1417287084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 700842492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4e7c745a8d58c74096e68189245a05a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waveUIContainer: {fileID: 1724899616}
 --- !u!1 &764835880
 GameObject:
   m_ObjectHideFlags: 0
@@ -2538,7 +2580,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1724899617
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3370,14 +3412,13 @@ GameObject:
   - component: {fileID: 1071986935128125527}
   - component: {fileID: 8355640766750726820}
   - component: {fileID: 5885541417924910998}
-  - component: {fileID: 698826721}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1071986935128125527
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3420,7 +3461,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3437,26 +3478,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!95 &698826721
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 692504474209166933}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: e8d2a76dfbf61854c8087fe3ee93ca50, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &872134815836371064
 GameObject:
   m_ObjectHideFlags: 0
@@ -4079,7 +4100,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4549,13 +4570,14 @@ GameObject:
   - component: {fileID: 5276273776996742243}
   - component: {fileID: 1380850379015510730}
   - component: {fileID: 589414834643686049}
+  - component: {fileID: 1695310732}
   m_Layer: 5
   m_Name: instructionsPop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &216443934599033252
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4638,6 +4660,26 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!95 &1695310732
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3229035385637882971}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e8d2a76dfbf61854c8087fe3ee93ca50, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &3229345447179967215
 GameObject:
   m_ObjectHideFlags: 0
@@ -6598,8 +6640,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 16777215
+  m_fontColor: {r: 1, g: 1, b: 1, a: 0}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -6616,7 +6658,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28
+  m_fontSize: 24
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1

@@ -13,7 +13,7 @@ public class endDialogueListener : MonoBehaviour
         {
             Debug.Log("keyboard event has occured!");
             animator.SetBool("clicked",true);
-            DialogueController.Instance.DialogueEndPhase();
+            StartCoroutine(DialogueController.Instance.DialogueEndPhase());
         }
     }
    public void disableText()

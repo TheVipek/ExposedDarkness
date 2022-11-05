@@ -11,19 +11,27 @@ public class WaveTrigger : MonoBehaviour
     }
     private void OnEnable() 
     {
-        waveController.triggerWave(waveToTrigger);    
-        EnemiesAliveCounter.onEnemyAliveChange += spawnSubwave;
+        triggerWave();
+        EnemiesAliveCounter.onEnemyAliveChange += sendInformationAboutClean;
     }
     private void OnDisable() {
-        EnemiesAliveCounter.onEnemyAliveChange -= spawnSubwave;
+        EnemiesAliveCounter.onEnemyAliveChange -= sendInformationAboutClean;
     }
-    public void spawnSubwave()
+    public void triggerWave()
+    {
+        waveController.initWave(waveToTrigger);
+    }
+    public void sendInformationAboutClean()
     {
         if(EnemiesAliveCounter.enemiesCount == 0){
             waveController.currWave.currentSubwave +=1;
             if(waveController.currWave.currentSubwave <= waveController.currWave.amountOfSubwaves)
             {
-                StartCoroutine(waveController.spawnSubwave());
+                waveController.BreakBetweenWaves(); 
+                // StartCoroutine(waveController.spawnSubwave());
+            }else
+            {
+                // PRINT END OF WAVES
             }
         }
     }

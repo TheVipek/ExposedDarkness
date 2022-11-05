@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 
 
-public class FlashlightDisplayer : MonoBehaviour
+public class FlashlightDisplayer : MonoBehaviour,IDisplayUI
 {
     [SerializeField] TMP_Text stateText;
     [SerializeField] GameObject deactivatedPanel;
@@ -22,31 +22,30 @@ public class FlashlightDisplayer : MonoBehaviour
     }
     // Start is called before the first frame update
     private void OnEnable() {
-        WeaponSwitcher.onWeaponChange+=DisplayFlashlighter;
+        WeaponSwitcher.onWeaponChange+=DisplayUI;
     }
      private void OnDisable() {
-        WeaponSwitcher.onWeaponChange-=DisplayFlashlighter;
+        WeaponSwitcher.onWeaponChange-=DisplayUI;
     }
     private void Update() {
         
     }
     public void DisplayFlashlighter()
     {
-        if(FlashLightSystem.canDisplay() == true)
+        
+        
+    }
+    public void DisplayUI()
+    {
+        bool shouldHide = FlashLightSystem.canDisplay() ? true : false;
+        if(shouldHide == true)
         {
-            if(deactivatedPanel.gameObject.activeInHierarchy == true)
-            {
-                deactivatedPanel.SetActive(false);
-            }
+            deactivatedPanel.SetActive(false);
         }
         else
         {
-            if(deactivatedPanel.gameObject.activeInHierarchy == false)
-            {
-                deactivatedPanel.SetActive(true);
-            }
+            deactivatedPanel.SetActive(true);
         }
-        
     }
     public void SetFlashlightTextState(FlashlightState state)
     {

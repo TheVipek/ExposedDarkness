@@ -7,10 +7,11 @@ using System;
 
 public class InteractionDialogue : InteractionContainer {
     [SerializeField] dialogueConversation dialogueConversation;
+    [SerializeField] bool forceDialogue ;
     public override void OnInteractionStart()
     {
         
-        DialogueController.Instance.DialogueStartPhase(dialogueConversation.dialogue,true);
+        StartCoroutine(DialogueController.Instance.DialogueStartPhase(dialogueConversation.dialogue,forceDialogue));
     }
 }
 

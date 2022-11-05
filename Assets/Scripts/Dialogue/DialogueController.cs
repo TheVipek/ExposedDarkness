@@ -9,7 +9,7 @@ using System;
 
 public class DialogueController : MonoBehaviour
 {
-    public static DialogueController Instance{get;private set;}
+    public static DialogueController Instance { get; private set; }
     [SerializeField] GameObject dialoguePanel;
     [SerializeField] GameObject dialogueEndPossibility;
     [SerializeField] Animator dialogueAnimator;
@@ -20,72 +20,88 @@ public class DialogueController : MonoBehaviour
     public Dialogue currentDialogue;
     public static event Action OnGlobalDialogueStarted;
     public static event Action OnGlobalDialogueEnded;
-    private void Awake() {
+    private void Awake()
+    {
 
-        if(Instance != this && Instance != null)
+        if (Instance != this && Instance != null)
         {
             Destroy(gameObject);
-        }else
+        }
+        else
         {
             Instance = this;
         }
     }
-    
-    public void DialogueStartPhase(Dialogue _dialogue, bool transitionInside = true)
+
+    public IEnumerator DialogueStartPhase(Dialogue _dialogue, bool transitionInside = true)
     {
-        currentDialogue = _dialogue;
+        // dialoguePanel.SetActive(true);
+        if (transitionInside == true)
+        {
+            dialogueAnimator.SetTrigger("appear");
+            //yield return null;
+            float animLength = dialogueAnimator.GetCurrentAnimatorStateInfo(0).length;
+            yield return new WaitForSeconds(animLength);
+        }
+
         OnGlobalDialogueStarted();
         currentDialogue.callStartEvents();
-        if(transitionInside == true) dialogueAnimator.SetTrigger("appear");
-        dialoguePanel.SetActive(true);
+        currentDialogue = _dialogue;
+        yield return StartCoroutine(textTransition(currentDialogue));
+    }
+    public void StartShowingText()
+    {
         StartCoroutine(textTransition(currentDialogue));
     }
     public void DialogueShowEnd()
     {
-        if(currentDialogue.forceExitDialogue == true)
-        {  
-            DialogueEndPhase();
-        }else
+        if (currentDialogue.forceExitDialogue == true)
+        {
+            StartCoroutine(DialogueEndPhase());
+        }
+        else
         {
             dialogueEndPossibility.SetActive(true);
         }
     }
-    public void DialogueEndPhase()
+    public IEnumerator DialogueEndPhase()
     {
         dialogueAnimator.SetTrigger("disappear");
+        float animLength = dialogueAnimator.GetCurrentAnimatorStateInfo(0).length;
+        yield return new WaitForSeconds(animLength);
         OnGlobalDialogueEnded();
         currentDialogue.callEndEvents();
     }
     IEnumerator textTransition(Dialogue _dialogue)
     {
         string[] text = _dialogue.dialogueText.textToDisplayAtOnce;
-        for(int i=0;i<text.Length;i++)
+        for (int i = 0; i < text.Length; i++)
         {
-          //  Debug.Log(text[i].Length);
-            int currentIndex =0;
+            
+            int currentIndex = 0;
             bool tagStarted = false;
             string tagStorage = string.Empty;
             tMP_Text.text = string.Empty;
-            while(currentIndex<text[i].Length)
+            currentDialogue.checkForSentenceEvent(i);
+            while (currentIndex < text[i].Length)
             {
-                currentDialogue.checkForSentenceEvent(i);
-                if(text[i][currentIndex] == '<')
+                if (text[i][currentIndex] == '<')
                 {
                     tagStarted = true;
                 }
 
-                if(tagStarted == true)
+                if (tagStarted == true)
                 {
-                    if(text[i][currentIndex] == '>')
+                    if (text[i][currentIndex] == '>')
                     {
                         tagStarted = false;
                     }
                     tagStorage += text[i][currentIndex];
                 }
 
-                if(tagStarted == false)
+                if (tagStarted == false)
                 {
-                    if(tagStorage != string.Empty)
+                    if (tagStorage != string.Empty)
                     {
                         tMP_Text.text += tagStorage;
                         tagStorage = string.Empty;
@@ -96,7 +112,7 @@ public class DialogueController : MonoBehaviour
                     }
                 }
 
-                currentIndex+=1;
+                currentIndex += 1;
                 yield return new WaitForSeconds(timePerCharacter);
             }
             yield return new WaitForSeconds(timePerSentence);

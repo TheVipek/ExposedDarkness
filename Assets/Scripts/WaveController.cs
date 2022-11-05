@@ -23,33 +23,22 @@ public class WaveController : MonoBehaviour
         }
     }
     private void OnEnable() {
-        onWaveStarted += displayUI;
-        onWaveStarted += displayWavePanel;
-
-        onWaveEnded += displayUI;
-        onWaveEnded += displayWavePanel;
     }
     private void OnDisable() {
-        onWaveStarted -= displayUI;
-        onWaveStarted -= displayWavePanel;
-        
-        onWaveEnded -= displayUI;
-        onWaveEnded -= displayWavePanel;
     }
-    public void triggerWave(WaveContainer wave)
+    public void triggerWaveEntryEvents()
     {
-       initWave(wave);
+       onWaveStarted();
 
     }
     public void initWave(WaveContainer wave)
     {
-        onWaveStarted();
-        currWave = wave;      
+        currWave = wave;         
         StartCoroutine(spawnSubwave());
     }
     public IEnumerator spawnSubwave()
     {
-        Debug.Log("spawning subwave!");
+        
         WaitForSeconds _timeBetweenMonster = new WaitForSeconds(timeBetweenMonster);
         for(int i=0 ; i<currWave.getAmountToSpawn(); i++)
         {
@@ -58,6 +47,15 @@ public class WaveController : MonoBehaviour
         }
         
     }
+    public IEnumerator BreakBetweenWaves(float breakLength = 15f)
+    {
+        while(breakLength>0)
+        {
+            breakLength -= Time.deltaTime;
+            yield return null;
+        }
+        yield return StartCoroutine(spawnSubwave());
+    }
     public void spawnEnemy(GameObject enemy)
     {
         
@@ -65,7 +63,6 @@ public class WaveController : MonoBehaviour
         enemy.GetComponent<Enemy>().RevertHp();
         enemy.SetActive(true);
         enemy.GetComponent<enemyAI>().SanityMode();
-        //enemy.GetComponent<Enemy>().gotProvoked(true);
     }
 
     public int getRespawnPoint()
@@ -73,17 +70,4 @@ public class WaveController : MonoBehaviour
         return UnityEngine.Random.Range(0,currWave.spawnPoints.Count);
     }
 
-    public void displayWavePanel()
-    {
-        if(wavePanel == null) return;
-        wavePanel.SetActive(!wavePanel.activeSelf);
-    }
-    public void displayUI()
-    {
-        if(UIToDisable.Count == 0) return;
-        for(int i=0;i<UIToDisable.Count;i++)
-        {
-            UIToDisable[i].SetActive(!UIToDisable[i].activeSelf);
-        }
-    }
 }
