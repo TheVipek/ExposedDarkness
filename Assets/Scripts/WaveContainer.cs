@@ -9,6 +9,8 @@ public class WaveContainer
     public int amountOfSubwaves;
     public List<GameObject> spawnPoints;
     public List<GameObject> listOfEnemies;
+
+
     public int getAmountToSpawn()
     {
         float amount = (currentSubwave * listOfEnemies.Count) / amountOfSubwaves;

@@ -19,8 +19,8 @@ public class StepEffect : MonoBehaviour
 
         if(Vector3.Distance(lastStep,transform.position) > distanceBetweenStep)
         {
-            Debug.Log(Vector3.Distance(lastStep,transform.position) + ", " + distanceBetweenStep);
-            Debug.Log(PlayerMovement.instance.IsGrounded);
+            //Debug.Log(Vector3.Distance(lastStep,transform.position) + ", " + distanceBetweenStep);
+            //Debug.Log(PlayerMovement.instance.IsGrounded);
             if(PlayerMovement.instance.IsGrounded == true)
             {
                 StepSound();
@@ -31,7 +31,7 @@ public class StepEffect : MonoBehaviour
     }
     private void StepSound()
     {
-        Debug.Log("playing step sound!");
+        //Debug.Log("playing step sound!");
         AudioClip clipToPlay = getClip();
         audioSource.PlayOneShot(clipToPlay,0.2f);
     }

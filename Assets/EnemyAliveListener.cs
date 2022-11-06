@@ -5,9 +5,9 @@ using UnityEngine;
 public class EnemyAliveListener : MonoBehaviour
 {
     private void OnEnable() {
-        EnemiesAliveCounter.Instance.increaseEnemiesCount();
+      //  EnemiesAliveCounter.Instance.increaseEnemiesCount();
     }
     private void OnDisable() {
-        EnemiesAliveCounter.Instance.decreaseEnemiesCount();
+      //  EnemiesAliveCounter.Instance.decreaseEnemiesCount();
     }
 }

@@ -174,7 +174,7 @@ public abstract class enemyAI : MonoBehaviour
         }
         else if(distanceToTarget < navMeshAgent.stoppingDistance || isAttacking == true)
         { 
-            Debug.Log("Get to point");  
+           // Debug.Log("Get to point");  
             navMeshAgent.ResetPath();
             if(isAttacking == false)
             {

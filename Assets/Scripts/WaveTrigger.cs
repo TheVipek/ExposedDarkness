@@ -8,22 +8,19 @@ public class WaveTrigger : MonoBehaviour
     private WaveController waveController;
     private void Awake() {
         waveController = WaveController.Instance;
+        waveController.initWave(waveToTrigger);
     }
     private void OnEnable() 
     {
-        triggerWave();
-        EnemiesAliveCounter.onEnemyAliveChange += sendInformationAboutClean;
+        waveController.startWaveEvents();
+        EnemiesAliveCounter.onEnemyAliveChange += EndSubwaveListener;
     }
     private void OnDisable() {
-        EnemiesAliveCounter.onEnemyAliveChange -= sendInformationAboutClean;
+        EnemiesAliveCounter.onEnemyAliveChange -= EndSubwaveListener;
     }
-    public void triggerWave()
+    public void EndSubwaveListener()
     {
-        waveController.initWave(waveToTrigger);
-    }
-    public void sendInformationAboutClean()
-    {
-        if(EnemiesAliveCounter.enemiesCount == 0){
+        if(EnemiesAliveCounter.currentEnemiesCount == 0){
             waveController.currWave.currentSubwave +=1;
             if(waveController.currWave.currentSubwave <= waveController.currWave.amountOfSubwaves)
             {

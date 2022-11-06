@@ -17,7 +17,7 @@ public class ObjectiveKiller : MonoBehaviour
 
     public void setCompleted()
     {
-        if(EnemiesAliveCounter.enemiesCount == 0)
+        if(EnemiesAliveCounter.currentEnemiesCount == 0)
         {
             objectiveList.setObjectiveStatus(objective,ObjectiveStatus.DONE);
             gameObject.SetActive(false);

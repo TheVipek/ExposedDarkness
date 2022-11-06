@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.Events;
 public class WaveController : MonoBehaviour
 {
     public static WaveController Instance{get; private set;}
@@ -10,8 +11,10 @@ public class WaveController : MonoBehaviour
     public WaveContainer currWave;
     public static Action onWaveStarted;
     public static Action onWaveEnded;
+    public UnityEvent onBreakStarted;
+    
     public float timeBetweenMonster;
-    public float timeBetweenSubwave;
+    public float breakBetweenSubwave;
     private void Awake() {
         if(Instance != this && Instance != null)
         {
@@ -26,32 +29,38 @@ public class WaveController : MonoBehaviour
     }
     private void OnDisable() {
     }
-    public void triggerWaveEntryEvents()
-    {
-       onWaveStarted();
-
-    }
     public void initWave(WaveContainer wave)
     {
         currWave = wave;         
+    }
+    public void startWaveEvents()
+    {
+        onWaveStarted();
+    }
+    public void startWave()
+    {
         StartCoroutine(spawnSubwave());
     }
     public IEnumerator spawnSubwave()
     {
         
         WaitForSeconds _timeBetweenMonster = new WaitForSeconds(timeBetweenMonster);
-        for(int i=0 ; i<currWave.getAmountToSpawn(); i++)
+        int i;
+        for(i=0; i<currWave.getAmountToSpawn(); i++)
         {
             spawnEnemy(currWave.listOfEnemies[i]);
             yield return _timeBetweenMonster;
         }
-        
+        EnemiesAliveCounter.maxEnemiesCount = i;
+        Debug.Log(EnemiesAliveCounter.maxEnemiesCount);
+
     }
-    public IEnumerator BreakBetweenWaves(float breakLength = 15f)
+    public IEnumerator BreakBetweenWaves()
     {
-        while(breakLength>0)
+        float _breakTime = breakBetweenSubwave;
+        while(_breakTime>0)
         {
-            breakLength -= Time.deltaTime;
+            _breakTime -= Time.deltaTime;
             yield return null;
         }
         yield return StartCoroutine(spawnSubwave());

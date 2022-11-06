@@ -5,6 +5,7 @@ using UnityEngine;
 public class WaveDisplayer : MonoBehaviour,IDisplayUI
 {
     [SerializeField] GameObject waveUIContainer;
+
     private void OnEnable() {
         WaveController.onWaveStarted += DisplayUI;
         WaveController.onWaveEnded += DisplayUI;
@@ -14,14 +15,10 @@ public class WaveDisplayer : MonoBehaviour,IDisplayUI
         WaveController.onWaveEnded -= DisplayUI;
         
     }
-    void Start()
-    {
-        
-    }
-
     public void DisplayUI()
     {
         if(waveUIContainer == null) return;
         waveUIContainer.SetActive(!waveUIContainer.activeSelf);
     }
+    
 }
