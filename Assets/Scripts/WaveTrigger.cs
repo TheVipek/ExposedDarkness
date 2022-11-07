@@ -5,26 +5,26 @@ using UnityEngine;
 public class WaveTrigger : MonoBehaviour
 {
     public WaveContainer waveToTrigger;
-    private WaveController waveController;
+    private WaveController _waveController;
     private void Awake() {
-        waveController = WaveController.Instance;
-        waveController.initWave(waveToTrigger);
+        _waveController = WaveController.Instance;
+        _waveController.initWave(waveToTrigger);
     }
     private void OnEnable() 
     {
-        waveController.startWaveEvents();
-        EnemiesAliveCounter.onEnemyAliveChange += EndSubwaveListener;
+        WaveController.onWaveStartGlobal();
+        EnemiesAliveCounter.onEnemyAliveChange += EndWaveListener;
     }
     private void OnDisable() {
-        EnemiesAliveCounter.onEnemyAliveChange -= EndSubwaveListener;
+        EnemiesAliveCounter.onEnemyAliveChange -= EndWaveListener;
     }
-    public void EndSubwaveListener()
+    public void EndWaveListener()
     {
         if(EnemiesAliveCounter.currentEnemiesCount == 0){
-            waveController.currWave.currentSubwave +=1;
-            if(waveController.currWave.currentSubwave <= waveController.currWave.amountOfSubwaves)
+            _waveController.waveContainer.currentSubwave +=1;
+            if(_waveController.waveContainer.currentSubwave <= _waveController.waveContainer.amountOfSubwaves)
             {
-                waveController.BreakBetweenWaves(); 
+                StartCoroutine(StartingBreak());
                 // StartCoroutine(waveController.spawnSubwave());
             }else
             {
@@ -32,4 +32,16 @@ public class WaveTrigger : MonoBehaviour
             }
         }
     }
+    IEnumerator StartingBreak()
+    {
+        yield return null;
+        while(WaveUpdaterUI.isSliderUpdating == true)
+        {
+            yield return null;
+        }
+        yield return new WaitForSeconds(2f);
+        WaveController.onBreakStarted();
+        
+    } 
+
 }

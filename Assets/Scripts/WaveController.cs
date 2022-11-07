@@ -8,13 +8,15 @@ public class WaveController : MonoBehaviour
     public static WaveController Instance{get; private set;}
     public GameObject wavePanel;
     public List<GameObject> UIToDisable; 
-    public WaveContainer currWave;
-    public static Action onWaveStarted;
-    public static Action onWaveEnded;
-    public UnityEvent onBreakStarted;
-    
+    public WaveContainer waveContainer;
+
+    public static Action onWaveStartGlobal;
+    public static Action onWaveEndGlobal;
+    public static Action onWave;
+    public static Action onBreakStarted;
+    public static Action onBreakEnded;
     public float timeBetweenMonster;
-    public float breakBetweenSubwave;
+    public float breakBetweenWaves;
     private void Awake() {
         if(Instance != this && Instance != null)
         {
@@ -26,49 +28,51 @@ public class WaveController : MonoBehaviour
         }
     }
     private void OnEnable() {
+        onBreakEnded += startWave;
     }
     private void OnDisable() {
+        onBreakEnded -= startWave;
     }
     public void initWave(WaveContainer wave)
     {
-        currWave = wave;         
-    }
-    public void startWaveEvents()
-    {
-        onWaveStarted();
+        waveContainer = wave;         
     }
     public void startWave()
     {
-        StartCoroutine(spawnSubwave());
+        onWave();
+        StartCoroutine(spawnWave());
     }
-    public IEnumerator spawnSubwave()
+    public IEnumerator spawnWave()
     {
         
         WaitForSeconds _timeBetweenMonster = new WaitForSeconds(timeBetweenMonster);
+        EnemiesAliveCounter.maxEnemiesCount = 0;
         int i;
-        for(i=0; i<currWave.getAmountToSpawn(); i++)
+        for(i=0; i<waveContainer.getAmountToSpawn(); i++)
         {
-            spawnEnemy(currWave.listOfEnemies[i]);
+            spawnEnemy(waveContainer.listOfEnemies[i]);
             yield return _timeBetweenMonster;
         }
         EnemiesAliveCounter.maxEnemiesCount = i;
-        Debug.Log(EnemiesAliveCounter.maxEnemiesCount);
 
     }
-    public IEnumerator BreakBetweenWaves()
-    {
-        float _breakTime = breakBetweenSubwave;
-        while(_breakTime>0)
-        {
-            _breakTime -= Time.deltaTime;
-            yield return null;
-        }
-        yield return StartCoroutine(spawnSubwave());
-    }
+    // public IEnumerator BreakBetweenWaves()
+    // {
+    //     onBreakStarted();
+    //     float _breakTime = breakBetweenWaves;
+    //     while(_breakTime>0)
+    //     {
+    //         _breakTime -= Time.deltaTime;
+    //         yield return null;
+    //     }
+    //     onBreakEnded();
+    //     yield return null;
+    //     yield return StartCoroutine(spawnWave());
+    // }
     public void spawnEnemy(GameObject enemy)
     {
         
-        enemy.transform.position = currWave.spawnPoints[getRespawnPoint()].transform.position;
+        enemy.transform.position = waveContainer.spawnPoints[getRespawnPoint()].transform.position;
         enemy.GetComponent<Enemy>().RevertHp();
         enemy.SetActive(true);
         enemy.GetComponent<enemyAI>().SanityMode();
@@ -76,7 +80,7 @@ public class WaveController : MonoBehaviour
 
     public int getRespawnPoint()
     {
-        return UnityEngine.Random.Range(0,currWave.spawnPoints.Count);
+        return UnityEngine.Random.Range(0,waveContainer.spawnPoints.Count);
     }
 
 }

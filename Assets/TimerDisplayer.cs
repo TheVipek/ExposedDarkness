@@ -6,12 +6,12 @@ public class TimerDisplayer : MonoBehaviour,IDisplayUI
 {
      [SerializeField] GameObject timerUIContainer;
     private void OnEnable() {
-        WaveController.onWaveStarted += DisplayUI;
-        WaveController.onWaveEnded += DisplayUI;
+        WaveController.onWaveStartGlobal += DisplayUI;
+        WaveController.onWaveEndGlobal += DisplayUI;
     }
     private void OnDisable() {
-        WaveController.onWaveStarted -= DisplayUI;
-        WaveController.onWaveEnded -= DisplayUI;
+        WaveController.onWaveStartGlobal -= DisplayUI;
+        WaveController.onWaveEndGlobal -= DisplayUI;
         
     }
     void Start()

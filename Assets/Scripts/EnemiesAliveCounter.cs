@@ -22,7 +22,8 @@ public class EnemiesAliveCounter : MonoBehaviour
     public void increaseEnemiesCount()
     {
         currentEnemiesCount+=1;
-        //if(onEnemyAliveChange!=null) onEnemyAliveChange();
+        maxEnemiesCount+=1;
+        if(onEnemyAliveChange!=null) onEnemyAliveChange();
     }
     public void decreaseEnemiesCount()
     {

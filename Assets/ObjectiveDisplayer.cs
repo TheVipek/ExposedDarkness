@@ -6,12 +6,12 @@ public class ObjectiveDisplayer : MonoBehaviour,IDisplayUI
 {
     [SerializeField] GameObject objectiveUIContainer;
     private void OnEnable() {
-        WaveController.onWaveStarted += DisplayUI;
-        WaveController.onWaveEnded += DisplayUI;
+        WaveController.onWaveStartGlobal += DisplayUI;
+        WaveController.onWaveEndGlobal += DisplayUI;
     }
     private void OnDisable() {
-        WaveController.onWaveStarted -= DisplayUI;
-        WaveController.onWaveEnded -= DisplayUI;
+        WaveController.onWaveStartGlobal -= DisplayUI;
+        WaveController.onWaveEndGlobal -= DisplayUI;
         
     }
     void Start()

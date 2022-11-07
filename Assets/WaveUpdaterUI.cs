@@ -3,48 +3,60 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-public class WaveUpdaterUI : MonoBehaviour
+using UnityEngine.Events;
+public class WaveUpdaterUI : MonoBehaviour,IDisplayUI
 {
     [SerializeField] Slider waveSlider;
     [SerializeField] TMP_Text currentWaveUI;
     [SerializeField] TMP_Text maxWaveUI;
-   // [SerializeField] Image FilLAmount;
-    // [SerializeField] Image waveToDecrease;
-    private int maxEnemiesCount;
-    private WaveController waveController;
-    public float lerpDuration = 3f;
-    float lerpElapsed;
-    float endValue;
-    float startValue;
-    Queue<IEnumerator> barCoroutines = new Queue<IEnumerator>();
-    Coroutine barCoroutine = null;
+    [SerializeField] GameObject panelWithBar;
+    [SerializeField] GameObject panelWithTimer;
+
+
+
+
+    [SerializeField] float lerpDuration;
+    private float lerpElapsed;
+    private float endValue;
+    private float startValue;
+    private Queue<IEnumerator> barCoroutines = new Queue<IEnumerator>();
+    private Coroutine barCoroutine = null;
+    
+    private WaveController _waveController;
+    public static bool isSliderUpdating;
+    
     private void Awake() {
-        waveController = WaveController.Instance;
-        maxWaveUI.text = waveController.currWave.amountOfSubwaves.ToString();
-        InitSubwaveValues();
+        _waveController = WaveController.Instance;
+        maxWaveUI.text = _waveController.waveContainer.amountOfSubwaves.ToString();
+        UpdateWaveValue();
     }
     private void OnEnable() {
         EnemiesAliveCounter.onEnemyAliveChange += smoothBarMoveCaller;
+        
+        WaveController.onWave += UpdateWaveValue;
+        WaveController.onBreakStarted += DisplayUI;
+        WaveController.onBreakEnded += DisplayUI;
     }
     private void OnDisable() {
         EnemiesAliveCounter.onEnemyAliveChange -= smoothBarMoveCaller;
+
+        WaveController.onWave -= UpdateWaveValue;
+        WaveController.onBreakStarted -= DisplayUI;
+        WaveController.onBreakEnded -= DisplayUI;
         
     }
 
-    public void InitSubwaveValues()
+    public void UpdateWaveValue()
     {
-        Debug.Log(maxEnemiesCount);
-        currentWaveUI.text = waveController.currWave.currentSubwave.ToString();
+        currentWaveUI.text = _waveController.waveContainer.currentSubwave.ToString();
     }
     public void smoothBarMoveCaller()
     {
         if(barCoroutine != null)
         {
-            // Debug.Log("Adding to queue");
             barCoroutines.Enqueue(smoothBarMove());
         }else
         {
-            // Debug.Log("Simply coroutine");
             barCoroutine = StartCoroutine(smoothBarMove());
         }
     }
@@ -52,15 +64,25 @@ public class WaveUpdaterUI : MonoBehaviour
     // {
     //     waveSlider.GetComponent<RectTransform>().
     // }
+    public void DisplayUI()
+    {
+        Debug.Log("Swapping wave UI");
+        if(panelWithBar == null || panelWithTimer == null) return;
+        panelWithBar.SetActive(!panelWithBar.activeSelf);
+        panelWithTimer.SetActive(!panelWithTimer.activeSelf);
+
+    }
     IEnumerator smoothBarMove()
     {
-        // Debug.Log("current: "+ EnemiesAliveCounter.currentEnemiesCount);
-        // Debug.Log("max: "+EnemiesAliveCounter.maxEnemiesCount);
-        // Debug.Log("valToGo: "+valueToGo);
+        yield return null;
+        Debug.Log("startValue" + waveSlider.value);
         startValue = waveSlider.value;
         endValue = (float)EnemiesAliveCounter.currentEnemiesCount/(float)EnemiesAliveCounter.maxEnemiesCount;
+        Debug.Log("endValue" + endValue);
+      
+        
         lerpElapsed =0;
-
+        isSliderUpdating = true;
         while(lerpElapsed < lerpDuration)
         {
             waveSlider.value = Mathf.Lerp(startValue, endValue,lerpElapsed/lerpDuration);
@@ -70,13 +92,13 @@ public class WaveUpdaterUI : MonoBehaviour
         waveSlider.value = endValue;
         if(barCoroutines.Count > 0)
         {
-            // Debug.Log("Starting new coroutine through coroutine");
             yield return StartCoroutine(barCoroutines.Dequeue());
         }else
         {
-            // Debug.Log("Setting barCoroutine to null");
             barCoroutine = null;
+            isSliderUpdating = false;
         }
+
         
     }
 }
