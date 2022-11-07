@@ -15,7 +15,7 @@ public class AmmoPickup : MonoBehaviour
         if(other.gameObject.tag == "Player")
         {
             GetAmmoFromPickup();
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
     

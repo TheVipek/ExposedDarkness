@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.Events;
 [Serializable]
 public class WaveContainer
 {
@@ -10,6 +11,8 @@ public class WaveContainer
     public List<GameObject> spawnPoints;
     public List<GameObject> listOfEnemies;
 
+    public UnityEvent onSubwavesStartEvent;
+    public UnityEvent onSubwavesEndEvent;
 
     public int getAmountToSpawn()
     {

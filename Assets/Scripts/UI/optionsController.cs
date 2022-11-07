@@ -6,7 +6,6 @@ using TMPro;
 public class optionsController : MonoBehaviour
 {
     [SerializeField] Toggle fullScreenCheckBox;
-    [SerializeField] Image preventingResolutionPanel;
     [SerializeField] TMP_Dropdown resolution;
     void Awake()
     {
@@ -31,11 +30,11 @@ public class optionsController : MonoBehaviour
         Debug.Log(toggle.isOn);
         if(toggle.isOn == true)
         {
-            preventingResolutionPanel.enabled = true;
+            resolution.interactable = false;
             Screen.SetResolution(Screen.width,Screen.height,FullScreenMode.FullScreenWindow,0);
         }else
         {
-            preventingResolutionPanel.enabled = false;
+            resolution.interactable = true;
             Screen.SetResolution(Screen.width,Screen.height,FullScreenMode.Windowed,0);
 
         }

@@ -67,8 +67,11 @@ public abstract class enemyAI : MonoBehaviour
     {
         //OVERRIDE IN EVERY SUBCLASS
         animator = enemy.getAnimator;
-        target = PlayerHealth.instance.transform;
-        Assert.IsNotNull(target,gameObject.name + " not set target");
+        if(PlayerHealth.instance != null)
+        {
+            target = PlayerHealth.instance.transform;
+            Assert.IsNotNull(target,gameObject.name + " not set target");
+        }
         if(patrollingWaypoints.Length>1)
         {
             isPatrolling = true;
@@ -79,44 +82,52 @@ public abstract class enemyAI : MonoBehaviour
     }
     protected virtual void Update()
     {
-        distanceToTarget = Vector3.Distance(
-            new Vector3(transform.position.x,0,transform.position.z),
-            new Vector3(target.position.x,0,target.position.z));
         
+        PlayerDistance();
         if(isPatrolling == true && isOnBreak == false  && isProvoked == false)
         {
             PatrollingArea();
         }
 
-        if(isProvoked == true)
+        if(PlayerHealth.instance != null)
         {
-            EngageTarget();
-        }
-        if(isPatrolling == false && isOnStartingPosition == false && isProvoked == false && isOnBreak == false)
-        {
-            BackToStartingPos();
-        }
-        
-        if(PlayerHealth.instance.IsDead == false)
-        {
-            if(PlayerMovement.instance.Crouch == false)
+            if(isProvoked == true)
             {
-                if(distanceToTarget <= enemyStats.baseChaseRange)
-                {
-                    isProvoked = true;
-                }
+                EngageTarget();
             }
-            else
+            if(isPatrolling == false && isOnStartingPosition == false && isProvoked == false && isOnBreak == false)
             {
-                if(distanceToTarget <= enemyStats.baseCrouchRange)
+                BackToStartingPos();
+            }
+            
+            if(PlayerHealth.instance.IsDead == false)
+            {
+                if(PlayerMovement.instance.Crouch == false)
                 {
-                    isProvoked = true;
+                    if(distanceToTarget <= enemyStats.baseChaseRange)
+                    {
+                        isProvoked = true;
+                    }
+                }
+                else
+                {
+                    if(distanceToTarget <= enemyStats.baseCrouchRange)
+                    {
+                        isProvoked = true;
+                    }
                 }
             }
         }
         
     }
 
+    public virtual void PlayerDistance()
+    {
+        if(target == null) return;
+        distanceToTarget = Vector3.Distance(
+            new Vector3(transform.position.x,0,transform.position.z),
+            new Vector3(target.position.x,0,target.position.z));
+    }
     public virtual void SanityMode()
     {
         tryingCatchTarget = Mathf.Infinity;
