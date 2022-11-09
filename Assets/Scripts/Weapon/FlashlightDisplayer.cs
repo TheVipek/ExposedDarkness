@@ -8,6 +8,7 @@ using TMPro;
 public class FlashlightDisplayer : MonoBehaviour,IDisplayUI
 {
     [SerializeField] TMP_Text stateText;
+    [SerializeField] GameObject flashLightContainer;
     [SerializeField] GameObject deactivatedPanel;
     
     public static FlashlightDisplayer Instance{get; private set;}
@@ -37,14 +38,14 @@ public class FlashlightDisplayer : MonoBehaviour,IDisplayUI
     }
     public void DisplayUI()
     {
-        bool shouldHide = FlashLightSystem.canDisplay() ? true : false;
-        if(shouldHide == true)
+        bool shouldBeVisible = FlashLightSystem.canDisplay() ? true : false;
+        if(shouldBeVisible == true)
         {
-            deactivatedPanel.SetActive(false);
+            flashLightContainer.SetActive(true);
         }
         else
         {
-            deactivatedPanel.SetActive(true);
+            flashLightContainer.SetActive(false);
         }
     }
     public void SetFlashlightTextState(FlashlightState state)

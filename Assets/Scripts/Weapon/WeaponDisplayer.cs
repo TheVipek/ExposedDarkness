@@ -36,6 +36,7 @@ public class WeaponDisplayer : MonoBehaviour
         WeaponSwitcher.onWeaponChange += DisplayChangeAmunition;
         WeaponReloader.onWeaponReload += DisplayChangeAmunition;
         Ammo.onAmmoAdd += DisplayChangeAmunition;
+
         WeaponShootingTypeChanger.onChangeShootingType += DisplayChangeShootingType;
     }
     private void OnDisable() {
@@ -67,13 +68,13 @@ public class WeaponDisplayer : MonoBehaviour
             {
                 weaponName.text = weaponSwitcher.CurrentWeapon.name;
                 weaponArt.sprite = weaponSwitcher.CurrentWeapon.weaponIcon;
-                float imageWidth = weaponArt.sprite.rect.width/2 > maxWeaponImageWidth ? maxWeaponImageWidth : weaponArt.sprite.rect.width;
+                float imageWidth = weaponArt.sprite.rect.width > maxWeaponImageWidth ? maxWeaponImageWidth : weaponArt.sprite.rect.width;
                 weaponArt.GetComponent<RectTransform>().sizeDelta = new Vector2(imageWidth,maxWeaponImageHeight);
                 if(weaponSwitcher.CurrentWeapon.ConstantShooting == false)
                 {
                     bulletArt.ForEach(x => x.gameObject.SetActive(false));
-                    bulletArt[0].gameObject.SetActive(true);
-                    bulletArt[0].sprite = weaponSwitcher.CurrentWeapon.bulletIcon;
+                    bulletArt[1].gameObject.SetActive(true);
+                    bulletArt[1].sprite = weaponSwitcher.CurrentWeapon.bulletIcon;
                 }
                 else
                 {
@@ -92,8 +93,8 @@ public class WeaponDisplayer : MonoBehaviour
                 if(weaponSwitcher.CurrentWeapon.ConstantShooting == true)
                 {
                     bulletArt.ForEach(x => x.gameObject.SetActive(false));
-                    bulletArt[0].gameObject.SetActive(true);
-                    bulletArt[0].sprite = weaponSwitcher.CurrentWeapon.bulletIcon;
+                    bulletArt[1].gameObject.SetActive(true);
+                    bulletArt[1].sprite = weaponSwitcher.CurrentWeapon.bulletIcon;
                 }
                 else
                 {
@@ -110,8 +111,8 @@ public class WeaponDisplayer : MonoBehaviour
         else
             {
                 bulletArt.ForEach(x => x.gameObject.SetActive(false));
-                bulletArt[0].gameObject.SetActive(true);
-                bulletArt[0].sprite = weaponSwitcher.CurrentWeapon.bulletIcon;
+                bulletArt[1].gameObject.SetActive(true);
+                bulletArt[1].sprite = weaponSwitcher.CurrentWeapon.bulletIcon;
 
             }
     }

@@ -1306,7 +1306,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8745098, g: 0.5529412, b: 0.07450981, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1343,8 +1343,8 @@ GameObject:
   - component: {fileID: 435532913}
   - component: {fileID: 435532912}
   - component: {fileID: 435532911}
-  - component: {fileID: 435532915}
   - component: {fileID: 435532914}
+  - component: {fileID: 435532915}
   m_Layer: 5
   m_Name: startBtn
   m_TagString: Untagged
@@ -1525,9 +1525,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
-  text: {fileID: 586002755}
-  textColorOnHover: {r: 1, g: 1, b: 1, a: 1}
-  textColorOutHover: {r: 1, g: 0.62352943, b: 0, a: 1}
+  text: {fileID: 0}
+  textColorOnHover: {r: 0, g: 0, b: 0, a: 0}
+  textColorOutHover: {r: 0, g: 0, b: 0, a: 0}
+  transitionLength: 0
 --- !u!1 &446819878
 GameObject:
   m_ObjectHideFlags: 0
@@ -2112,7 +2113,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8745098, g: 0.5529412, b: 0.07450981, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2415,8 +2416,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4279471583
+  m_fontColor: {r: 0.8745098, g: 0.5529412, b: 0.07450981, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2781,6 +2782,7 @@ MonoBehaviour:
   text: {fileID: 0}
   textColorOnHover: {r: 0, g: 0, b: 0, a: 0}
   textColorOutHover: {r: 0, g: 0, b: 0, a: 0}
+  transitionLength: 0
 --- !u!114 &726834297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3619,7 +3621,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8745098, g: 0.5529412, b: 0.07450981, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3849,8 +3851,8 @@ GameObject:
   - component: {fileID: 1185692807}
   - component: {fileID: 1185692806}
   - component: {fileID: 1185692805}
-  - component: {fileID: 1185692804}
   - component: {fileID: 1185692803}
+  - component: {fileID: 1185692808}
   m_Layer: 5
   m_Name: exitBtn
   m_TagString: Untagged
@@ -3900,22 +3902,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &1185692804
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1185692801}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9e0059842cb9e745818850909fed662, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  text: {fileID: 0}
-  textColorOnHover: {r: 0, g: 0, b: 0, a: 0}
-  textColorOutHover: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &1185692805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4010,6 +3996,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1185692801}
   m_CullTransparentMesh: 1
+--- !u!114 &1185692808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1185692801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9e0059842cb9e745818850909fed662, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  text: {fileID: 0}
+  textColorOnHover: {r: 0, g: 0, b: 0, a: 0}
+  textColorOutHover: {r: 0, g: 0, b: 0, a: 0}
+  transitionLength: 0
 --- !u!1001 &1217322860
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4019,7 +4022,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 74143971, guid: 51688ea47c2ae84498394dd1083ad920, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1878934565870694110, guid: 51688ea47c2ae84498394dd1083ad920, type: 3}
       propertyPath: m_Name
@@ -5673,8 +5676,8 @@ GameObject:
   - component: {fileID: 1820534608}
   - component: {fileID: 1820534607}
   - component: {fileID: 1820534606}
-  - component: {fileID: 1820534605}
   - component: {fileID: 1820534604}
+  - component: {fileID: 1820534609}
   m_Layer: 5
   m_Name: optionsBtn
   m_TagString: Untagged
@@ -5724,22 +5727,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &1820534605
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1820534602}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9e0059842cb9e745818850909fed662, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  text: {fileID: 0}
-  textColorOnHover: {r: 0, g: 0, b: 0, a: 0}
-  textColorOutHover: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &1820534606
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5846,6 +5833,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1820534602}
   m_CullTransparentMesh: 1
+--- !u!114 &1820534609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1820534602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9e0059842cb9e745818850909fed662, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  text: {fileID: 0}
+  textColorOnHover: {r: 0, g: 0, b: 0, a: 0}
+  textColorOutHover: {r: 0, g: 0, b: 0, a: 0}
+  transitionLength: 0
 --- !u!1 &1864522708
 GameObject:
   m_ObjectHideFlags: 0
@@ -6080,8 +6084,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4279471583
+  m_fontColor: {r: 0.8745099, g: 0.5529412, b: 0.07450981, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

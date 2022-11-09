@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-public class HealthDisplayer : MonoBehaviour
+public class HealthDisplayer : MonoBehaviour,IDisplayUI
 {
     public HealthDisplayer instance;
     [SerializeField] TMP_Text actualHp;
-    [SerializeField] TMP_Text maxHp;
-    
     [SerializeField] float smoothLoseHp = 2f;
     float sliderComplete = 0f;
-    [SerializeField] Image imageFillerHp;
+    [SerializeField] Slider sliderFill;
     private void Awake() {
         if(instance!= this && instance != null)
         {
@@ -23,24 +21,22 @@ public class HealthDisplayer : MonoBehaviour
         }
     }
     private void OnEnable() {
-        PlayerHealth.onDamageTaken += DisplayHealth;
-        PlayerHealth.onFightOver += DisplayHealth;
+        PlayerHealth.onDamageTaken += DisplayUI;
+        PlayerHealth.onFightOver += DisplayUI;
     }
     private void OnDisable() {
-        PlayerHealth.onDamageTaken -= DisplayHealth;
-        PlayerHealth.onFightOver -= DisplayHealth;
+        PlayerHealth.onDamageTaken -= DisplayUI;
+        PlayerHealth.onFightOver -= DisplayUI;
         
     }
 
     private void Start() {
-        maxHp.text = PlayerHealth.instance.MaxHealth.ToString();
-        actualHp.text = PlayerHealth.instance.CurrentHealth.ToString();
-        imageFillerHp.fillAmount = PlayerHealth.instance.CurrentHealth /100;
+        DisplayUI();
     }
-    void DisplayHealth()
+    public void DisplayUI()
     {
         actualHp.text = PlayerHealth.instance.CurrentHealth.ToString();
-        imageFillerHp.fillAmount = PlayerHealth.instance.CurrentHealth /100;
+        sliderFill.value = PlayerHealth.instance.CurrentHealth /100;
         
     }
 
