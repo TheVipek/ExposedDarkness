@@ -4,10 +4,24 @@ using UnityEngine;
 using TMPro;
 public class loadingText : MonoBehaviour
 {
-    [SerializeField] TMP_Text tMP_Text;
+    [SerializeField] TMP_Text loadingTMP;
+    [SerializeField] TMP_Text dotsTMP;
     [SerializeField] float forwardSpeed = 0.4f;
     [SerializeField] float backwardSpeed = 0.15f;
     int dots = 3;
+    loadingClickListener loadingClickListener;
+
+    private void Awake() {
+        loadingClickListener = GetComponent<loadingClickListener>();
+    }
+    private void OnEnable() {
+        SceneController.onLoadingPrepared += preparedSceneText;
+        
+    }
+    private void OnDisable() {
+        SceneController.onLoadingPrepared -= preparedSceneText;
+        
+    }
     void Start()
     {
         StartCoroutine(smoothText());
@@ -22,18 +36,23 @@ public class loadingText : MonoBehaviour
         {
             while(dots > 0)
             {
-                tMP_Text.text+=".";
+                dotsTMP.text+=".";
                 dots -= 1;
                 yield return wForward;
             }
             while(dots < 3)
             {
-                tMP_Text.text = tMP_Text.text.Remove(tMP_Text.text.Length -1); 
+                dotsTMP.text = dotsTMP.text.Remove(dotsTMP.text.Length -1); 
                 dots += 1;
                 yield return wBackward;
             }
             yield return null;
         }
         
+    }
+    public void preparedSceneText()
+    {
+        loadingTMP.text = "Click Any Key To Continue";
+        if(loadingClickListener != null) loadingClickListener.enabled = true;
     }
 }

@@ -6,7 +6,7 @@ public class BlinkingLamp : MonoBehaviour
 {
     [SerializeField] List<Light> lights;
     [Tooltip("Random time blink occurs beetwen 0 to selected value")]
-    [Range(0,5)] 
+    [Range(0,10)] 
     [SerializeField] float blinkingDelayRange;
     [SerializeField] int timeToOverheat;
     //[SerializeField] AudioClip buzzingSound;
@@ -26,8 +26,8 @@ public class BlinkingLamp : MonoBehaviour
                 audioSource.Stop();
                 
             }
-            yield return new WaitForSeconds(randomTime);
-            randomTime = Random.Range(0,blinkingDelayRange);
+            yield return new WaitForSeconds(0.2f);
+            //randomTime = Random.Range(0,blinkingDelayRange);
             foreach (var item in lights)
             {
                 

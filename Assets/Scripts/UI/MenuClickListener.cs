@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class MenuClickListener : MonoBehaviour
+public class MenuClickListener : MonoBehaviour,IAnyButton
 {
     [SerializeField] Canvas menuCanvas;
     bool used = false;
@@ -15,18 +15,7 @@ public class MenuClickListener : MonoBehaviour
             {
                 if (currentEvent.type == EventType.KeyDown && used == false)
                 {
-                    
-                    menuCanvas.enabled = !menuCanvas.enabled;   
-                    if(menuCanvas.enabled == true)
-                    {
-                        Cursor.lockState = CursorLockMode.Confined;
-                        Cursor.visible = true;
-                        GameManager.Instance.freezeTime();
-                    }else
-                    {
-                        Cursor.visible = false;
-                        GameManager.Instance.unfreezeTime();
-                    }
+                    AnyButtonAction();
                     used = true;
                 }
                 else if(currentEvent.type == EventType.KeyUp && used == true)
@@ -36,5 +25,18 @@ public class MenuClickListener : MonoBehaviour
             }
         }
     }
-    
+    public void AnyButtonAction()
+    {
+        menuCanvas.enabled = !menuCanvas.enabled;   
+        if(menuCanvas.enabled == true)
+        {
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+            GameManager.Instance.freezeTime();
+        }else
+        {
+            Cursor.visible = false;
+            GameManager.Instance.unfreezeTime();
+        }
+    }
 }

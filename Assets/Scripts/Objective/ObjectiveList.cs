@@ -38,8 +38,10 @@ public class ObjectiveList : MonoBehaviour
       if(status == ObjectiveStatus.DONE)
       {
          TMP_Text text = objective.objectiveUI.GetComponent<TMP_Text>();
+         Color textColor = text.color;
+         text.color = new Color(text.color.r,text.color.g,text.color.b,64);
          //text.fontStyle = FontStyles.Underline;
-         text.fontStyle = FontStyles.Strikethrough | FontStyles.SmallCaps;
+         // text.fontStyle = FontStyles.Strikethrough | FontStyles.SmallCaps;
          //text.fontStyle = FontStyles.SmallCaps;
       }
    }

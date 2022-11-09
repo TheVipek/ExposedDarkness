@@ -10,10 +10,11 @@ using System;
 public class DialogueController : MonoBehaviour
 {
     public static DialogueController Instance { get; private set; }
-    [SerializeField] GameObject dialoguePanel;
+    [SerializeField] Image dialoguePanel;
+    
     [SerializeField] GameObject dialogueEndPossibility;
     [SerializeField] Animator dialogueAnimator;
-    [SerializeField] TMP_Text tMP_Text;
+    [SerializeField] TMP_Text dialogueTMP;
     [SerializeField] float timePerCharacter;
     [SerializeField] float timePerSentence;
 
@@ -38,10 +39,19 @@ public class DialogueController : MonoBehaviour
         // dialoguePanel.SetActive(true);
         if (transitionInside == true)
         {
+            dialogueAnimator.enabled = true;
             dialogueAnimator.SetTrigger("appear");
             //yield return null;
             float animLength = dialogueAnimator.GetCurrentAnimatorStateInfo(0).length;
             yield return new WaitForSeconds(animLength);
+        }
+        else
+        {
+            dialogueAnimator.enabled = false;
+            Color dialogueImageColor = dialoguePanel.color;
+            Color dialogueTextColor = dialogueTMP.color;
+            dialogueTMP.color = new Color(dialogueTextColor.r,dialogueTextColor.g,dialogueTextColor.b,255);
+            dialoguePanel.color = new Color(dialogueImageColor.r,dialogueImageColor.g,dialogueImageColor.b,255);
         }
 
         OnGlobalDialogueStarted();
@@ -66,11 +76,14 @@ public class DialogueController : MonoBehaviour
     }
     public IEnumerator DialogueEndPhase()
     {
+        if(dialogueAnimator.enabled == false) dialogueAnimator.enabled = true;
         dialogueAnimator.SetTrigger("disappear");
         float animLength = dialogueAnimator.GetCurrentAnimatorStateInfo(0).length;
         yield return new WaitForSeconds(animLength);
         OnGlobalDialogueEnded();
         currentDialogue.callEndEvents();
+        dialogueAnimator.enabled = false;
+
     }
     IEnumerator textTransition(Dialogue _dialogue)
     {
@@ -81,7 +94,7 @@ public class DialogueController : MonoBehaviour
             int currentIndex = 0;
             bool tagStarted = false;
             string tagStorage = string.Empty;
-            tMP_Text.text = string.Empty;
+            dialogueTMP.text = string.Empty;
             currentDialogue.checkForSentenceEvent(i);
             while (currentIndex < text[i].Length)
             {
@@ -103,12 +116,12 @@ public class DialogueController : MonoBehaviour
                 {
                     if (tagStorage != string.Empty)
                     {
-                        tMP_Text.text += tagStorage;
+                        dialogueTMP.text += tagStorage;
                         tagStorage = string.Empty;
                     }
                     else
                     {
-                        tMP_Text.text += text[i][currentIndex];
+                        dialogueTMP.text += text[i][currentIndex];
                     }
                 }
 
