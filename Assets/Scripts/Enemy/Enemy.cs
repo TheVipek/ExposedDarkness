@@ -43,11 +43,8 @@ public abstract class Enemy : MonoBehaviour {
         baseHitpoints = statsScriptable.baseHitpoints;
         deathStateLength = statsScriptable.baseDeathStateLength;
     }
-    public virtual void RevertHp()
-    {
-        baseHitpoints = statsScriptable.baseHitpoints;
-    }
     protected virtual void Awake() {
+        Debug.Log("baseHitpoints Awake: " + baseHitpoints);
         InitStats();
         audioSource = GetComponent<AudioSource>();
         animator = GetComponentInChildren<Animator>();
@@ -58,10 +55,13 @@ public abstract class Enemy : MonoBehaviour {
        
         //calling method with true parameter so if zombie was choosen from pool he'll be able to move
        if(canMove == false) MovePossibility(true);
+       Debug.Log("baseHitpoints onEnable: " + baseHitpoints);
 
     }
     protected virtual void OnDisable()
     {
+        Debug.Log("baseHitpoints onDisable: " + baseHitpoints);
+
     }
     protected virtual void Start()
     {

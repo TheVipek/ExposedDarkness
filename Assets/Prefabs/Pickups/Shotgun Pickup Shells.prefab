@@ -105,9 +105,11 @@ GameObject:
   - component: {fileID: 1421899083227434626}
   - component: {fileID: 1570837171221157301}
   - component: {fileID: 6666868397131033543}
+  - component: {fileID: 6744076878208155827}
+  - component: {fileID: 104043469760621251}
   m_Layer: 0
   m_Name: Shotgun Pickup Shells
-  m_TagString: Untagged
+  m_TagString: interactionObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -158,6 +160,33 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6744076878208155827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1467528385477118116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bb5b86adea78d04eb06bdaceb9d0ff3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ammoPickup: {fileID: 1570837171221157301}
+--- !u!114 &104043469760621251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1467528385477118116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a856ad2a13d2f2340bac1e68a53a72f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canInteract: 1
+  interactionContainer: {fileID: 6744076878208155827}
 --- !u!1 &3442490954039574826
 GameObject:
   m_ObjectHideFlags: 0

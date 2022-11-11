@@ -224,6 +224,13 @@ public class PlayerMovement : MonoBehaviour
     private void OnCollisionStay(Collision other) {
         isGrounded=true;
     }
+
+    public void setMouseValues(float x,float y)
+    {
+        xSensitivity = x;
+        ySensitivity = y;
+    }
+
 }
 
 

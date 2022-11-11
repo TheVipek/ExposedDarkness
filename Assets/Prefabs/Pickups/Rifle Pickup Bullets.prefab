@@ -139,9 +139,11 @@ GameObject:
   - component: {fileID: 2319986550054787768}
   - component: {fileID: 2371055464717137088}
   - component: {fileID: 4517508141045502523}
+  - component: {fileID: 5929417970735948701}
+  - component: {fileID: 7541458431390414845}
   m_Layer: 0
   m_Name: Rifle Pickup Bullets
-  m_TagString: Untagged
+  m_TagString: interactionObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -192,6 +194,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ammoType: 2
   ammoCount: 20
+--- !u!114 &5929417970735948701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2319986550054787771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a856ad2a13d2f2340bac1e68a53a72f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canInteract: 1
+  interactionContainer: {fileID: 7541458431390414845}
+--- !u!114 &7541458431390414845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2319986550054787771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bb5b86adea78d04eb06bdaceb9d0ff3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ammoPickup: {fileID: 4517508141045502523}
 --- !u!1 &8034978287289391019
 GameObject:
   m_ObjectHideFlags: 0

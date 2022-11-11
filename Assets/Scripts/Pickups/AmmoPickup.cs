@@ -10,14 +10,14 @@ public class AmmoPickup : MonoBehaviour
     private void Start() {
         ammo = Ammo.instance;
     }
-    private void OnTriggerEnter(Collider other) 
-    {
-        if(other.gameObject.tag == "Player")
-        {
-            GetAmmoFromPickup();
-            gameObject.SetActive(false);
-        }
-    }
+    // private void OnTriggerEnter(Collider other) 
+    // {
+    //     if(other.gameObject.tag == "Player")
+    //     {
+    //         GetAmmoFromPickup();
+    //         gameObject.SetActive(false);
+    //     }
+    // }
     
     public void GetAmmoFromPickup()
     {

@@ -32,8 +32,7 @@ public class interactionListener : MonoBehaviour
                     if(interactionObject != null && interactionObject.canInteract == true)
                     {
                         interactionObject.interactionContainer.OnInteractionStart();
-                        interactionObject.canInteract = false;
-                        Interaction.Instance.interactionUI.SetActive(false);
+                        Interaction.Instance.OnDeselect();
                     }
                 }
             }

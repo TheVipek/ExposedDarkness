@@ -972,6 +972,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 536835279943692645}
     m_Modifications:
+    - target: {fileID: 914297122, guid: 608ad27ae11507e4993698101b83b223, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1385271541, guid: 608ad27ae11507e4993698101b83b223, type: 3}
       propertyPath: OutputAudioMixerGroup
       value: 
@@ -1033,6 +1037,10 @@ PrefabInstance:
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1694016888246948000, guid: 608ad27ae11507e4993698101b83b223, type: 3}
+      propertyPath: zoomTime
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1694016888246948000, guid: 608ad27ae11507e4993698101b83b223, type: 3}
       propertyPath: viewCamera
       value: 
       objectReference: {fileID: 536835279746102993}
@@ -1040,6 +1048,10 @@ PrefabInstance:
       propertyPath: weaponCamera
       value: 
       objectReference: {fileID: 1321206690}
+    - target: {fileID: 1694016888246948000, guid: 608ad27ae11507e4993698101b83b223, type: 3}
+      propertyPath: weaponZoomTime
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 1694016888246948000, guid: 608ad27ae11507e4993698101b83b223, type: 3}
       propertyPath: playerController
       value: 
@@ -1161,6 +1173,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4236576587377143744}
     - target: {fileID: 8926907554157513771, guid: 608ad27ae11507e4993698101b83b223, type: 3}
+      propertyPath: bulletIcon
+      value: 
+      objectReference: {fileID: 21300000, guid: 5163ae49a0de665458bba61cd20c99b1, type: 3}
+    - target: {fileID: 8926907554157513771, guid: 608ad27ae11507e4993698101b83b223, type: 3}
+      propertyPath: weaponIcon
+      value: 
+      objectReference: {fileID: 21300010, guid: 6674e8c43c63e4f4184cbd009379498d, type: 3}
+    - target: {fileID: 8926907554157513771, guid: 608ad27ae11507e4993698101b83b223, type: 3}
       propertyPath: shoot.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -1191,6 +1211,14 @@ PrefabInstance:
       propertyPath: OutputAudioMixerGroup
       value: 
       objectReference: {fileID: -8166511654241624430, guid: 2efcbaf5689b95345834fc3c68000d0b, type: 2}
+    - target: {fileID: 3127131980492032525, guid: 6dce7fae96ed5844da7b1481a3597737, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3127131980949910881, guid: 6dce7fae96ed5844da7b1481a3597737, type: 3}
+      propertyPath: zoomTime
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3127131980949910881, guid: 6dce7fae96ed5844da7b1481a3597737, type: 3}
       propertyPath: viewCamera
       value: 
@@ -1200,9 +1228,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1321206690}
     - target: {fileID: 3127131980949910881, guid: 6dce7fae96ed5844da7b1481a3597737, type: 3}
+      propertyPath: weaponZoomTime
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3127131980949910881, guid: 6dce7fae96ed5844da7b1481a3597737, type: 3}
       propertyPath: playerController
       value: 
       objectReference: {fileID: 1850273173}
+    - target: {fileID: 3127131980949910881, guid: 6dce7fae96ed5844da7b1481a3597737, type: 3}
+      propertyPath: weaponZoomOutPosition.z
+      value: 1.05
+      objectReference: {fileID: 0}
     - target: {fileID: 3176505457819664364, guid: 6dce7fae96ed5844da7b1481a3597737, type: 3}
       propertyPath: m_Name
       value: Shotgun
@@ -1215,6 +1251,14 @@ PrefabInstance:
       propertyPath: range
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 3176996106723479168, guid: 6dce7fae96ed5844da7b1481a3597737, type: 3}
+      propertyPath: bulletIcon
+      value: 
+      objectReference: {fileID: 21300016, guid: 5163ae49a0de665458bba61cd20c99b1, type: 3}
+    - target: {fileID: 3176996106723479168, guid: 6dce7fae96ed5844da7b1481a3597737, type: 3}
+      propertyPath: weaponIcon
+      value: 
+      objectReference: {fileID: 21300012, guid: 6674e8c43c63e4f4184cbd009379498d, type: 3}
     - target: {fileID: 3176996106723479168, guid: 6dce7fae96ed5844da7b1481a3597737, type: 3}
       propertyPath: shoot.Array.size
       value: 1
@@ -1478,6 +1522,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -8166511654241624430, guid: 2efcbaf5689b95345834fc3c68000d0b, type: 2}
     - target: {fileID: 4176564732031091800, guid: 42cb65f8fe2de1a499fb6df8fd3a274f, type: 3}
+      propertyPath: zoomTime
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4176564732031091800, guid: 42cb65f8fe2de1a499fb6df8fd3a274f, type: 3}
       propertyPath: viewCamera
       value: 
       objectReference: {fileID: 536835279746102993}
@@ -1486,9 +1534,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1321206690}
     - target: {fileID: 4176564732031091800, guid: 42cb65f8fe2de1a499fb6df8fd3a274f, type: 3}
+      propertyPath: weaponZoomTime
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4176564732031091800, guid: 42cb65f8fe2de1a499fb6df8fd3a274f, type: 3}
       propertyPath: playerController
       value: 
       objectReference: {fileID: 1850273173}
+    - target: {fileID: 4176564732031091800, guid: 42cb65f8fe2de1a499fb6df8fd3a274f, type: 3}
+      propertyPath: weaponZoomOutPosition.z
+      value: 1.05
+      objectReference: {fileID: 0}
     - target: {fileID: 4176564732031091801, guid: 42cb65f8fe2de1a499fb6df8fd3a274f, type: 3}
       propertyPath: empty
       value: sfx_ge
@@ -1510,9 +1566,13 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1353456736211773135}
     - target: {fileID: 4176564732031091801, guid: 42cb65f8fe2de1a499fb6df8fd3a274f, type: 3}
+      propertyPath: bulletIcon
+      value: 
+      objectReference: {fileID: 21300012, guid: 5163ae49a0de665458bba61cd20c99b1, type: 3}
+    - target: {fileID: 4176564732031091801, guid: 42cb65f8fe2de1a499fb6df8fd3a274f, type: 3}
       propertyPath: weaponIcon
       value: 
-      objectReference: {fileID: 21300000, guid: ca20b38ff1c0b354594ef9cec66592a7, type: 3}
+      objectReference: {fileID: 21300046, guid: 6674e8c43c63e4f4184cbd009379498d, type: 3}
     - target: {fileID: 4176564732031091801, guid: 42cb65f8fe2de1a499fb6df8fd3a274f, type: 3}
       propertyPath: timeToReload
       value: 2.5
@@ -1532,6 +1592,10 @@ PrefabInstance:
     - target: {fileID: 4176564732031091801, guid: 42cb65f8fe2de1a499fb6df8fd3a274f, type: 3}
       propertyPath: shoot.Array.data[2]
       value: sfx_rs3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4176564732031091803, guid: 42cb65f8fe2de1a499fb6df8fd3a274f, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7983599459750615441, guid: 42cb65f8fe2de1a499fb6df8fd3a274f, type: 3}
       propertyPath: ShapeModule.type

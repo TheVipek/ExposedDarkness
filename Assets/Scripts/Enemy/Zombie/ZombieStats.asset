@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edffc285bb2b78e4f83cdc4ed1c7e1b8, type: 3}
   m_Name: ZombieStats
   m_EditorClassIdentifier: 
-  baseDamage: 5
+  baseDamage: 10
   baseHitpoints: 150
   baseSpeed: 0.2
   baseChaseSpeed: 0.6

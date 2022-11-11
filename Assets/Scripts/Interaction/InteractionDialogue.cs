@@ -10,7 +10,7 @@ public class InteractionDialogue : InteractionContainer {
     [SerializeField] bool forceDialogue ;
     public override void OnInteractionStart()
     {
-        
+        GetComponent<InteractionObject>().canInteract = false;
         StartCoroutine(DialogueController.Instance.DialogueStartPhase(dialogueConversation.dialogue,forceDialogue));
     }
 }

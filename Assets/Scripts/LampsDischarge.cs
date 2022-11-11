@@ -5,7 +5,8 @@ using UnityEngine;
 public class LampsDischarge : MonoBehaviour
 {
     [SerializeField] List<GameObject> lights;
-    bool deactivated = false;
+    [SerializeField] AudioSource generator;
+    bool reached = false;
     void Start()
     {
         
@@ -16,17 +17,15 @@ public class LampsDischarge : MonoBehaviour
         for (int i = 0; i < lights.Count; i++)
         {
             lights[i].GetComponent<BlinkingLamp>().enabled = false;
+            lights[i].GetComponent<AudioSource>().enabled = false;
             lights[i].transform.GetChild(0).gameObject.SetActive(false);
         }
     }
     private void OnTriggerEnter(Collider other) {
-         if(deactivated == false)
+        if(other.gameObject.tag == "Player" && reached == false)
         {
-            if(other.gameObject.tag == "Player")
-            {
-                lampDischarge();
-                deactivated = true;
-            }
+            generator.Play();
+            lampDischarge();
         }
     }
 }

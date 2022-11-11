@@ -73,7 +73,6 @@ public class WaveController : MonoBehaviour
     {
         
         enemy.transform.position = waveContainer.spawnPoints[getRespawnPoint()].transform.position;
-        enemy.GetComponent<Enemy>().RevertHp();
         enemy.SetActive(true);
         enemy.GetComponent<enemyAI>().SanityMode();
     }
