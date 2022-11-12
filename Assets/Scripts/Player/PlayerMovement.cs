@@ -84,16 +84,20 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        CameraMouseLook();
         ProcessCrouch();
-        Movement();
-        
+        Jumping();
 
         if(rb.velocity.y > 0)
         {
             isGrounded = false;
         }
         
+    }
+    private void FixedUpdate() {
+        Movement();
+    }
+    private void LateUpdate() {
+        CameraMouseLook();
     }
     void CameraMouseLook()
     {
@@ -164,22 +168,14 @@ public class PlayerMovement : MonoBehaviour
         {
             position /= 2f;
         }
-        if(Input.GetKeyDown(jumpKey) && isGrounded == true)
-        {
-            // formula 
-           rb.AddForce(new Vector3(0,Mathf.Sqrt(jumpStrength * -2 * Physics.gravity.y),0),ForceMode.Impulse);
-      
-           //isGrounded = false;
-           // velocity.y = Mathf.Sqrt(jumpStrength * -2 * gravity);
         
-        }
         // multiplying it by Time.deltaTime to make it frame-independent
         //velocity.y += gravity * Time.deltaTime;
         
         //Moving it
 
         //frame independent
-        transform.Translate(position * Time.deltaTime);
+        transform.Translate(position * Time.fixedDeltaTime);
         // physics of free fall
         /*if(isGrounded == false)
         {
@@ -188,6 +184,18 @@ public class PlayerMovement : MonoBehaviour
         }*/
     }
 
+    void Jumping()
+    {
+        if(Input.GetKeyDown(jumpKey) && isGrounded == true)
+            {
+                // formula 
+            rb.AddForce(new Vector3(0,Mathf.Sqrt(jumpStrength * -2 * Physics.gravity.y),0),ForceMode.Impulse);
+        
+            //isGrounded = false;
+            // velocity.y = Mathf.Sqrt(jumpStrength * -2 * gravity);
+            
+            }
+    }
     void ProcessCrouch()
     {
         //Debug.Log(crouchTransition);
@@ -222,7 +230,10 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void OnCollisionStay(Collision other) {
-        isGrounded=true;
+        if(other.gameObject.tag == "Ground")
+        {
+            isGrounded=true;
+        }
     }
 
     public void setMouseValues(float x,float y)

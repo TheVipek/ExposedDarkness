@@ -29,10 +29,13 @@ public class Interaction : MonoBehaviour,IResponseInteraction
         ray = playerViewCamera.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0));
         if (Physics.Raycast(ray, out hit, maxDistance: interactionDistance))
         {
-            if (hit.transform.gameObject.CompareTag("interactionObject") && interactionActivated == false)
+            if (hit.transform.gameObject.CompareTag("interactionObject"))
             {
-                Debug.Log("You're looking at interactable object!");
-                OnSelect(hit.transform.gameObject);
+                if(interactionActivated == false)
+                {
+                    Debug.Log("You're looking at interactable object!");
+                    OnSelect(hit.transform.gameObject);
+                }
             }
 
         }
