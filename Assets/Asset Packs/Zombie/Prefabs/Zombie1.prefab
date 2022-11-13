@@ -1267,7 +1267,7 @@ GameObject:
   - component: {fileID: 6120544034525914399}
   m_Layer: 0
   m_Name: Z_Head
-  m_TagString: Untagged
+  m_TagString: Head
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

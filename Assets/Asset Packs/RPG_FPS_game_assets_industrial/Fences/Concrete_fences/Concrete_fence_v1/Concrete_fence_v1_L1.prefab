@@ -11,13 +11,14 @@ GameObject:
   - component: {fileID: 4000013143573754}
   - component: {fileID: 33000013946838628}
   - component: {fileID: 23000013306147162}
-  - component: {fileID: 64000011913646830}
+  - component: {fileID: 1985836206}
+  - component: {fileID: 1985836207}
   m_Layer: 0
   m_Name: Concrete_fence_v1_L1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &4000013143573754
 Transform:
@@ -84,8 +85,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &64000011913646830
-MeshCollider:
+--- !u!65 &1985836206
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -94,7 +95,19 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300030, guid: 3a8f58244ff42dd4687b2e136c464c50, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 0.4472835, y: 2.9944692, z: 2.379929}
+  m_Center: {x: -0.96671426, y: 0, z: 0}
+--- !u!65 &1985836207
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000012990547510}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.3807137, y: 2.9944692, z: 0.47593522}
+  m_Center: {x: 0.000000834465, y: 0, z: -0.9519969}

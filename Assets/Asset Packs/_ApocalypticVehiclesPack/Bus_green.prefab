@@ -13,12 +13,12 @@ GameObject:
   - component: {fileID: 2300000}
   - component: {fileID: 6500000}
   - component: {fileID: 4467011279360859993}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Bus_green
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 1
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 95
   m_IsActive: 1
 --- !u!4 &400000
 Transform:
@@ -112,9 +112,9 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 60de7306d9c47a649af6a5106429d87f, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.2
+  m_Volume: 0.1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -206,12 +206,12 @@ GameObject:
   m_Component:
   - component: {fileID: 954530523}
   - component: {fileID: 954530524}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: nearRightFront
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 1
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 95
   m_IsActive: 1
 --- !u!4 &954530523
 Transform:
@@ -301,12 +301,12 @@ GameObject:
   m_Component:
   - component: {fileID: 1558295007}
   - component: {fileID: 1558295008}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &1558295007
 Transform:
@@ -395,12 +395,12 @@ GameObject:
   m_Component:
   - component: {fileID: 1631285700}
   - component: {fileID: 1631285701}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: nearLeftFront
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 1
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 95
   m_IsActive: 1
 --- !u!4 &1631285700
 Transform:
@@ -490,12 +490,12 @@ GameObject:
   m_Component:
   - component: {fileID: 1952536413}
   - component: {fileID: 1952536414}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &1952536413
 Transform:

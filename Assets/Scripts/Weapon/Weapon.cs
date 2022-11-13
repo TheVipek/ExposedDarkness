@@ -14,6 +14,7 @@ public class Weapon : MonoBehaviour
     
     [SerializeField] float range = 100f;
     [SerializeField] float damage;
+    [SerializeField] float headshotMultiplier;
     [SerializeField] float shootingDelay;
     [SerializeField] bool canConstantShoot = false;
     public float timeToReload;

@@ -12,6 +12,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float sprintMultiplier;
     [SerializeField] float jumpStrength;
 
+    [Header("Slope")]
+    public float maxSlopeAngle;
+    private RaycastHit slopeHit;
+
+
     [Header("Binds")]
     [SerializeField] KeyCode sprintKey = KeyCode.LeftShift;
     [SerializeField] KeyCode gaitKey = KeyCode.LeftAlt;
@@ -57,6 +62,7 @@ public class PlayerMovement : MonoBehaviour
     public bool Gaiting{get{return gaiting;}}
     [SerializeField] bool isGrounded = false;
     public bool IsGrounded{get{return isGrounded;}}
+    [SerializeField] bool canMove = true;
     Coroutine crouchTransition;
     float gravity = -9.81f;
     float horizontalMove;
@@ -86,11 +92,11 @@ public class PlayerMovement : MonoBehaviour
     {
         ProcessCrouch();
         Jumping();
-
         if(rb.velocity.y > 0)
         {
             isGrounded = false;
         }
+
         
     }
     private void FixedUpdate() {
@@ -111,78 +117,83 @@ public class PlayerMovement : MonoBehaviour
     }
     void Movement()
     {
-        //Vertical - Z-axis
-        verticalMove = Input.GetAxis("Vertical");
-        verticalMove = verticalMove > 0 ? verticalMove *= movingFrontSpeed : verticalMove < 0 ? verticalMove *= movingBackSpeed : 0;
+       
+            //Vertical - Z-axis
+            verticalMove = Input.GetAxis("Vertical");
+            verticalMove = verticalMove > 0 ? verticalMove *= movingFrontSpeed : verticalMove < 0 ? verticalMove *= movingBackSpeed : 0;
 
-        //Horizontal - X-axis
-        horizontalMove = Input.GetAxis("Horizontal") * movingSidesSpeed;
-        if(verticalMove != 0 || horizontalMove != 0)
-        {
-            moving = true;
-        }else
-        {
-            moving = false;
-        }
-
-        //Get local camera direction ,by using forward we get space ahead of us , by right we get on side and inverse those vectors to player direction
-         Vector3 cameraForward = transform.InverseTransformVector(_mCamera.transform.forward);
-         Vector3 cameraSides = transform.InverseTransformVector(_mCamera.transform.right);
-    
-        // this is changed to 0 to get rid of going unnecesary down or up 
-        cameraForward.y = 0;
-        cameraSides.y = 0;
-        cameraForward = cameraForward.normalized;
-        cameraSides = cameraSides.normalized;
-
-        Vector3 position = cameraForward * verticalMove + cameraSides * horizontalMove;
-
-        //Checking for sprint
-        if(moving == true)
-        {
-            if (Input.GetKey(sprintKey))
+            //Horizontal - X-axis
+            horizontalMove = Input.GetAxis("Horizontal") * movingSidesSpeed;
+            if(verticalMove != 0 || horizontalMove != 0)
             {
-                position *= sprintMultiplier;
-                sprinting = true;
+                moving = true;
+            }else
+            {
+                moving = false;
             }
-            else if(Input.GetKey(gaitKey) && crouch == false)
+
+            //Get local camera direction ,by using forward we get space ahead of us , by right we get on side and inverse those vectors to player direction
+            Vector3 cameraForward = transform.InverseTransformVector(_mCamera.transform.forward);
+            Vector3 cameraSides = transform.InverseTransformVector(_mCamera.transform.right);
+        
+            // this is changed to 0 to get rid of going unnecesary down or up 
+            cameraForward.y = 0;
+            cameraSides.y = 0;
+            cameraForward = cameraForward.normalized;
+            cameraSides = cameraSides.normalized;
+
+            Vector3 position = cameraForward * verticalMove + cameraSides * horizontalMove;
+
+            //Checking for sprint
+            if(moving == true)
             {
-                position /= 1.5f;
-                gaiting = true;
-                
+                if (Input.GetKey(sprintKey))
+                {
+                    position *= sprintMultiplier;
+                    sprinting = true;
+                }
+                else if(Input.GetKey(gaitKey) && crouch == false)
+                {
+                    position /= 1.5f;
+                    gaiting = true;
+                    
+                }
+                else
+                {
+                    sprinting = false;
+                    gaiting = false;
+                }
             }
             else
             {
                 sprinting = false;
                 gaiting = false;
             }
-        }
-        else
-        {
-            sprinting = false;
-            gaiting = false;
-        }
-        
+            
 
-        if(crouch == true)
-        {
-            position /= 2f;
-        }
-        
-        // multiplying it by Time.deltaTime to make it frame-independent
-        //velocity.y += gravity * Time.deltaTime;
-        
-        //Moving it
+            if(crouch == true)
+            {
+                position /= 2f;
+            }
+            
+            // multiplying it by Time.deltaTime to make it frame-independent
+            //velocity.y += gravity * Time.deltaTime;
+            
+            //Moving it
 
-        //frame independent
-        transform.Translate(position * Time.fixedDeltaTime);
-        // physics of free fall
-        /*if(isGrounded == false)
-        {
-            //transform.Translate(velocity * Time.deltaTime);
+            //frame independent
+            transform.Translate(position * Time.fixedDeltaTime);
+            // physics of free fall
+            /*if(isGrounded == false)
+            {
+                //transform.Translate(velocity * Time.deltaTime);
 
-        }*/
+            }*/
+
+        
     }
+
+
 
     void Jumping()
     {

@@ -19,6 +19,7 @@ public abstract class Enemy : MonoBehaviour {
     PlayerHealth target;
 
     //Data backpack
+    [SerializeField] CapsuleCollider capsuleCollider;
     public EnemyStats statsScriptable; 
     public float chaseSpeedBase{get; private set;}
    // [Range(1,10)]
@@ -33,7 +34,6 @@ public abstract class Enemy : MonoBehaviour {
     public Animator getAnimator{get{return animator;}}
     public PlayerHealth Target{get{return target;}}
     [SerializeField] protected bool canMove;
-
     //Events
     public delegate void OnDamageTaken();
     public event OnDamageTaken onDamageTaken;
@@ -95,7 +95,7 @@ public abstract class Enemy : MonoBehaviour {
     //Controlling zombie move
     public virtual void MovePossibility(bool isAble)
     {
-        GetComponent<CapsuleCollider>().enabled = isAble;
+        capsuleCollider.enabled = isAble;
         canMove = isAble;
 
     }
