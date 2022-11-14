@@ -5,15 +5,18 @@ using UnityEngine;
 public class InteractionAmmo : InteractionContainer
 {
     public AmmoPickup ammoPickup;
-    [SerializeField] AudioSource audioSource;
-    [SerializeField] AudioClip pickupSound;
     public override void OnInteractionStart()
     {        
-        
-        audioSource.PlayOneShot(pickupSound);
+        base.OnInteractionStart();
+        Debug.Log("OnInteractionDerived");
+        Debug.Log(ammoPickup);
         ammoPickup.GetAmmoFromPickup();
-        
-        gameObject.SetActive(false);
-
+        StartCoroutine(interactionWaiter(interactionSound.length));
     }
+    public override IEnumerator interactionWaiter(float delay)
+    {
+        yield return StartCoroutine(base.interactionWaiter(delay));
+        gameObject.SetActive(false);
+    }
+
 }

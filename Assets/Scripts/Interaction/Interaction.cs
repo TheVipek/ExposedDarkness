@@ -7,8 +7,10 @@ public class Interaction : MonoBehaviour,IResponseInteraction
     public GameObject interactionUI;
     [SerializeField] Camera playerViewCamera;
     [SerializeField] float interactionDistance;
-    bool interactionActivated = false;
-    internal GameObject lookingAt = null;
+    [HideInInspector] public bool interactionActivated = false;
+    [HideInInspector] public bool interactionEnded = false;
+    [HideInInspector] public GameObject lookingAt = null;
+    [HideInInspector] public GameObject lastInteracted = null;
     Ray ray;
     RaycastHit hit;
 
@@ -29,22 +31,29 @@ public class Interaction : MonoBehaviour,IResponseInteraction
         ray = playerViewCamera.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0));
         if (Physics.Raycast(ray, out hit, maxDistance: interactionDistance))
         {
+            Debug.DrawLine(ray.origin,hit.point,Color.red);
             if (hit.transform.gameObject.CompareTag("interactionObject"))
             {
                 if(interactionActivated == false)
                 {
                     Debug.Log("You're looking at interactable object!");
-                    OnSelect(hit.transform.gameObject);
+                    Debug.Log(lookingAt);
+                    Debug.Log(lastInteracted);
+                    if(hit.transform.gameObject != lastInteracted || lastInteracted == null)
+                    {
+                        OnSelect(hit.transform.gameObject);
+                    }
                 }
+            }
+            else
+            {
+                if(interactionActivated == true) OnDeselect();
             }
 
         }
         else
         {
-            if (interactionActivated == true)
-            {
-                OnDeselect();
-            }
+            if(interactionActivated == true) OnDeselect();
         }
     }
 
@@ -59,5 +68,9 @@ public class Interaction : MonoBehaviour,IResponseInteraction
         lookingAt = null;
         interactionActivated = false;
         interactionUI.SetActive(false);
+    }
+    public void setLastInteracted()
+    {
+        lastInteracted = lookingAt;
     }
 }

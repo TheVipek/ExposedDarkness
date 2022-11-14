@@ -5,6 +5,7 @@ using UnityEngine.Rendering.PostProcessing;
 public class VingetteBumping : MonoBehaviour
 {
     [SerializeField] PostProcessVolume volume;
+    [SerializeField] AudioSource audioSource;
     Vignette vingette;
     public float entryValue = 0.1f;
     public float maxBloodValue = 0.25f;
@@ -14,7 +15,7 @@ public class VingetteBumping : MonoBehaviour
     //[SerializeField] float speed = 0.1f;
     [SerializeField] float duration =2f;
     [SerializeField] float colorSwapDuration = 0.5f;
-
+    int deathPumps = 1;
     public Color currentColor;
     public static VingetteBumping instance;
 
@@ -32,6 +33,11 @@ public class VingetteBumping : MonoBehaviour
     public IEnumerator BloodBumping(float toVal,float fromVal = 0)
     {
        float complete = 0f;
+
+       if(!audioSource.isPlaying)
+       {
+            audioSource.Play();
+       }
        while(complete < duration)
        {
             
@@ -43,16 +49,32 @@ public class VingetteBumping : MonoBehaviour
        }
        currentBump = toVal;
        vingette.intensity.value = currentBump;
-       if(PlayerHealth.instance.bloodOverFace == false && currentBump != 0)
+       if(PlayerHealth.instance.IsDead == false)
        {
-            yield return StartCoroutine(BloodBumping(fromVal:toVal,toVal:0));
+            if(PlayerHealth.instance.bloodOverFace == false && currentBump != 0)
+            {
+                    yield return StartCoroutine(BloodBumping(fromVal:toVal,toVal:0));
+            }
+            else if(PlayerHealth.instance.bloodOverFace == false && currentBump == 0)
+            {
+                    yield break;
+            }else
+            {
+                    yield return StartCoroutine(BloodBumping(fromVal:toVal,toVal:fromVal));
+            }
        }
-       else if(PlayerHealth.instance.bloodOverFace == false && currentBump == 0)
+       else
        {
-            yield break;
-       }else
-       {
-            yield return StartCoroutine(BloodBumping(fromVal:toVal,toVal:fromVal));
+            if(deathPumps>=0)
+            {
+                deathPumps -=1;
+                yield return StartCoroutine(BloodBumping(fromVal:toVal,toVal:fromVal));
+            }
+            else
+            {
+                Debug.Log("Player is dead - no heart beat");
+                yield return null;
+            }
        }
 
        

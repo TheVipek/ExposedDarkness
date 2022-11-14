@@ -32,7 +32,9 @@ public class interactionListener : MonoBehaviour
                     if(interactionObject != null && interactionObject.canInteract == true)
                     {
                         interactionObject.interactionContainer.OnInteractionStart();
+                        Interaction.Instance.setLastInteracted();
                         Interaction.Instance.OnDeselect();
+                        //Interaction.Instance.interactionActivated = false;
                     }
                 }
             }

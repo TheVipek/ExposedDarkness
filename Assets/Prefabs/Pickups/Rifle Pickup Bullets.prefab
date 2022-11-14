@@ -78,7 +78,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 0.7411765, g: 0.6509804, b: 0.56078434, a: 1}
-  m_Intensity: 2
+  m_Intensity: 0.5
   m_Range: 2
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -179,8 +179,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.63723755, y: 0.9193208, z: 0.70360994}
+  m_Center: {x: -0.18138123, y: 0.040339574, z: -0.14819503}
 --- !u!114 &4517508141045502523
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -221,9 +221,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bb5b86adea78d04eb06bdaceb9d0ff3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ammoPickup: {fileID: 4517508141045502523}
   audioSource: {fileID: 1578629981}
-  pickupSound: {fileID: 8300000, guid: d79ebef01f4662543bdf6e5f9143c7d3, type: 3}
+  interactionSound: {fileID: 8300000, guid: d79ebef01f4662543bdf6e5f9143c7d3, type: 3}
+  ammoPickup: {fileID: 4517508141045502523}
 --- !u!82 &1578629981
 AudioSource:
   m_ObjectHideFlags: 0
@@ -364,7 +364,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 0.7411765, g: 0.6509804, b: 0.56078434, a: 1}
-  m_Intensity: 1.5
+  m_Intensity: 0.5
   m_Range: 2
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -458,7 +458,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 0.7411765, g: 0.6509804, b: 0.56078434, a: 1}
-  m_Intensity: 1.5
+  m_Intensity: 0.5
   m_Range: 2
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -581,7 +581,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2611421918520786682, guid: 53df236944dbd4c48b49b703aa1a2922, type: 3}
       propertyPath: m_VersionIndex
-      value: 4825
+      value: 4849
       objectReference: {fileID: 0}
     - target: {fileID: 2611421918520786686, guid: 53df236944dbd4c48b49b703aa1a2922, type: 3}
       propertyPath: m_Mesh
@@ -675,7 +675,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2611421918520786682, guid: 53df236944dbd4c48b49b703aa1a2922, type: 3}
       propertyPath: m_VersionIndex
-      value: 4837
+      value: 4861
       objectReference: {fileID: 0}
     - target: {fileID: 2611421918520786687, guid: 53df236944dbd4c48b49b703aa1a2922, type: 3}
       propertyPath: m_Name
@@ -765,7 +765,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2611421918520786682, guid: 53df236944dbd4c48b49b703aa1a2922, type: 3}
       propertyPath: m_VersionIndex
-      value: 4822
+      value: 4846
       objectReference: {fileID: 0}
     - target: {fileID: 2611421918520786686, guid: 53df236944dbd4c48b49b703aa1a2922, type: 3}
       propertyPath: m_Mesh
