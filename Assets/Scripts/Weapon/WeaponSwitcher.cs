@@ -19,7 +19,8 @@ public class WeaponSwitcher : MonoBehaviour
      [Header("Get onWeaponChange so it may be"+"\n"+" called every time player shoots.")]
     public UnityEvent weaponEvent;
     [Header("Audio")]
-    public string weaponSwitch; 
+    [SerializeField] DefaultSoundKit weaponSwitch; 
+    [SerializeField] AudioSource audioSource;
     private void Awake() {
         if(instance != null && instance != this)
         {
@@ -34,6 +35,7 @@ public class WeaponSwitcher : MonoBehaviour
     }
     void Start() 
     {
+        AudioManager.playSound(audioSource,weaponSwitch.Sound); 
         previousWeapon = currentWeaponIndex;
         SetWeaponActive();    
         getCurrentWeapon();
@@ -46,6 +48,7 @@ public class WeaponSwitcher : MonoBehaviour
 
         if(previousWeapon!=currentWeaponIndex)
         {
+            AudioManager.playSound(audioSource,weaponSwitch.Sound); 
             previousWeapon=currentWeaponIndex;
             SetWeaponActive();
             getCurrentWeapon();

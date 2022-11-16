@@ -29,24 +29,17 @@ public class WeaponDisplayer : MonoBehaviour
             instance = this;
         }
     }
-    private void OnEnable() {
-
-        
+    private void OnEnable() 
+    {
         WeaponSwitcher.onWeaponChange += DisplayChangeWeapon;
         WeaponSwitcher.onWeaponChange += DisplayChangeAmunition;
-        WeaponReloader.onWeaponReload += DisplayChangeAmunition;
-        Ammo.onAmmoAdd += DisplayChangeAmunition;
-
-        WeaponShootingTypeChanger.onChangeShootingType += DisplayChangeShootingType;
+        Ammo.OnAmmoChange += DisplayChangeAmunition;
     }
-    private void OnDisable() {
+    private void OnDisable() 
+    {
         WeaponSwitcher.onWeaponChange -= DisplayChangeWeapon;
         WeaponSwitcher.onWeaponChange -= DisplayChangeAmunition;
-        WeaponReloader.onWeaponReload -= DisplayChangeAmunition;
-        Ammo.onAmmoAdd -= DisplayChangeAmunition;
-
-        WeaponShootingTypeChanger.onChangeShootingType -= DisplayChangeShootingType;
-
+        Ammo.OnAmmoChange -= DisplayChangeAmunition;
     }
     private void Start() {
         ammos = Ammo.instance;
@@ -67,53 +60,28 @@ public class WeaponDisplayer : MonoBehaviour
         if(weaponName.text != weaponSwitcher.CurrentWeapon.name)
             {
                 weaponName.text = weaponSwitcher.CurrentWeapon.name;
-                weaponArt.sprite = weaponSwitcher.CurrentWeapon.weaponIcon;
+                weaponArt.sprite = weaponSwitcher.CurrentWeapon.WeaponIcon;
                 float imageWidth = weaponArt.sprite.rect.width > maxWeaponImageWidth ? maxWeaponImageWidth : weaponArt.sprite.rect.width;
                 weaponArt.GetComponent<RectTransform>().sizeDelta = new Vector2(imageWidth,maxWeaponImageHeight);
-                if(weaponSwitcher.CurrentWeapon.ConstantShooting == false)
-                {
-                    bulletArt.ForEach(x => x.gameObject.SetActive(false));
-                    bulletArt[1].gameObject.SetActive(true);
-                    bulletArt[1].sprite = weaponSwitcher.CurrentWeapon.bulletIcon;
-                }
-                else
-                {
-                    foreach (var item in bulletArt)
-                    {
-                        item.gameObject.SetActive(true);
-                        item.sprite = weaponSwitcher.CurrentWeapon.bulletIcon;
-                    }
-                }
+                DisplayChangeShootingType();
             }
     }
     public void DisplayChangeShootingType()
     {
-        if(weaponSwitcher.CurrentWeapon.CanConstantShoot == true)
+        if(weaponSwitcher.CurrentWeapon.ConstantShooting == true)
+        {
+             foreach (var item in bulletArt)
             {
-                if(weaponSwitcher.CurrentWeapon.ConstantShooting == true)
-                {
-                    bulletArt.ForEach(x => x.gameObject.SetActive(false));
-                    bulletArt[1].gameObject.SetActive(true);
-                    bulletArt[1].sprite = weaponSwitcher.CurrentWeapon.bulletIcon;
-                }
-                else
-                {
-                    foreach (var item in bulletArt)
-                    {
-                        item.gameObject.SetActive(true);
-                        item.sprite = weaponSwitcher.CurrentWeapon.bulletIcon;
-                    }
-                }
-                
-                weaponSwitcher.CurrentWeapon.SwapConstantShooting();
-                
+                item.gameObject.SetActive(true);
+                item.sprite = weaponSwitcher.CurrentWeapon.BulletIcon;
             }
+            
+        }
         else
-            {
-                bulletArt.ForEach(x => x.gameObject.SetActive(false));
-                bulletArt[1].gameObject.SetActive(true);
-                bulletArt[1].sprite = weaponSwitcher.CurrentWeapon.bulletIcon;
-
-            }
+        {
+            bulletArt.ForEach(x => x.gameObject.SetActive(false));
+            bulletArt[1].gameObject.SetActive(true);
+            bulletArt[1].sprite = weaponSwitcher.CurrentWeapon.BulletIcon;
+        }    
     }
 }

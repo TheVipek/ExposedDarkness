@@ -5,10 +5,8 @@ public class AudioManager : MonoBehaviour
 {
     
 
-    [NonReorderable]
-    [SerializeField] Sound[] sounds;
     AudioSource audioSource;
-    private Coroutine musicTransitor;
+    public static Coroutine musicTransitor {get; private set;}
     public static AudioManager Instance{get; private set;}
 
     private void Awake() {
@@ -21,44 +19,30 @@ public class AudioManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
     }
-    public void playSoundAtPlace(string soundName,Vector3 position)
+    public static void playSound(AudioSource _source,AudioClip _clip)
     {
-        foreach (var sound in sounds)
-        {
-            if(sound.name == soundName)
-            {
-                AudioSource.PlayClipAtPoint(sound.clip,position);
-            }
-        }
+        if(_source == null || _clip == null) return;
+
+        _source.pitch = Random.Range(0.9f,1.1f);
+        Debug.Log(_source.pitch);
+        _source.PlayOneShot(_clip,_source.volume); 
     }
-    public void playSound(AudioSource source,string name)
+    public static void musicSoundTransition(AudioSource source,bool mute,float transitionLength = 2f)
     {
-        foreach (var sound in sounds)
-        {
-            if(sound.name == name)
-            {
-                
-                source.PlayOneShot(sound.clip,sound.volume);
-                return;
-            }
-        }
-        Debug.LogWarning("SOUND NOT FOUND!");    
-    }
-    public void musicSoundTransition(AudioSource source,bool mute,float transitionLength = 2f)
-    {
+        AudioManager _instance = AudioManager.Instance;
         //Debug.Log("musicSound called");
         if(musicTransitor != null)
         {
-            StopCoroutine(musicTransitor);
+            _instance.StopCoroutine(musicTransitor);
         }
-        musicTransitor = StartCoroutine(soundVolumeTransitor(source,transitionLength,mute));
+        musicTransitor = _instance.StartCoroutine(_instance.soundVolumeTransitor(source,transitionLength,mute));
         
 
     }
     IEnumerator soundVolumeTransitor(AudioSource source,float transitionLength,bool mute)
     {
         float currentSoundPoint = source.volume;
-        //Debug.Log(currentSoundPoint);
+
         float currentTransitionPoint = transitionLength * currentSoundPoint;
         //Debug.Log(currentTransitionPoint);
 

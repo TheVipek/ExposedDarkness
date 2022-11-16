@@ -2,14 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 public class WeaponReloader : MonoBehaviour
 {
-    public delegate void OnWeaponReload();
-    public static event OnWeaponReload onWeaponReload;
-    public Image reloadImage;
-    public Image bgImage;
+    [SerializeField] Canvas reloadCanvas;
+    [SerializeField] Image reloadImage;
     public bool currentlyReloading= false;
     WeaponSwitcher weaponSwitcher;
+    private Weapon weapon;
+    private WeaponZoom weaponZoom;
     private void Start() {
         weaponSwitcher = WeaponSwitcher.Instance;
     }
@@ -17,11 +18,11 @@ public class WeaponReloader : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.R) && currentlyReloading == false) 
         {
-            //will work if hierarchy is the same as ammo slots sequence
-            Weapon weapon = weaponSwitcher.CurrentWeapon;
+            weapon = weaponSwitcher.CurrentWeapon;
+            weaponZoom = weapon.GetComponent<WeaponZoom>();
             if(weapon.ammoSlot.GetAmmoInSlot(weapon.AmmoType) != weapon.ammoSlot.GetAmmoPerSlot(weapon.AmmoType) && weapon.ammoSlot.GetAmmoAmount(weapon.AmmoType) > 0)
             {
-                StartCoroutine(reloadInitialization(weapon,weapon.timeToReload));
+                StartCoroutine(reloadInitialization(weapon,weapon.TimeToReload));
             }
             
 
@@ -29,20 +30,21 @@ public class WeaponReloader : MonoBehaviour
     }
     IEnumerator reloadInitialization(Weapon weapon,float timeToReload)
     {
+        AudioManager.playSound(weapon.AudioSource,weapon.weaponSounds.ReloadSound);
 
-        AudioManager.Instance.playSound(weapon.audioSource,weapon.Reload);
+        weapon.enabled = false;
+        weaponZoom.enabled = false;
+
         currentlyReloading = true;
         float leftTime = timeToReload;
-        
-        reloadImage.enabled = true;
-        bgImage.enabled = true;
+        reloadCanvas.enabled = true;
         while(leftTime >= 0)
         {
             leftTime-= Time.deltaTime;
             reloadImage.fillAmount = leftTime/timeToReload;
-            if(weapon.weaponIndex !=weaponSwitcher.CurrentWeaponIndex)
+            if(weapon.WeaponIndex !=weaponSwitcher.CurrentWeaponIndex)
             {
-                weapon.audioSource.Stop();
+                weapon.AudioSource.Stop();
                 break;
             }
             yield return null;
@@ -51,12 +53,15 @@ public class WeaponReloader : MonoBehaviour
         {
             Ammo ammos = GetComponent<Ammo>();
             ammos.ReloadAmmo(weapon.AmmoType);
-            onWeaponReload();
             weapon.EmptyAmmo = false;
         }
-        reloadImage.enabled = false;
-        bgImage.enabled = false;
+
+        reloadCanvas.enabled = false;
         reloadImage.fillAmount =1;
+        
         currentlyReloading = false;
+
+        weapon.enabled = true;
+        weaponZoom.enabled = true;
     }
 }

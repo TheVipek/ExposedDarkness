@@ -11,89 +11,86 @@ public class WeaponZoom : MonoBehaviour
 
     [Header("Components")]
     [SerializeField] PlayerMovement playerController;
-    [Header("Needed objects")]
-    [SerializeField] GameObject crosshair;
+
     
+    [Header("Default options")]
+    [Tooltip("Higher value equals weaker camera zoom")]
+    private CamerasController camerasController;
+    public Vector3 defaultWeaponPosition;
+
+
     [Header("Zoom-IN options")]
     [Tooltip("Lower value equals stronger camera zoom")]
     [SerializeField] float zoomInField =20f;
-    [SerializeField] float zoomInSensitivity =0.6f;
+    [Tooltip("Lower value equals lower mouse sensitivity during zoom")]
+    [SerializeField] Vector2 zoomInSensitivity = new Vector2(0.6f,0.6f);
     [SerializeField] Vector3 weaponZoomInPosition;
     
-    [Header("Zoom-OUT options")]
-    [Tooltip("Higher value equals weaker camera zoom")]
-    [SerializeField] float zoomOutField = 60f;
-    [SerializeField] float zoomOutSensitivity = 2f;
-    public Vector3 weaponZoomOutPosition;
     
     [Header("Options for IN and OUT")]
-    [SerializeField] float zoomTime = 1f;
-    [SerializeField] float weaponZoomTime = 1f;
+    [SerializeField] float cameraZoomDuration = 1f;
+    [SerializeField] float weaponZoomDuration = 1f;
     [Header("Booleans")]
-    bool tryingZooming;
-    bool zoomed;
-    public bool isZoomed{get{return zoomed;}}
+    private bool isTryingToZoom;
+    private bool isZoomed;
+    public bool IsZoomed{get{return isZoomed;}}
     Animator animator;
-    private void OnEnable() {
-        if(animator.enabled == false) animator.enabled = true;
-        tryingZooming = false;
-        zoomed = false;
-    }
-    private void Awake() {
+    private void Awake() 
+    {
         animator = GetComponent<Animator>();
+        camerasController = CamerasController.Instance;
     }
-    void Update() {
-        ZoomWeapon();
+    private void OnEnable() {
+        
+        isTryingToZoom = false;
+        isZoomed = false;
+    }
+    void Update() 
+    {
+       //Purpose of this line is that when player change weapon he needs to press again input(1) to zoom 
+        if(Input.GetMouseButtonDown(1))
+        {
+            isTryingToZoom = true;
+        }
+        if(Input.GetMouseButton(1) && isTryingToZoom == true && isZoomed == false)
+        {
+            ZoomIn();
+        }
+        else if(Input.GetMouseButtonUp(1))
+        {
+            isTryingToZoom = false;
+            ZoomOut();
+        }
     }
     void OnDisable() {
         resetOnChangeWeapon();
     }
-    public void ZoomWeapon()
-    {
-        //Purpose of this line is that when player change weapon he needs to press again input(1) to zoom 
-        if(Input.GetMouseButtonDown(1))
-        {
-           tryingZooming = true;
-        }
-        if(Input.GetMouseButton(1) && tryingZooming == true && zoomed == false)
-        {
-           ZoomIn();
-        }
-        else if(Input.GetMouseButtonUp(1))
-        {
-            tryingZooming = false;
-            ZoomOut();
-        }
-    }
-
-
-    
+ 
     private void ZoomOut()
     { 
     
-        StartCoroutine(weaponToZoom(weaponZoomOutPosition,weaponZoomTime,false));
-        StartCoroutine(cameraToZoom(zoomOutField,zoomTime));
-        playerController.setMouseValues(zoomOutSensitivity,zoomOutSensitivity);
+        StartCoroutine(weaponToZoom(defaultWeaponPosition,weaponZoomDuration,false));
+        StartCoroutine(cameraToZoom(camerasController.DefaultFov,cameraZoomDuration));
+        playerController.setDefaultMouseValues();
     }
     private void resetOnChangeWeapon()
     {
         
-        transform.localPosition = weaponZoomOutPosition;
-        weaponCamera.fieldOfView = zoomOutField;
-        viewCamera.fieldOfView = zoomOutField;
-        playerController.setMouseValues(zoomOutSensitivity,zoomOutSensitivity);
+        transform.localPosition = defaultWeaponPosition;
+        CamerasController.Instance.setDefaultFov();
+        playerController.setDefaultMouseValues();
 
     }
     private void ZoomIn()
     {
-        //Rebind so when next time animator is enabled animation is going from first frame, not from last ended frame
+        //Rebind so when next time animator is enabled animation is going from first frame, not from last ended 
         animator.Rebind();
         animator.enabled = false;
 
 
-        StartCoroutine(weaponToZoom(weaponZoomInPosition,weaponZoomTime,true));
-        StartCoroutine(cameraToZoom(zoomInField,zoomTime));
-        playerController.setMouseValues(zoomInSensitivity,zoomInSensitivity);
+        StartCoroutine(weaponToZoom(weaponZoomInPosition,weaponZoomDuration,true));
+        StartCoroutine(cameraToZoom(zoomInField,cameraZoomDuration));
+        playerController.setCustomMouseValues(zoomInSensitivity.x,zoomInSensitivity.y);
 
     }
 
@@ -107,13 +104,13 @@ public class WeaponZoom : MonoBehaviour
     //Fourth: setting localPos to desiredPos
     IEnumerator weaponToZoom(Vector3 desiredPosition,float zoomOverTime,bool isZoomingIn)
     {
-        bool _zooming = tryingZooming;
+        bool _zooming = isTryingToZoom;
         Vector3 startPos = transform.localPosition;
         float timeElapsed = 0f;
-        if(isZoomingIn == true) zoomed = true;
+        if(isZoomingIn == true) isZoomed = true;
         //zoomed = isZoomingIn;
 
-        while(timeElapsed<= zoomOverTime && _zooming == tryingZooming)
+        while(timeElapsed<= zoomOverTime && _zooming == isTryingToZoom)
         {
             float t = timeElapsed / zoomOverTime; 
             transform.localPosition = Vector3.Lerp(startPos,desiredPosition,t);
@@ -122,7 +119,7 @@ public class WeaponZoom : MonoBehaviour
         }
         if(isZoomingIn == false)
         {
-            zoomed = false;
+            isZoomed = false;
             animator.enabled = true;
             Debug.Log("Starting play animation!");
         }
@@ -139,9 +136,9 @@ public class WeaponZoom : MonoBehaviour
     //Check weaponToZoom , basically the same stuff without few features
     IEnumerator cameraToZoom(float desiredFOV,float zoomOverTime)
     {
-        bool _zooming = tryingZooming;
+        bool _zooming = isTryingToZoom;
         float timeElapsed = 0f;
-        while(timeElapsed <= zoomOverTime && _zooming == tryingZooming)
+        while(timeElapsed <= zoomOverTime && _zooming == isTryingToZoom)
         {
             float t = timeElapsed/zoomOverTime;
             t = t*t * (3f - 2f*t);
@@ -156,7 +153,7 @@ public class WeaponZoom : MonoBehaviour
             yield break;
         }
 
-        weaponCamera.fieldOfView=desiredFOV;
+        weaponCamera.fieldOfView = desiredFOV;
         viewCamera.fieldOfView = desiredFOV;
 
         yield return null;

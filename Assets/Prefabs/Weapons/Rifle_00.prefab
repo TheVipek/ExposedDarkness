@@ -1232,9 +1232,9 @@ GameObject:
   - component: {fileID: 8901850298827841023}
   - component: {fileID: 4176564732031091798}
   - component: {fileID: 4176564732031091803}
-  - component: {fileID: 4176564732031091802}
-  - component: {fileID: 4176564732031091800}
   - component: {fileID: 4176564732031091801}
+  - component: {fileID: 4176564732031091800}
+  - component: {fileID: 4176564732031091802}
   m_Layer: 8
   m_Name: Rifle_00
   m_TagString: Untagged
@@ -1383,7 +1383,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &4176564732031091802
+--- !u!114 &4176564732031091801
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1392,16 +1392,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 8125172136448280389}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f84e008268963db408058346dabc7790, type: 3}
+  m_Script: {fileID: 11500000, guid: 614f6d989ff8192439a8d0b19f34fc29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showWeaponOffset: -0.5
-  movementXRange: -0.03
-  movementYRange: -0.03
-  movementZRange: -0.03
-  rotationXRange: 10
-  sprintWeaponMoving: 0.5
-  normalWeaponMoving: 1
+  range: 40
+  damage: 10
+  shootingDelay: 0.1
+  canConstantShoot: 1
+  constantShooting: 0
+  ammoSlot: {fileID: 0}
+  ammoType: 2
+  weaponSounds: {fileID: 0}
+  shootVFX: {fileID: 0}
+  hitEffect: {fileID: 7564172096902744805, guid: c1a7fb52c355c314fafe11903c10d1f9, type: 3}
+  weaponIcon: {fileID: 21300030, guid: 0bd96f6f4899f644ea1ffd9b4735a5e6, type: 3}
+  bulletIcon: {fileID: 21300012, guid: 309ac3eb4cc441349b63128366ca98b6, type: 3}
 --- !u!114 &4176564732031091800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1417,16 +1422,15 @@ MonoBehaviour:
   weaponCamera: {fileID: 0}
   viewCamera: {fileID: 0}
   playerController: {fileID: 0}
-  crosshair: {fileID: 0}
+  defaultField: 80
+  defaultSensitivity: {x: 2, y: 2}
+  defaultWeaponPosition: {x: 0.498, y: -0.583, z: 0.66}
   zoomInField: 20
-  zoomInSensitivity: 0.6
+  zoomInSensitivity: {x: 0.6, y: 0.6}
   weaponZoomInPosition: {x: 0, y: -0.35, z: 0.8}
-  zoomOutField: 60
-  zoomOutSensitivity: 2
-  weaponZoomOutPosition: {x: 0.49800003, y: -0.583, z: 0.8}
-  zoomTime: 2
-  weaponZoomTime: 1
---- !u!114 &4176564732031091801
+  cameraZoomDuration: 0.3
+  weaponZoomDuration: 0.3
+--- !u!114 &4176564732031091802
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1435,25 +1439,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8125172136448280389}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 614f6d989ff8192439a8d0b19f34fc29, type: 3}
+  m_Script: {fileID: 11500000, guid: f84e008268963db408058346dabc7790, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponIndex: 0
-  shootVFX: {fileID: 0}
-  hitEffect: {fileID: 7564172096902744805, guid: c1a7fb52c355c314fafe11903c10d1f9, type: 3}
-  weaponIcon: {fileID: 21300030, guid: 0bd96f6f4899f644ea1ffd9b4735a5e6, type: 3}
-  bulletIcon: {fileID: 21300012, guid: 309ac3eb4cc441349b63128366ca98b6, type: 3}
-  range: 40
-  damage: 10
-  shootingDelay: 0.1
-  canConstantShoot: 1
-  timeToReload: 2
-  emptyAmmo: 0
-  ammoSlot: {fileID: 0}
-  ammoType: 2
-  reload: 
-  empty: 
-  shoot: []
+  showWeaponOffset: -0.5
 --- !u!1 &8326074969932912839
 GameObject:
   m_ObjectHideFlags: 0

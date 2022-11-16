@@ -39,6 +39,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Mouse Values")]
     [Tooltip("This one is truly for sensivity in game that players are allowed to change via options")]
+    [SerializeField] Vector2 defaultSensitivity;
     public float xSensitivity;
     public float ySensitivity;
     [Tooltip("Default sensivity multiplier,better not change!")]
@@ -247,12 +248,16 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void setMouseValues(float x,float y)
+    public void setCustomMouseValues(float x,float y)
     {
         xSensitivity = x;
         ySensitivity = y;
     }
-
+    public void setDefaultMouseValues()
+    {
+        xSensitivity = defaultSensitivity.x;
+        ySensitivity = defaultSensitivity.y;
+    }
 }
 
 

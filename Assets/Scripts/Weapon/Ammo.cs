@@ -1,15 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
 public class Ammo : MonoBehaviour
 {
     [Tooltip("Getting reference from inventory to get ammos")]
     [SerializeField] List<AmmoSlot> ammoSlots;
     public static Ammo instance;
 
-    public delegate void OnAmmoAdd();
-    public static event OnAmmoAdd onAmmoAdd;
+    public static Action OnAmmoChange;
     private void Awake() {
         if(instance != null && instance != this)
         {
@@ -65,15 +64,17 @@ public class Ammo : MonoBehaviour
     public void ReloadAmmo(AmmoType ammoType)
     {
         GetAmmoSlot(ammoType).Reload();
+        OnAmmoChange();
     }
     public void UseAmmo(AmmoType ammoType)
     {
        GetAmmoSlot(ammoType).ammoInSlot--;
+       OnAmmoChange();
     }
     public void AddAmmo(AmmoType ammoType,int ammoCount)
     {
         GetAmmoSlot(ammoType).ammoAmount+=ammoCount;
-        onAmmoAdd();
+        OnAmmoChange();
     }
     private AmmoSlot GetAmmoSlot(AmmoType ammoType)
     {

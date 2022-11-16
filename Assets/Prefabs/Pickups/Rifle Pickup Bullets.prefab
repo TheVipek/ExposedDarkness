@@ -179,8 +179,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.63723755, y: 0.9193208, z: 0.70360994}
-  m_Center: {x: -0.18138123, y: 0.040339574, z: -0.14819503}
+  m_Size: {x: 0.87557983, y: 1.0502433, z: 1.0360947}
+  m_Center: {x: -0.14230347, y: 0.10580081, z: -0.13722277}
 --- !u!114 &4517508141045502523
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -581,7 +581,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2611421918520786682, guid: 53df236944dbd4c48b49b703aa1a2922, type: 3}
       propertyPath: m_VersionIndex
-      value: 4849
+      value: 4858
       objectReference: {fileID: 0}
     - target: {fileID: 2611421918520786686, guid: 53df236944dbd4c48b49b703aa1a2922, type: 3}
       propertyPath: m_Mesh
@@ -675,7 +675,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2611421918520786682, guid: 53df236944dbd4c48b49b703aa1a2922, type: 3}
       propertyPath: m_VersionIndex
-      value: 4861
+      value: 4870
       objectReference: {fileID: 0}
     - target: {fileID: 2611421918520786687, guid: 53df236944dbd4c48b49b703aa1a2922, type: 3}
       propertyPath: m_Name
@@ -765,7 +765,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2611421918520786682, guid: 53df236944dbd4c48b49b703aa1a2922, type: 3}
       propertyPath: m_VersionIndex
-      value: 4846
+      value: 4855
       objectReference: {fileID: 0}
     - target: {fileID: 2611421918520786686, guid: 53df236944dbd4c48b49b703aa1a2922, type: 3}
       propertyPath: m_Mesh

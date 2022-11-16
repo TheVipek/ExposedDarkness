@@ -20,14 +20,10 @@ public abstract class Enemy : MonoBehaviour {
 
     //Data backpack
     [SerializeField] CapsuleCollider capsuleCollider;
-    public EnemyStats statsScriptable; 
+    public EnemySetting enemySetting; 
+    public EnemySoundKit enemySoundKit;
     public float chaseSpeedBase{get; private set;}
-   // [Range(1,10)]
-   // public float chaseSpeedMultiplier;
-    [SerializeField] string attackSound;
-    [SerializeField] string patrollingSound;
-    [SerializeField] string deathSound;
-    [SerializeField] string provokeSound;
+
     
     protected AudioSource audioSource;
     //Properties
@@ -39,9 +35,9 @@ public abstract class Enemy : MonoBehaviour {
     public event OnDamageTaken onDamageTaken;
     protected virtual void InitStats()
     {
-        baseDamage = statsScriptable.baseDamage;
-        baseHitpoints = statsScriptable.baseHitpoints;
-        deathStateLength = statsScriptable.baseDeathStateLength;
+        baseDamage = enemySetting.baseDamage;
+        baseHitpoints = enemySetting.baseHitpoints;
+        deathStateLength = enemySetting.baseDeathStateLength;
     }
     protected virtual void Awake() {
         Debug.Log("baseHitpoints Awake: " + baseHitpoints);
@@ -65,14 +61,14 @@ public abstract class Enemy : MonoBehaviour {
     }
     protected virtual void Start()
     {
-        AudioManager.Instance.playSound(audioSource,patrollingSound);
+        AudioManager.playSound(audioSource,enemySoundKit.PatrollingSound);
         target = PlayerHealth.instance;
         Assert.IsNotNull(target,gameObject.name + " not set target");
 
     }
     public virtual void Attack()
     {
-        AudioManager.Instance.playSound(audioSource,attackSound);
+        AudioManager.playSound(audioSource,enemySoundKit.AttackSound);
         //If player dont exist or is dead dont call anything;
         if(target == null || target.IsDead == true) return;
         
@@ -84,6 +80,7 @@ public abstract class Enemy : MonoBehaviour {
     public virtual void TakeDamage(float damage)
     {
         onDamageTaken?.Invoke();
+        AudioManager.playSound(audioSource,enemySoundKit.DamageSound);
         //Make it always positive
         baseHitpoints-=Mathf.Abs(damage);
 
@@ -102,7 +99,7 @@ public abstract class Enemy : MonoBehaviour {
     
     public virtual void Death()
     {
-        AudioManager.Instance.playSound(audioSource,deathSound);
+        AudioManager.playSound(audioSource,enemySoundKit.DeathSound);
         if(animator!=null) animator.SetTrigger("death");
         MovePossibility(false);
 
@@ -118,7 +115,7 @@ public abstract class Enemy : MonoBehaviour {
     {
         if(provokeState == true)
         {
-            AudioManager.Instance.playSound(audioSource,provokeSound);
+            AudioManager.playSound(audioSource,enemySoundKit.ProvokeSound);
         }
     }
 }

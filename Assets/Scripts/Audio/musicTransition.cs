@@ -11,7 +11,7 @@ public class musicTransition : MonoBehaviour
     }
     public void triggerTransition(bool mute)
     {
-        AudioManager.Instance.musicSoundTransition(GetComponent<AudioSource>(),mute:mute);
+        AudioManager.musicSoundTransition(GetComponent<AudioSource>(),mute:mute);
 
     }
 }

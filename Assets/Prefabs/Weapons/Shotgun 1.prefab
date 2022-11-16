@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 3177460743007630134}
   - component: {fileID: 3198034428097244588}
   - component: {fileID: 3189204708060971330}
-  - component: {fileID: 3176996106723479168}
-  - component: {fileID: 3127131980949910881}
   - component: {fileID: 1594511029188806219}
   - component: {fileID: 3127131980492032525}
+  - component: {fileID: 3176996106723479168}
+  - component: {fileID: 3127131980949910881}
   - component: {fileID: 3127131980492032519}
   m_Layer: 8
   m_Name: Shotgun 1
@@ -89,58 +89,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &3176996106723479168
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3176505457819664364}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 614f6d989ff8192439a8d0b19f34fc29, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponIndex: 0
-  shootVFX: {fileID: 4861580144566183180}
-  hitEffect: {fileID: 7564172096902744805, guid: c1a7fb52c355c314fafe11903c10d1f9, type: 3}
-  weaponIcon: {fileID: 21300012, guid: 0bd96f6f4899f644ea1ffd9b4735a5e6, type: 3}
-  bulletIcon: {fileID: 21300016, guid: 309ac3eb4cc441349b63128366ca98b6, type: 3}
-  range: 10
-  damage: 50
-  shootingDelay: 1
-  canConstantShoot: 0
-  timeToReload: 4
-  emptyAmmo: 0
-  ammoSlot: {fileID: 0}
-  ammoType: 1
-  reload: sfx_sr
-  empty: sfx_ge
-  shoot: []
---- !u!114 &3127131980949910881
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3176505457819664364}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3344024077305a64986844ee358ca397, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponCamera: {fileID: 0}
-  viewCamera: {fileID: 0}
-  playerController: {fileID: 0}
-  crosshair: {fileID: 0}
-  zoomInField: 20
-  zoomInSensitivity: 0.6
-  weaponZoomInPosition: {x: 0, y: -0.14, z: 1}
-  zoomOutField: 60
-  zoomOutSensitivity: 2
-  weaponZoomOutPosition: {x: 0.49800003, y: -0.583, z: 1.146}
-  zoomTime: 2
-  weaponZoomTime: 1
 --- !u!82 &1594511029188806219
 AudioSource:
   m_ObjectHideFlags: 0
@@ -257,6 +205,53 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &3176996106723479168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3176505457819664364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 614f6d989ff8192439a8d0b19f34fc29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  range: 10
+  damage: 50
+  shootingDelay: 1
+  canConstantShoot: 0
+  constantShooting: 0
+  ammoSlot: {fileID: 0}
+  ammoType: 1
+  weaponSounds: {fileID: 0}
+  shootVFX: {fileID: 4861580144566183180}
+  hitEffect: {fileID: 7564172096902744805, guid: c1a7fb52c355c314fafe11903c10d1f9, type: 3}
+  weaponIcon: {fileID: 21300012, guid: 0bd96f6f4899f644ea1ffd9b4735a5e6, type: 3}
+  bulletIcon: {fileID: 21300016, guid: 309ac3eb4cc441349b63128366ca98b6, type: 3}
+--- !u!114 &3127131980949910881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3176505457819664364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3344024077305a64986844ee358ca397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponCamera: {fileID: 0}
+  viewCamera: {fileID: 0}
+  playerController: {fileID: 0}
+  defaultField: 80
+  defaultSensitivity: {x: 2, y: 2}
+  defaultWeaponPosition: {x: 0.498, y: -0.583, z: 0.78}
+  zoomInField: 20
+  zoomInSensitivity: {x: 0.6, y: 0.6}
+  weaponZoomInPosition: {x: 0, y: -0.14, z: 1}
+  cameraZoomDuration: 0.3
+  weaponZoomDuration: 0.3
 --- !u!114 &3127131980492032519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -270,12 +265,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showWeaponOffset: -0.5
-  movementXRange: -0.03
-  movementYRange: -0.03
-  movementZRange: -0.03
-  rotationXRange: 10
-  sprintWeaponMoving: 0.5
-  normalWeaponMoving: 1
 --- !u!1001 &6351897290727276092
 PrefabInstance:
   m_ObjectHideFlags: 0

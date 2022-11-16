@@ -6,59 +6,73 @@ using UnityEngine.Events;
 [RequireComponent(typeof(AudioSource))]
 public class Weapon : MonoBehaviour
 {
-    public int weaponIndex;
-    [SerializeField] ParticleSystem shootVFX;
-    [SerializeField] GameObject hitEffect;
-    public Sprite weaponIcon;
-    public Sprite bulletIcon;
+    public int WeaponIndex {get; private set;}
     
+
+    [Header("Weapon settings")]
     [SerializeField] float range = 100f;
     [SerializeField] float damage;
-    [SerializeField] float headshotMultiplier;
     [SerializeField] float shootingDelay;
     [SerializeField] bool canConstantShoot = false;
-    public float timeToReload;
+    [SerializeField] bool constantShooting;
+    [SerializeField] bool canWieldFlashLight;
+    
+    //Weapon Properties and fields
+    public bool CanWieldFlashLight{get{return canWieldFlashLight;}}
     public bool CanConstantShoot{get{return canConstantShoot;}}
-    private bool constantShooting;
     public bool ConstantShooting{get{return constantShooting;}set{constantShooting = value;}}
-    bool canShoot = true;
-    [SerializeField] bool emptyAmmo = false;
-    public bool EmptyAmmo{set{emptyAmmo = value;}}
+    public bool EmptyAmmo{get{return emptyAmmo;} set{emptyAmmo = value;}}
+    public float TimeToReload {get {return weaponSounds.ReloadSound.length;}}
+    private bool canShoot = true;
+    private bool emptyAmmo = false;
+    private WaitForSeconds wShootingDelay;
     [HideInInspector] public Ammo ammoSlot;
     [SerializeField] AmmoType ammoType;
     public AmmoType AmmoType{get{ return ammoType; }}
 
-    public AudioSource audioSource{get; private set;}
-    [Header("Audio")]
-    [SerializeField] string reload;
-    public string Reload{get{return reload;}}
-    [SerializeField] string empty;    
     
-    [SerializeField] List<string> shoot;
+    [Header("Audio")]
+    public WeaponSoundKit weaponSounds; 
+    public AudioSource AudioSource{get; private set;}
     private bool firstEnable = true;
 
+    
+    [Header("VFX/Sprites")]
+    [SerializeField] ParticleSystem shootVFX;
+    [SerializeField] GameObject hitEffect;
+    [SerializeField] Sprite weaponIcon;
+    public Sprite WeaponIcon{ get {return weaponIcon;}}
+    [SerializeField] Sprite bulletIcon;
+    public Sprite BulletIcon{ get {return bulletIcon;}}
 
+
+    
+    
     void OnEnable() {
+        WeaponShootingTypeChanger.onChangeShootingType += SwapConstantShooting;
         if(firstEnable == true)
         {
             firstEnable = false;
         }else
         {
-            AudioManager.Instance.playSound(audioSource,WeaponSwitcher.Instance.weaponSwitch);
+//
+           // AudioManager.Instance.playSound(audioSource,WeaponSwitcher.Instance.weaponSwitch);
 
         }
         canShoot = true;
 
     }
     void OnDisable() {
-        
+        WeaponShootingTypeChanger.onChangeShootingType -= SwapConstantShooting;
     }
     private void Awake() 
     {
+        //To avoid GC
+        wShootingDelay = new WaitForSeconds(shootingDelay);
         ammoSlot = GetComponentInParent<Ammo>();
-        weaponIndex = transform.GetSiblingIndex();
+        WeaponIndex = transform.GetSiblingIndex();
         constantShooting = canConstantShoot;
-        audioSource = GetComponent<AudioSource>();
+        AudioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -67,12 +81,11 @@ public class Weapon : MonoBehaviour
         {
             Shoot();
         }
-        else if((Input.GetMouseButtonDown(0) && canShoot) && (!constantShooting || emptyAmmo == true))
+        else if((Input.GetMouseButtonDown(0) && canShoot) && (constantShooting == false || emptyAmmo == true))
         {
             Shoot();
 
         }
-        //Debug.DrawRay(transform.position,transform.forward*range);
     }
     private void Shoot()
     {
@@ -84,17 +97,17 @@ public class Weapon : MonoBehaviour
         canShoot = false;
         if(ammoSlot.GetAmmoInSlot(ammoType) > 0)
         {
-            AudioManager.Instance.playSound(audioSource,shoot[UnityEngine.Random.Range(0,shoot.Count)]);
+            AudioManager.playSound(AudioSource,weaponSounds.ShootSound);
             PlayMuzzleFlash();
             ProcessRaycast();
             ammoSlot.UseAmmo(ammoType);
-            WeaponSwitcher.Instance.weaponEvent.Invoke();
         }else
         {
-            AudioManager.Instance.playSound(audioSource,empty);
+            AudioManager.playSound(AudioSource,weaponSounds.EmptySound);
             emptyAmmo = true;
         }
-        yield return new WaitForSeconds(shootingDelay);
+        //To avoid GC
+        yield return wShootingDelay;
         canShoot = true;
         yield return null;
     }
@@ -134,9 +147,12 @@ public class Weapon : MonoBehaviour
         ParticleSystem hitParticle = hitUFX.transform.GetChild(0).GetComponent<ParticleSystem>();
         Destroy(hitUFX,hitParticle.main.duration);
     }
+    
     public void SwapConstantShooting()
     {
-        AudioManager.Instance.playSound(audioSource,WeaponShootingTypeChanger.Instance.BulletTypeChange);
+        if(canConstantShoot == false) return;
         constantShooting = !constantShooting;
+        AudioManager.playSound(AudioSource,weaponSounds.ShootingTypeSound);
+        WeaponDisplayer.instance.DisplayChangeShootingType();
     }
 }

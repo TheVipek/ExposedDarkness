@@ -7,7 +7,7 @@ using UnityEngine.Assertions;
 public abstract class enemyAI : MonoBehaviour
 {
     Enemy enemy;
-    EnemyStats enemyStats;
+    EnemySetting enemySetting;
     protected Transform target;
     
     
@@ -53,7 +53,7 @@ public abstract class enemyAI : MonoBehaviour
         lastWaypoint = currentWaypoint;
         patrollingWaypoints = GetComponent<Waypoints>().waypoints;
         enemy = GetComponent<Enemy>();
-        enemyStats = enemy.statsScriptable;
+        enemySetting = enemy.enemySetting;
         NormalMode();
     }
     // protected virtual void InitStats()
@@ -104,14 +104,14 @@ public abstract class enemyAI : MonoBehaviour
             {
                 if(PlayerMovement.instance.Crouch == false)
                 {
-                    if(distanceToTarget <= enemyStats.baseChaseRange)
+                    if(distanceToTarget <= enemySetting.baseChaseRange)
                     {
                         isProvoked = true;
                     }
                 }
                 else
                 {
-                    if(distanceToTarget <= enemyStats.baseCrouchRange)
+                    if(distanceToTarget <= enemySetting.baseCrouchRange)
                     {
                         isProvoked = true;
                     }
@@ -197,7 +197,7 @@ public abstract class enemyAI : MonoBehaviour
             }
             else
             {
-                if(distanceToTarget > navMeshAgent.stoppingDistance + enemyStats.baseAttackRange)
+                if(distanceToTarget > navMeshAgent.stoppingDistance + enemySetting.baseAttackRange)
                 {
                     isAttacking = false;
                 }
@@ -225,7 +225,7 @@ public abstract class enemyAI : MonoBehaviour
     {
         Vector3 direction = (target.position - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x,0,direction.z));
-        transform.rotation = Quaternion.Slerp(transform.rotation,lookRotation,Time.deltaTime*enemyStats.baseRotateSpeed);
+        transform.rotation = Quaternion.Slerp(transform.rotation,lookRotation,Time.deltaTime*enemySetting.baseRotateSpeed);
     }
     public virtual void BackToStartingPos()
     {
@@ -297,7 +297,7 @@ public abstract class enemyAI : MonoBehaviour
 
         if(state == true)
         {
-            navMeshAgent.speed = enemyStats.baseSpeed;
+            navMeshAgent.speed = enemySetting.baseSpeed;
             enemyState = AIState.Patrolling;
         }
         animator.SetBool("patrol",state);
@@ -307,7 +307,7 @@ public abstract class enemyAI : MonoBehaviour
         if(state)
         {
             enemyState = AIState.Chasing;
-            navMeshAgent.speed = enemyStats.baseChaseSpeed;
+            navMeshAgent.speed = enemySetting.baseChaseSpeed;
         }
         animator.SetBool("chase",state);
     }
@@ -321,9 +321,9 @@ public abstract class enemyAI : MonoBehaviour
     }
     protected virtual void OnDrawGizmosSelected() 
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position,enemyStats.baseChaseRange);
-        Gizmos.DrawWireSphere(transform.position,enemyStats.baseCrouchRange);
+        // Gizmos.color = Color.red;
+        // Gizmos.DrawWireSphere(transform.position,enemySetting.baseChaseRange);
+        // Gizmos.DrawWireSphere(transform.position,enemySetting.baseCrouchRange);
 
     }
 }

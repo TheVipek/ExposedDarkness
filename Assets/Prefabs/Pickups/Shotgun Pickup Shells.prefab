@@ -159,8 +159,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.5631256, y: 0.3752592, z: 0.5488119}
-  m_Center: {x: 0.08887482, y: 0.15434794, z: 0.06473255}
+  m_Size: {x: 0.84861755, y: 0.5529659, z: 0.90110636}
+  m_Center: {x: 0.0923233, y: 0.24320126, z: 0.050260782}
 --- !u!114 &6744076878208155827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -577,7 +577,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1651514843466631809, guid: abfb8d5c169ee1f4b8e99da8789caf5a, type: 3}
       propertyPath: m_VersionIndex
-      value: 2098
+      value: 2107
       objectReference: {fileID: 0}
     - target: {fileID: 1651514843466631812, guid: abfb8d5c169ee1f4b8e99da8789caf5a, type: 3}
       propertyPath: m_Mesh
@@ -667,7 +667,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1651514843466631809, guid: abfb8d5c169ee1f4b8e99da8789caf5a, type: 3}
       propertyPath: m_VersionIndex
-      value: 2083
+      value: 2092
       objectReference: {fileID: 0}
     - target: {fileID: 1651514843466631812, guid: abfb8d5c169ee1f4b8e99da8789caf5a, type: 3}
       propertyPath: m_Mesh
@@ -761,7 +761,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1651514843466631809, guid: abfb8d5c169ee1f4b8e99da8789caf5a, type: 3}
       propertyPath: m_VersionIndex
-      value: 2086
+      value: 2095
       objectReference: {fileID: 0}
     - target: {fileID: 1651514843466631812, guid: abfb8d5c169ee1f4b8e99da8789caf5a, type: 3}
       propertyPath: m_Mesh
