@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ObjectiveDisplayer : MonoBehaviour,IDisplayUI
 {
-    [SerializeField] GameObject objectiveUIContainer;
+    [SerializeField] Canvas objectiveCanvas;
     private void OnEnable() {
         WaveController.onWaveStartGlobal += DisplayUI;
         WaveController.onWaveEndGlobal += DisplayUI;
@@ -21,7 +21,7 @@ public class ObjectiveDisplayer : MonoBehaviour,IDisplayUI
 
     public void DisplayUI()
     {
-        if(objectiveUIContainer == null) return;
-        objectiveUIContainer.SetActive(!objectiveUIContainer.activeSelf);
+        if(objectiveCanvas == null) return;
+        objectiveCanvas.enabled = !objectiveCanvas.enabled;
     }
 }

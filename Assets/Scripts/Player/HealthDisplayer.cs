@@ -5,21 +5,10 @@ using TMPro;
 using UnityEngine.UI;
 public class HealthDisplayer : MonoBehaviour,IDisplayUI
 {
-    public HealthDisplayer instance;
     [SerializeField] TMP_Text actualHp;
     [SerializeField] float smoothLoseHp = 2f;
     float sliderComplete = 0f;
     [SerializeField] Slider sliderFill;
-    private void Awake() {
-        if(instance!= this && instance != null)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            instance = this;
-        }
-    }
     private void OnEnable() {
         PlayerHealth.onDamageTaken += DisplayUI;
         PlayerHealth.onFightOver += DisplayUI;

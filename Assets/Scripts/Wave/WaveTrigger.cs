@@ -6,6 +6,7 @@ public class WaveTrigger : MonoBehaviour
 {
     public WaveContainer waveToTrigger;
     private WaveController _waveController;
+    [SerializeField] GameObject missionCompletionCanvas;
     private void Awake() {
         _waveController = WaveController.Instance;
         _waveController.initWave(waveToTrigger);
@@ -14,9 +15,16 @@ public class WaveTrigger : MonoBehaviour
     {
         WaveController.onWaveStartGlobal();
         EnemiesAliveCounter.onEnemyAliveChange += EndWaveListener;
+        if(missionCompletionCanvas != null){
+            WaveController.onWaveEndGlobal += missionCompletionTrigger; 
+        }
     }
     private void OnDisable() {
         EnemiesAliveCounter.onEnemyAliveChange -= EndWaveListener;
+        if(missionCompletionCanvas != null){
+            WaveController.onWaveEndGlobal -= missionCompletionTrigger; 
+        } 
+
     }
     public void EndWaveListener()
     {
@@ -31,6 +39,10 @@ public class WaveTrigger : MonoBehaviour
                 // PRINT END OF WAVES
             }
         }
+    }
+    public void missionCompletionTrigger()
+    {
+        missionCompletionCanvas.gameObject.SetActive(true);
     }
     IEnumerator StartingBreak()
     {

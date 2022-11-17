@@ -1115,15 +1115,15 @@ MonoBehaviour:
   - ammoType: 0
     ammoInSlot: 12
     ammoPerSlot: 12
-    ammoAmount: 12
+    ammoAmount: 36
   - ammoType: 2
     ammoInSlot: 30
     ammoPerSlot: 30
-    ammoAmount: 30
+    ammoAmount: 90
   - ammoType: 1
     ammoInSlot: 8
     ammoPerSlot: 8
-    ammoAmount: 8
+    ammoAmount: 24
 --- !u!114 &1590678763
 MonoBehaviour:
   m_ObjectHideFlags: 0

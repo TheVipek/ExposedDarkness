@@ -8,6 +8,9 @@ public abstract class enemyAI : MonoBehaviour
 {
     Enemy enemy;
     EnemySetting enemySetting;
+    EnemySoundKit enemySoundKit;
+    AudioSource audioSource;
+    
     protected Transform target;
     
     
@@ -54,15 +57,11 @@ public abstract class enemyAI : MonoBehaviour
         patrollingWaypoints = GetComponent<Waypoints>().waypoints;
         enemy = GetComponent<Enemy>();
         enemySetting = enemy.enemySetting;
+        enemySoundKit = enemy.enemySoundKit;
+        audioSource = GetComponent<AudioSource>();
         NormalMode();
     }
-    // protected virtual void InitStats()
-    // {
-    //     patrollingSpeedBase = statsScriptable.baseSpeed;
-    //     chaseSpeedBase = statsScriptable.baseSpeed*3;
-    //     attackingRange = statsScriptable.baseAttackRange;
-
-    // }
+    
     protected virtual void Start()
     {
         //OVERRIDE IN EVERY SUBCLASS
@@ -120,7 +119,6 @@ public abstract class enemyAI : MonoBehaviour
         }
         
     }
-
     public virtual void PlayerDistance()
     {
         if(target == null) return;
@@ -147,14 +145,12 @@ public abstract class enemyAI : MonoBehaviour
             StartCoroutine(BreakOnNextAction(patrollingWaypoints[lastWaypoint].Position));
             return;
         }
-
+        if(distanceToTarget <= 10) FaceTarget();
         
+        //FaceTarget();
         //time ended or distance is over possible and player not catched
-        //Debug.Log(tryingCatchTarget);
-        //Debug.Log(distanceToTarget);
         if(tryingCatchTarget <= 0)
         {
-            //Debug.Log(tryingCatchTarget + "lower than 0");
             isProvoked = false;
             tryingCatchTarget = tryingCatchTargetBase;
             navMeshAgent.ResetPath();
@@ -173,24 +169,18 @@ public abstract class enemyAI : MonoBehaviour
                 return;
             }
         }
-        FaceTarget();
         
         if(distanceToTarget >= navMeshAgent.stoppingDistance && isAttacking == false)
         {
             ChaseTarget();
-
-            //Debug.Log(tryingCatchTarget);
-
             tryingCatchTarget-=Time.deltaTime;
         }
         else if(distanceToTarget < navMeshAgent.stoppingDistance || isAttacking == true)
         { 
-           // Debug.Log("Get to point");  
             navMeshAgent.ResetPath();
             if(isAttacking == false)
             {
                 isAttacking = true;
-                //navMeshAgent.isStopped =true;
                 AttackTarget(true);
             
                 if(tryingCatchTarget!=tryingCatchTargetBase) tryingCatchTarget = tryingCatchTargetBase;
@@ -219,6 +209,7 @@ public abstract class enemyAI : MonoBehaviour
         AttackTarget(false);
         PatrollingAnimateState(false);
         ChaseAnimateState(true);
+        Debug.Log(navMeshAgent.destination);
         navMeshAgent.SetDestination(target.position);
     }
     public virtual void FaceTarget()
@@ -288,7 +279,6 @@ public abstract class enemyAI : MonoBehaviour
     {
 
         animator.SetBool("attack",isAttacking);
-        
       //Debug.Log("Attacking!");  
     }
     protected void PatrollingAnimateState(bool state)
@@ -299,6 +289,8 @@ public abstract class enemyAI : MonoBehaviour
         {
             navMeshAgent.speed = enemySetting.baseSpeed;
             enemyState = AIState.Patrolling;
+            AudioManager.playSound(audioSource,enemySoundKit.PatrollingSound,false);
+
         }
         animator.SetBool("patrol",state);
     }
@@ -308,6 +300,8 @@ public abstract class enemyAI : MonoBehaviour
         {
             enemyState = AIState.Chasing;
             navMeshAgent.speed = enemySetting.baseChaseSpeed;
+            AudioManager.playSound(audioSource,enemySoundKit.ProvokeSound,false);
+
         }
         animator.SetBool("chase",state);
     }
@@ -316,6 +310,8 @@ public abstract class enemyAI : MonoBehaviour
         if(state)
         {
             enemyState = AIState.Idling;
+            AudioManager.playSound(audioSource,enemySoundKit.PatrollingSound,false);
+
         }
         animator.SetTrigger("idle");
     }
@@ -324,6 +320,6 @@ public abstract class enemyAI : MonoBehaviour
         // Gizmos.color = Color.red;
         // Gizmos.DrawWireSphere(transform.position,enemySetting.baseChaseRange);
         // Gizmos.DrawWireSphere(transform.position,enemySetting.baseCrouchRange);
-
+        //Gizmos.DrawSphere(transform.position,10);
     }
 }

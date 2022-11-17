@@ -23,7 +23,6 @@ public class FlashLightSystem : MonoBehaviour
     private void OnEnable() {
         flashlightMesh.enabled = true;
         needActivateBySelf = false;
-        //Debug.Log("Enabled!");
     }
     private void Start() {
         weapon = GetComponentInParent<WeaponZoom>();
@@ -75,7 +74,7 @@ public class FlashLightSystem : MonoBehaviour
                 flashlightActivated = (FlashlightState)value;
                 Mylight.enabled = Convert.ToBoolean(value);
             }
-            FlashlightDisplayer.Instance.SetFlashlightTextState(flashlightActivated);
+            FlashlightDisplayer.SetFlashlightTextState(flashlightActivated);
         }
         
     }

@@ -41,7 +41,7 @@ public abstract class Enemy : MonoBehaviour {
     }
     protected virtual void Awake() {
         Debug.Log("baseHitpoints Awake: " + baseHitpoints);
-        InitStats();
+       // InitStats();
         audioSource = GetComponent<AudioSource>();
         animator = GetComponentInChildren<Animator>();
         //Make sure every enemy has it's own animation 
@@ -51,6 +51,8 @@ public abstract class Enemy : MonoBehaviour {
        
         //calling method with true parameter so if zombie was choosen from pool he'll be able to move
        if(canMove == false) MovePossibility(true);
+       //AudioManager.playSound(audioSource,enemySoundKit.PatrollingSound);
+       InitStats();
        Debug.Log("baseHitpoints onEnable: " + baseHitpoints);
 
     }
@@ -61,16 +63,16 @@ public abstract class Enemy : MonoBehaviour {
     }
     protected virtual void Start()
     {
-        AudioManager.playSound(audioSource,enemySoundKit.PatrollingSound);
         target = PlayerHealth.instance;
         Assert.IsNotNull(target,gameObject.name + " not set target");
 
     }
     public virtual void Attack()
     {
-        AudioManager.playSound(audioSource,enemySoundKit.AttackSound);
+        //AudioManager.playSound(audioSource,enemySoundKit.AttackSound);
         //If player dont exist or is dead dont call anything;
         if(target == null || target.IsDead == true) return;
+        AudioManager.playSound(audioSource,enemySoundKit.AttackSound,false);
         
         //Player damage dealing
         target.TakeDamage(baseDamage);
@@ -80,7 +82,7 @@ public abstract class Enemy : MonoBehaviour {
     public virtual void TakeDamage(float damage)
     {
         onDamageTaken?.Invoke();
-        AudioManager.playSound(audioSource,enemySoundKit.DamageSound);
+        //AudioManager.playSound(audioSource,enemySoundKit.DamageSound);
         //Make it always positive
         baseHitpoints-=Mathf.Abs(damage);
 
@@ -111,11 +113,8 @@ public abstract class Enemy : MonoBehaviour {
         gameObject.SetActive(false);
         yield return null;
     }
-    public virtual void gotProvoked(bool provokeState)
+    public virtual void gotProvoked()
     {
-        if(provokeState == true)
-        {
-            AudioManager.playSound(audioSource,enemySoundKit.ProvokeSound);
-        }
+        AudioManager.playSound(audioSource,enemySoundKit.ProvokeSound);
     }
 }

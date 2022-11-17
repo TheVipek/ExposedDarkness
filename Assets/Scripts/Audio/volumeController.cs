@@ -8,6 +8,8 @@ public class volumeController : MonoBehaviour
     [SerializeField] Slider slider;
     [SerializeField] AudioMixer audioMixer;
     [SerializeField] string mixerValueToChange;
+    public string MixerValueToChange {get{return mixerValueToChange;}}
+
     [SerializeField] float multiplier = 30f;
 
     void Awake()
@@ -21,7 +23,11 @@ public class volumeController : MonoBehaviour
     }
     void sliderValueHandler(Slider slider)
     {
-        audioMixer.SetFloat(mixerValueToChange,Mathf.Log10(slider.value) * multiplier);
+        AudioMixerSetValue(slider.value);
+    }
+    public void AudioMixerSetValue(float value)
+    {
+        audioMixer.SetFloat(mixerValueToChange,Mathf.Log10(value) * multiplier);
     }
     private void OnDisable() {
         PlayerPrefs.SetFloat(mixerValueToChange,slider.value);

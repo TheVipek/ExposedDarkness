@@ -143,11 +143,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   capsuleCollider: {fileID: 701855159631860974}
-  statsScriptable: {fileID: 11400000, guid: 9b7854703c6cdc740ad4ab3fdef62f5e, type: 2}
-  attackSound: sfx_za
-  patrollingSound: sfx_zd
-  deathSound: sfx_zpg
-  provokeSound: sfx_zpd
+  enemySetting: {fileID: 11400000, guid: 9b7854703c6cdc740ad4ab3fdef62f5e, type: 2}
+  enemySoundKit: {fileID: 11400000, guid: 565105aa25069324c8f8b8e2c40eeb12, type: 2}
   canMove: 0
 --- !u!195 &658442827073341808
 NavMeshAgent:
@@ -158,11 +155,11 @@ NavMeshAgent:
   m_GameObject: {fileID: 2661494441099815045}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 2
   m_Speed: 1
   m_Acceleration: 60
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 360
   m_StoppingDistance: 2
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1

@@ -17,9 +17,9 @@ public class WeaponAnimation : MonoBehaviour
         animator = GetComponent<Animator>();
     }
     private void OnEnable() {
-        Debug.Log(animator);
+//        Debug.Log(animator);
         animator.enabled = false;
-        Debug.Log(animator.isActiveAndEnabled);
+  //      Debug.Log(animator.isActiveAndEnabled);
         StartCoroutine(showWeapon(desiredPosition));
         transform.localRotation = Quaternion.Euler(0,0,0);
 

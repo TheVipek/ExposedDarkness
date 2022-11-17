@@ -109,7 +109,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 236740009567398735, guid: a89deba290655514481b87c9b071f567, type: 3}
       propertyPath: m_Name
-      value: Bus_green (2)
+      value: Bus_green (2) Variant
       objectReference: {fileID: 0}
     - target: {fileID: 236740009567500143, guid: a89deba290655514481b87c9b071f567, type: 3}
       propertyPath: m_RootOrder

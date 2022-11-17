@@ -24,6 +24,7 @@ public class FlashlightDisplayer : MonoBehaviour,IDisplayUI
     // Start is called before the first frame update
     private void OnEnable() {
         WeaponSwitcher.onWeaponChange+=DisplayUI;
+        
     }
      private void OnDisable() {
         WeaponSwitcher.onWeaponChange-=DisplayUI;
@@ -48,9 +49,9 @@ public class FlashlightDisplayer : MonoBehaviour,IDisplayUI
             flashLightContainer.SetActive(false);
         }
     }
-    public void SetFlashlightTextState(FlashlightState state)
+    public static void SetFlashlightTextState(FlashlightState state)
     {
-        stateText.text = state.ToString();
+        FlashlightDisplayer.Instance.stateText.text = state.ToString();
     }
    
    

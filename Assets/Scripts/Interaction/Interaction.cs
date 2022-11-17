@@ -31,14 +31,14 @@ public class Interaction : MonoBehaviour,IResponseInteraction
         ray = playerViewCamera.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0));
         if (Physics.Raycast(ray, out hit, maxDistance: interactionDistance))
         {
-            Debug.DrawLine(ray.origin,hit.point,Color.red);
+            // Debug.DrawLine(ray.origin,hit.point,Color.red);
             if (hit.transform.gameObject.CompareTag("interactionObject"))
             {
                 if(interactionActivated == false)
                 {
-                    Debug.Log("You're looking at interactable object!");
-                    Debug.Log(lookingAt);
-                    Debug.Log(lastInteracted);
+                    // Debug.Log("You're looking at interactable object!");
+                    // Debug.Log(lookingAt);
+                    // Debug.Log(lastInteracted);
                     if(hit.transform.gameObject != lastInteracted || lastInteracted == null)
                     {
                         OnSelect(hit.transform.gameObject);

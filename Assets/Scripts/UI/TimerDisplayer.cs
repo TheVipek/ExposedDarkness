@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TimerDisplayer : MonoBehaviour,IDisplayUI
 {
-     [SerializeField] GameObject timerUIContainer;
+     [SerializeField] Canvas timerCanvas;
     private void OnEnable() {
         WaveController.onWaveStartGlobal += DisplayUI;
         WaveController.onWaveEndGlobal += DisplayUI;
@@ -21,7 +21,7 @@ public class TimerDisplayer : MonoBehaviour,IDisplayUI
 
     public void DisplayUI()
     {
-        if(timerUIContainer == null) return;
-        timerUIContainer.SetActive(!timerUIContainer.activeSelf);
+        if(timerCanvas == null) return;
+        timerCanvas.enabled = !timerCanvas.enabled;
     }
 }
