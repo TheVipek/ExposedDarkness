@@ -40,7 +40,7 @@ public abstract class Enemy : MonoBehaviour {
         deathStateLength = enemySetting.baseDeathStateLength;
     }
     protected virtual void Awake() {
-        Debug.Log("baseHitpoints Awake: " + baseHitpoints);
+        //Debug.Log("baseHitpoints Awake: " + baseHitpoints);
        // InitStats();
         audioSource = GetComponent<AudioSource>();
         animator = GetComponentInChildren<Animator>();
@@ -53,12 +53,12 @@ public abstract class Enemy : MonoBehaviour {
        if(canMove == false) MovePossibility(true);
        //AudioManager.playSound(audioSource,enemySoundKit.PatrollingSound);
        InitStats();
-       Debug.Log("baseHitpoints onEnable: " + baseHitpoints);
+       //Debug.Log("baseHitpoints onEnable: " + baseHitpoints);
 
     }
     protected virtual void OnDisable()
     {
-        Debug.Log("baseHitpoints onDisable: " + baseHitpoints);
+       // Debug.Log("baseHitpoints onDisable: " + baseHitpoints);
 
     }
     protected virtual void Start()

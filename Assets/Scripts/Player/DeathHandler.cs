@@ -37,7 +37,7 @@ public class DeathHandler : MonoBehaviour
             PlayerMovement.instance.enabled = false;
             WeaponSwitcher.Instance.gameObject.SetActive(false);
             gameOverCanvas.enabled = true;
-            Cursor.lockState = CursorLockMode.None;
+            Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
             
             // Time.timeScale=0;
@@ -56,7 +56,7 @@ public class DeathHandler : MonoBehaviour
         PlayerMovement.instance.enabled = false;
         WeaponSwitcher.Instance.gameObject.SetActive(false);
         gameOverCanvas.enabled = true;
-        Cursor.lockState = CursorLockMode.None;
+        Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
     }
 }

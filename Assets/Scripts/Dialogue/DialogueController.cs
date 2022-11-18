@@ -17,6 +17,8 @@ public class DialogueController : MonoBehaviour
     [SerializeField] TMP_Text dialogueTMP;
     [SerializeField] float timePerCharacter;
     [SerializeField] float timePerSentence;
+    private WaitForSecondsRealtime waitForTimePerCharacter;
+    private WaitForSecondsRealtime waitForTimePerSentence;
 
     public Dialogue currentDialogue;
     public static event Action OnGlobalDialogueStarted;
@@ -33,9 +35,16 @@ public class DialogueController : MonoBehaviour
             Instance = this;
         }
     }
+    private void OnEnable() {
+        waitForTimePerCharacter = new WaitForSecondsRealtime(timePerCharacter);
+        waitForTimePerSentence = new WaitForSecondsRealtime(timePerSentence);
 
+    }
     public IEnumerator DialogueStartPhase(Dialogue _dialogue, bool transitionInside = true)
     {
+        OnGlobalDialogueStarted();
+        currentDialogue.callStartEvents();
+        currentDialogue = _dialogue;
         // dialoguePanel.SetActive(true);
         if (transitionInside == true)
         {
@@ -43,7 +52,8 @@ public class DialogueController : MonoBehaviour
             dialogueAnimator.SetTrigger("appear");
             //yield return null;
             float animLength = dialogueAnimator.GetCurrentAnimatorStateInfo(0).length;
-            yield return new WaitForSeconds(animLength);
+            WaitForSecondsRealtime _animLength = new WaitForSecondsRealtime(animLength);
+            yield return _animLength;
         }
         else
         {
@@ -54,9 +64,7 @@ public class DialogueController : MonoBehaviour
             dialoguePanel.color = new Color(dialogueImageColor.r,dialogueImageColor.g,dialogueImageColor.b,255);
         }
 
-        OnGlobalDialogueStarted();
-        currentDialogue.callStartEvents();
-        currentDialogue = _dialogue;
+       
         yield return StartCoroutine(textTransition(currentDialogue));
     }
     public void StartShowingText()
@@ -76,15 +84,19 @@ public class DialogueController : MonoBehaviour
     }
     public IEnumerator DialogueEndPhase()
     {
-        if(dialogueAnimator.enabled == false) dialogueAnimator.enabled = true;
-        dialogueAnimator.SetTrigger("disappear");
-        float animLength = dialogueAnimator.GetCurrentAnimatorStateInfo(0).length;
-        yield return new WaitForSeconds(animLength);
         OnGlobalDialogueEnded();
         currentDialogue.callEndEvents();
+        if(dialogueAnimator.enabled == false) dialogueAnimator.enabled = true;
+        
+        dialogueAnimator.SetTrigger("disappear");
+        float animLength = dialogueAnimator.GetCurrentAnimatorStateInfo(0).length;
+        WaitForSecondsRealtime _animLength = new WaitForSecondsRealtime(animLength);
+
+        yield return _animLength;
         dialogueAnimator.enabled = false;
 
     }
+
     IEnumerator textTransition(Dialogue _dialogue)
     {
         string[] text = _dialogue.dialogueText.textToDisplayAtOnce;
@@ -98,6 +110,7 @@ public class DialogueController : MonoBehaviour
             currentDialogue.checkForSentenceEvent(i);
             while (currentIndex < text[i].Length)
             {
+                #region tagDetecting
                 if (text[i][currentIndex] == '<')
                 {
                     tagStarted = true;
@@ -105,30 +118,28 @@ public class DialogueController : MonoBehaviour
 
                 if (tagStarted == true)
                 {
+                    tagStorage += text[i][currentIndex];
+                 //   Debug.Log(text[i][currentIndex]);
                     if (text[i][currentIndex] == '>')
                     {
                         tagStarted = false;
-                    }
-                    tagStorage += text[i][currentIndex];
-                }
-
-                if (tagStarted == false)
-                {
-                    if (tagStorage != string.Empty)
-                    {
                         dialogueTMP.text += tagStorage;
                         tagStorage = string.Empty;
                     }
-                    else
-                    {
-                        dialogueTMP.text += text[i][currentIndex];
-                    }
+                    
                 }
-
+                #endregion
+                else
+                {
+                    dialogueTMP.text += text[i][currentIndex];
+                }
+                #region endOfSentenceDetecting
+               // if(text[i][currentIndex] == '.' || text[i][currentIndex] == '!' || text[i][currentIndex] == '?') yield return waitForTimePerSentence.waitTime/2;
+                #endregion
                 currentIndex += 1;
-                yield return new WaitForSeconds(timePerCharacter);
+                yield return waitForTimePerCharacter;
             }
-            yield return new WaitForSeconds(timePerSentence);
+            yield return waitForTimePerSentence;
         }
         DialogueShowEnd();
         yield return null;

@@ -14,9 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textToDisplayAtOnce:
   - Gentle Stinger! Let's recap what we told you earlier this week. Your mission
-    is <b>high-risk</b> ,beacuse of large amount of newly born <b>ombies</b> and
-    important person that you have to rescue!
-  - Sneak near <b>hangar</b> at end of road and eliminate all <b>zombies</b>.After
-    eliminating all of them wait for <b>transport</b> ,so everyone can easily leave
-    <b>"Island"</b>.
-  - Remember,one moment of weakness equals dead! <b>GOOD LUCK!</b>
+    is <b>high-risk</b> ,beacuse of large amount of newly born <b>zombies</b> and
+    people that you have to rescue!
+  - Eliminate all<b> zombies </b>and give us <b>sign </b>,so everyone can leave<b>
+    this island</b>.
+  - Remember,one moment of weakness is equal <b>death</b>!

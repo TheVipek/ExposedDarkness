@@ -31,12 +31,16 @@ public class MenuClickListener : MonoBehaviour,IAnyButton
         if(menuCanvas.enabled == true)
         {
             Cursor.lockState = CursorLockMode.Confined;
-            Cursor.visible = true;
+            setCursor(true);
             GameManager.Instance.freezeTime();
         }else
         {
-            Cursor.visible = false;
+            setCursor(false);
             GameManager.Instance.unfreezeTime();
         }
+    }
+    public void setCursor(bool _visible)
+    {
+        Cursor.visible = _visible;
     }
 }

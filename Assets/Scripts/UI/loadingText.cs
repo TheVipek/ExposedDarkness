@@ -52,7 +52,14 @@ public class loadingText : MonoBehaviour
     }
     public void preparedSceneText()
     {
-        loadingTMP.text = "Click Any Key To Continue";
         if(loadingClickListener != null) loadingClickListener.enabled = true;
+        if(SceneController.Instance.GoingToScene != "MainMenu")
+        {
+            loadingTMP.text = "Click Any Key To Continue";
+        }
+        else
+        {
+            loadingClickListener.AnyButtonAction();
+        }
     }
 }

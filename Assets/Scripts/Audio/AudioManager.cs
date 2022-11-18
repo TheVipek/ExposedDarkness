@@ -33,7 +33,7 @@ public class AudioManager : MonoBehaviour
         }
 
         _source.pitch = Random.Range(0.9f,1.1f);
-        Debug.Log(_source.pitch);
+//        Debug.Log(_source.pitch);
         _source.PlayOneShot(_clip,_source.volume); 
     }
     public static void musicSoundTransition(AudioSource source,bool mute,float transitionLength = 2f)

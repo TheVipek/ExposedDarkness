@@ -9,6 +9,9 @@ public class SceneController : MonoBehaviour
     public float loadingProgress{get; private set;} 
     public static Action onLoadingPrepared;
     public AsyncOperation sceneToLoad;
+    
+    private string goingToScene; 
+    public string GoingToScene {get{return goingToScene;}}
     private void Awake() {
         Debug.Log("Initializing SceneController...");
         if(Instance!=this && Instance != null)
@@ -27,10 +30,7 @@ public class SceneController : MonoBehaviour
     private void OnDisable() {
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
-    public void Quit()
-    {
-        Application.Quit();
-    }
+
     public void GoToScene(string sceneName)
     {
         //Debug.Log("GoToScene called!");
@@ -42,6 +42,7 @@ public class SceneController : MonoBehaviour
     }
     IEnumerator goToLoadingScene(string previousScene,string wantGoSceneName)
     {
+        goingToScene = wantGoSceneName;
         //Debug.Log("Start Loading...");
         WaitForSeconds isCompletedChecker = new WaitForSeconds(0.1f);
         WaitForSeconds swappingTime = new WaitForSeconds(3f);
@@ -65,13 +66,6 @@ public class SceneController : MonoBehaviour
         SceneManager.UnloadSceneAsync(previousScene);
         yield return swappingTime;
         onLoadingPrepared();
-        // sceneToLoad.allowSceneActivation = true;
-        // while(!sceneToLoad.isDone)
-        // {
-        //     yield return null;
-        // }
-        // SceneManager.UnloadSceneAsync("loadingScene");
-
     }
     public void loadScene(string sceneName)
     {
@@ -84,16 +78,12 @@ public class SceneController : MonoBehaviour
     }
     void OnSceneLoaded(Scene scene,LoadSceneMode mode)
     {
-        SceneManager.SetActiveScene(scene);
-        if(SceneManager.GetActiveScene().name != "MainMenu" && SceneManager.GetActiveScene().name != "loadingScene" )
-        {
-            DialogueController dialogueController = DialogueController.Instance;
-            StartCoroutine(dialogueController.DialogueStartPhase(dialogueController.currentDialogue,false));
-        }
+    //    SceneManager.SetActiveScene(scene);
     }
     public IEnumerator loadingPreparedAction()
     {
         sceneToLoad.allowSceneActivation = true;
+        goingToScene = String.Empty;
         while(!sceneToLoad.isDone)
         {
             yield return null;

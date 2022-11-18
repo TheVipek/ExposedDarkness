@@ -24,7 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2425513689578103518}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1009.111, y: -951.666, z: 579.6886}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -47,11 +47,12 @@ MonoBehaviour:
   dialoguePanel: {fileID: 0}
   dialogueEndPossibility: {fileID: 0}
   dialogueAnimator: {fileID: 0}
-  tMP_Text: {fileID: 0}
-  timePerCharacter: 0.01
-  timePerSentence: 0.5
+  dialogueTMP: {fileID: 0}
+  timePerCharacter: 0.05
+  timePerSentence: 3
   currentDialogue:
     dialogueText: {fileID: 11400000, guid: a9fcfeed56520364f809603988bf4182, type: 2}
+    forceExitDialogue: 0
     OnLocalDialogueStarted: []
     OnLocalDialogueEnded: []
-    sentenceEvents: []
+    OnSentence: []
