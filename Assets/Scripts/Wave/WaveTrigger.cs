@@ -36,6 +36,8 @@ public class WaveTrigger : MonoBehaviour
                 // StartCoroutine(waveController.spawnSubwave());
             }else
             {
+                WaveController.onWaveEndGlobal();
+
                 // PRINT END OF WAVES
             }
         }

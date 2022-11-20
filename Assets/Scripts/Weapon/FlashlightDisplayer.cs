@@ -8,9 +8,9 @@ using TMPro;
 public class FlashlightDisplayer : MonoBehaviour,IDisplayUI
 {
     [SerializeField] TMP_Text stateText;
-    [SerializeField] GameObject flashLightContainer;
-    [SerializeField] GameObject deactivatedPanel;
-    
+    // [SerializeField] GameObject flashLightContainer;
+    // [SerializeField] GameObject deactivatedPanel;
+    [SerializeField] Canvas flashLightCanvas;
     public static FlashlightDisplayer Instance{get; private set;}
     private void Awake() {
         if(Instance!=this && Instance != null)
@@ -29,24 +29,17 @@ public class FlashlightDisplayer : MonoBehaviour,IDisplayUI
      private void OnDisable() {
         WeaponSwitcher.onWeaponChange-=DisplayUI;
     }
-    private void Update() {
-        
-    }
-    public void DisplayFlashlighter()
-    {
-        
-        
-    }
     public void DisplayUI()
     {
         bool shouldBeVisible = FlashLightSystem.canDisplay() ? true : false;
+        Debug.Log(shouldBeVisible);
         if(shouldBeVisible == true)
         {
-            flashLightContainer.SetActive(true);
+            flashLightCanvas.enabled = true;
         }
         else
         {
-            flashLightContainer.SetActive(false);
+            flashLightCanvas.enabled = false;
         }
     }
     public static void SetFlashlightTextState(FlashlightState state)

@@ -54,6 +54,7 @@ public class SceneController : MonoBehaviour
         {
             yield return null;
         }
+        SceneManager.UnloadSceneAsync(previousScene);
         yield return swappingTime;
         sceneToLoad = SceneManager.LoadSceneAsync(wantGoSceneName,LoadSceneMode.Additive);
         sceneToLoad.allowSceneActivation = false;
@@ -63,7 +64,6 @@ public class SceneController : MonoBehaviour
             yield return null;
         }
         loadingProgress = 1;
-        SceneManager.UnloadSceneAsync(previousScene);
         yield return swappingTime;
         onLoadingPrepared();
     }

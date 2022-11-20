@@ -38,12 +38,13 @@ public class ObjectiveList : MonoBehaviour
       if(status == ObjectiveStatus.DONE)
       {
          TMP_Text text = objective.objectiveUI.GetComponent<TMP_Text>();
-         Color textColor = text.color;
-         text.color = new Color(text.color.r,text.color.g,text.color.b,64);
+         Color32 textColor = text.color;
+         text.color = new Color32(textColor.r,textColor.g,textColor.b,32);
          //text.fontStyle = FontStyles.Underline;
          // text.fontStyle = FontStyles.Strikethrough | FontStyles.SmallCaps;
          //text.fontStyle = FontStyles.SmallCaps;
       }
+      objective.status = status;
    }
    public Objective getObjective(int id)
    {

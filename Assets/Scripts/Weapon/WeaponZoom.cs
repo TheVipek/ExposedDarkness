@@ -75,7 +75,7 @@ public class WeaponZoom : MonoBehaviour
     }
     private void resetOnChangeWeapon()
     {
-        
+        gameObject.transform.localRotation = Quaternion.Euler(0,0,0);
         transform.localPosition = defaultWeaponPosition;
         CamerasController.Instance.setDefaultFov();
         playerController.setDefaultMouseValues();
@@ -104,6 +104,7 @@ public class WeaponZoom : MonoBehaviour
     //Fourth: setting localPos to desiredPos
     IEnumerator weaponToZoom(Vector3 desiredPosition,float zoomOverTime,bool isZoomingIn)
     {
+        gameObject.transform.localRotation = Quaternion.Euler(0,0,0);
         bool _zooming = isTryingToZoom;
         Vector3 startPos = transform.localPosition;
         float timeElapsed = 0f;
