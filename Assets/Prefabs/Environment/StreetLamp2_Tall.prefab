@@ -196,6 +196,7 @@ MonoBehaviour:
   lights:
   - {fileID: 7580327960294584327}
   - {fileID: 7580327961327949596}
+  - {fileID: 1225632222}
   blinkingDelayRange: 4
   timeToOverheat: 0
   audioSource: {fileID: 74143972}
@@ -512,7 +513,7 @@ Light:
   m_InnerSpotAngle: 1
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 1
+    m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 0.9

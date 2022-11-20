@@ -269,6 +269,7 @@ public abstract class enemyAI : MonoBehaviour
         isOnBreak = true;
         IdleAnimteState(true);
         yield return new WaitForSeconds(nextActionBreakBase);
+        if(!navMeshAgent.isActiveAndEnabled) yield break;
         navMeshAgent.destination = newDestination;
         //Debug.Log(navMeshAgent.destination);
         isOnBreak = false;

@@ -121,12 +121,12 @@ public class WeaponZoom : MonoBehaviour
         {
             isZoomed = false;
             animator.enabled = true;
-            Debug.Log("Starting play animation!");
+       //     Debug.Log("Starting play animation!");
         }
 
         if(timeElapsed < zoomOverTime)
         {
-            Debug.Log("timeElapsed <= zoomOverTime");
+//            Debug.Log("timeElapsed <= zoomOverTime");
             yield break;
         }
         transform.localPosition = desiredPosition;

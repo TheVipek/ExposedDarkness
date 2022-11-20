@@ -4,28 +4,17 @@ using UnityEngine;
 using System;
 public class EnemiesAliveCounter : MonoBehaviour
 {
-    public static EnemiesAliveCounter Instance{get;private set;}
     public static int currentEnemiesCount;
     public static int maxEnemiesCount;
-
     public static event Action onEnemyAliveChange;
     
-    private void Awake() {
-        if(Instance!= this && Instance !=null)
-        {
-            Destroy(this);
-        }else
-        {
-            Instance = this;
-        }
-    }
-    public void increaseEnemiesCount()
+    public static void increaseEnemiesCount()
     {
         currentEnemiesCount+=1;
-        maxEnemiesCount+=1;
+        maxEnemiesCount = currentEnemiesCount;
         if(onEnemyAliveChange!=null) onEnemyAliveChange();
     }
-    public void decreaseEnemiesCount()
+    public static void decreaseEnemiesCount()
     {
         currentEnemiesCount -= 1;
         //Debug.Log("Enemies left:" + enemiesCount);

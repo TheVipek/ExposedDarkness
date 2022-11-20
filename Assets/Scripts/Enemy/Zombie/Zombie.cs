@@ -15,7 +15,8 @@ public class Zombie : Enemy
     protected override void OnEnable()
     {
         base.OnEnable();
-        EnemiesAliveCounter.Instance.increaseEnemiesCount();
+
+        EnemiesAliveCounter.increaseEnemiesCount();
 
     }
     protected override void OnDisable()
@@ -47,7 +48,7 @@ public class Zombie : Enemy
     public override void Death()
     {
         base.Death();
-        EnemiesAliveCounter.Instance.decreaseEnemiesCount();
+        EnemiesAliveCounter.decreaseEnemiesCount();
 
     }
     public override IEnumerator DeathCoroutine()

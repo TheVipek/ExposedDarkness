@@ -16,7 +16,7 @@ public class TerrainGroundDetector
         mTerrainData = Terrain.activeTerrain.terrainData;
         alphamapWidth = mTerrainData.alphamapWidth;
         alphamapHeight = mTerrainData.alphamapHeight;
- 
+        
         mSplatmapData = mTerrainData.GetAlphamaps(0, 0, alphamapWidth, alphamapHeight);
         mNumTextures = mSplatmapData.Length / (alphamapWidth * alphamapHeight);
     }

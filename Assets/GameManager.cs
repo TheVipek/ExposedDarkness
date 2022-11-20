@@ -19,13 +19,13 @@ public class GameManager : MonoBehaviour
     }
     public void freezeTime()
     {
-        Debug.Log("freezedMovement");
+       // Debug.Log("freezedMovement");
         Time.timeScale = 0;
         freezePlayerActions();
     }
     public void unfreezeTime()
     {
-        Debug.Log("unfreezedMovement");
+      //  Debug.Log("unfreezedMovement");
         Time.timeScale = 1;
         unfreezePlayerActions();
 

@@ -6,6 +6,10 @@ public class StepEffect : MonoBehaviour
 {
     [SerializeField] List<AudioClip> groundSounds;
     [SerializeField] List<AudioClip> rockSounds;
+    [SerializeField] List<AudioClip> gravelSounds;
+    [SerializeField] List<AudioClip> grassSounds;
+
+
     [SerializeField] AudioSource audioSource;
     private TerrainGroundDetector terrainGroundDetector;
     [SerializeField] float distanceBetweenStep = 1f;
@@ -44,9 +48,17 @@ public class StepEffect : MonoBehaviour
             if(hit.transform.GetComponent<Terrain>() != null)
             {
                 int terrainTextureIndex = terrainGroundDetector.GetTerrainAtPosition(transform.position);
+                Debug.Log(terrainTextureIndex);
                 switch (terrainTextureIndex)
                     {
-                        case <=3:
+                        case 0:
+                            return groundSounds[Random.Range(0,groundSounds.Count)];
+                        case 1:
+                            return rockSounds[Random.Range(0,rockSounds.Count)];
+                        case 2:
+                            return gravelSounds[Random.Range(0,gravelSounds.Count)];
+                        case 3:
+                            return grassSounds[Random.Range(0,grassSounds.Count)];
                         default:
                             return groundSounds[Random.Range(0,groundSounds.Count)];
                         
