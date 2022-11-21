@@ -21,6 +21,7 @@ public class Weapon : MonoBehaviour
     public bool CanWieldFlashLight{get{return canWieldFlashLight;}}
     public bool CanConstantShoot{get{return canConstantShoot;}}
     public bool ConstantShooting{get{return constantShooting;}set{constantShooting = value;}}
+    public bool CanShoot{get{return canShoot;} set{canShoot = value;}}
     public bool EmptyAmmo{get{return emptyAmmo;} set{emptyAmmo = value;}}
     public float TimeToReload {get {return weaponSounds.ReloadSound.length;}}
     private bool canShoot = true;

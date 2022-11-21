@@ -5,7 +5,13 @@ using TMPro;
 public class interactionListener : MonoBehaviour
 {
     [SerializeField] GameObject canInteract;
+    [SerializeField] TMP_Text canInteractText;
+    private const string defaultCanInteractText = "To interact";
     [SerializeField] GameObject cantInteract;
+    [SerializeField] TMP_Text cantInteractText;
+
+    private const string defaultCantInteractText = "Can't interact";
+
 
     private GameObject lookingAt;
     private InteractionObject interactionObject;
@@ -15,9 +21,13 @@ public class interactionListener : MonoBehaviour
         if(interactionObject.canInteract == true)
         {
             canInteract.SetActive(true);
+            if(interactionObject.canInteractDescription != string.Empty) 
+                    canInteractText.text = interactionObject.canInteractDescription;
         }else
         {
             cantInteract.SetActive(true);
+            if(interactionObject.cantInteractDescription != string.Empty) 
+                    cantInteractText.text = interactionObject.cantInteractDescription;
         }
     }
     private void OnGUI() {

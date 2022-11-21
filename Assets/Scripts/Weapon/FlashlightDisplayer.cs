@@ -32,7 +32,7 @@ public class FlashlightDisplayer : MonoBehaviour,IDisplayUI
     public void DisplayUI()
     {
         bool shouldBeVisible = FlashLightSystem.canDisplay() ? true : false;
-        Debug.Log(shouldBeVisible);
+//        Debug.Log(shouldBeVisible);
         if(shouldBeVisible == true)
         {
             flashLightCanvas.enabled = true;

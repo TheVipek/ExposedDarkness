@@ -34,9 +34,11 @@ public class AudioManager : MonoBehaviour
 
         _source.pitch = Random.Range(0.9f,1.1f);
 //        Debug.Log(_source.pitch);
+        //  _source.clip = _clip;
+        //  _source.Play();
         _source.PlayOneShot(_clip,_source.volume); 
     }
-    public static void musicSoundTransition(AudioSource source,bool mute,float transitionLength = 2f)
+    public static void musicSoundTransition(AudioSource source,bool mute,float transitionLength = 1f)
     {
         AudioManager _instance = AudioManager.Instance;
         //Debug.Log("musicSound called");
@@ -61,6 +63,7 @@ public class AudioManager : MonoBehaviour
         {
             while(currentTransitionPoint > 0)
             {
+                if(source == null) yield break;
                 source.volume = currentTransitionPoint/maxTransitionPoint;
                 currentTransitionPoint -= Time.deltaTime;
                 yield return null;
@@ -71,6 +74,7 @@ public class AudioManager : MonoBehaviour
         {
             while(currentTransitionPoint < maxTransitionPoint)
             {
+                if(source == null) yield break;
                 source.volume = currentTransitionPoint/maxTransitionPoint;
                 currentTransitionPoint += Time.deltaTime;
                 yield return null;

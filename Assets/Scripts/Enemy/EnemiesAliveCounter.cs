@@ -17,7 +17,7 @@ public class EnemiesAliveCounter : MonoBehaviour
     public static void decreaseEnemiesCount()
     {
         currentEnemiesCount -= 1;
-        //Debug.Log("Enemies left:" + enemiesCount);
+        Debug.Log("Enemies left:" + currentEnemiesCount);
         if(onEnemyAliveChange!=null) onEnemyAliveChange();
     }
 }

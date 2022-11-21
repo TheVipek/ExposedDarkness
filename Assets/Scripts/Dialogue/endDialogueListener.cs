@@ -18,10 +18,6 @@ public class endDialogueListener : MonoBehaviour
             StartCoroutine(DialogueController.Instance.DialogueEndPhase());
         }
     }
-   public void disableText()
-   {
-        gameObject.SetActive(false);
-   }
    
    private void OnDisable() {
         tMP_Text.color = new Color32(255,255,255,0);

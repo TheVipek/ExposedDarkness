@@ -256,7 +256,7 @@ public abstract class enemyAI : MonoBehaviour
 
         if(navMeshAgent.remainingDistance <= 0.5f)
         {
-            Debug.Log(navMeshAgent.remainingDistance);
+//            Debug.Log(navMeshAgent.remainingDistance);
             //Debug.Log("Patrolling next waypoint...");
             PatrollingAnimateState(false);
             StartCoroutine(BreakOnNextAction(patrollingWaypoints[currentWaypoint].Position));

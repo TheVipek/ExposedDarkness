@@ -17,19 +17,20 @@ public class FlashLightSystem : MonoBehaviour
     public bool needActivateBySelf = false;
     [SerializeField] KeyCode flashlightKey;
     FlashlightState flashlightActivated = FlashlightState.ON;
-    WeaponZoom weapon;
+    [SerializeField] WeaponZoom weapon;
     [SerializeField] DefaultSoundKit flashlightSound;
-    AudioSource audioSource;
+    [SerializeField] AudioSource audioSource;
     private void OnEnable() {
         flashlightMesh.enabled = true;
         needActivateBySelf = false;
     }
     private void Start() {
-        weapon = GetComponentInParent<WeaponZoom>();
-        audioSource = GetComponent<AudioSource>();
+       // weapon = GetComponentInParent<WeaponZoom>();
+        //audioSource = GetComponent<AudioSource>();
     }
     void Update()
     {
+        if(weapon.enabled == false) return;
         if(Input.GetKeyDown(flashlightKey) && needActivateBySelf == false)
         {
             SwapFlashLighter();

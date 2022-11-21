@@ -8,6 +8,8 @@ public class volumeController : MonoBehaviour
     [SerializeField] Slider slider;
     [SerializeField] AudioMixer audioMixer;
     [SerializeField] string mixerValueToChange;
+    private float maxValue = 0.0f;
+    private float minValue = -80f;
     public string MixerValueToChange {get{return mixerValueToChange;}}
 
     [SerializeField] float multiplier = 30f;
@@ -27,7 +29,8 @@ public class volumeController : MonoBehaviour
     }
     public void AudioMixerSetValue(float value)
     {
-        audioMixer.SetFloat(mixerValueToChange,Mathf.Log10(value) * multiplier);
+        if(value == 0) audioMixer.SetFloat(mixerValueToChange,minValue);
+        else audioMixer.SetFloat(mixerValueToChange,Mathf.Log10(value) * multiplier);
     }
     private void OnDisable() {
         PlayerPrefs.SetFloat(mixerValueToChange,slider.value);

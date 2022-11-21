@@ -159,5 +159,9 @@ PrefabInstance:
       propertyPath: m_Shadows.m_Type
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4519101503022379702, guid: a89deba290655514481b87c9b071f567, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -8166511654241624430, guid: 2efcbaf5689b95345834fc3c68000d0b, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a89deba290655514481b87c9b071f567, type: 3}

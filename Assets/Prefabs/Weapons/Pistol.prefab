@@ -353,7 +353,7 @@ AudioSource:
   m_GameObject: {fileID: 1694016886317651711}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -8166511654241624430, guid: 2efcbaf5689b95345834fc3c68000d0b, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -456,7 +456,9 @@ MonoBehaviour:
   Mylight: {fileID: 9026986607412998664}
   needActivateBySelf: 0
   flashlightKey: 102
+  weapon: {fileID: 0}
   flashlightSound: {fileID: 0}
+  audioSource: {fileID: 0}
 --- !u!4 &1694016886317877983 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: b694b8ec5c41f6247843a2b67222fda6, type: 3}

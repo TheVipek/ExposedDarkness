@@ -13,6 +13,7 @@ public class policeSirensTrigger : MonoBehaviour
     {
         for(int i=0;i<policeCars.Count;i++)
         {
+            policeCars[i].ignoreListenerPause = true;
             policeCars[i].Play();
             
         }

@@ -12,6 +12,7 @@ public class WeaponDisplayer : MonoBehaviour
     [SerializeField] TMP_Text weaponName;
     [SerializeField] Image weaponArt;
     [SerializeField] List<Image> bulletArt;
+    [SerializeField] TMP_Text bulletText;
     [SerializeField] float maxWeaponImageHeight;
     [SerializeField] float maxWeaponImageWidth;
 
@@ -83,5 +84,17 @@ public class WeaponDisplayer : MonoBehaviour
             bulletArt[1].gameObject.SetActive(true);
             bulletArt[1].sprite = weaponSwitcher.CurrentWeapon.BulletIcon;
         }    
+        DisplayConstantShootingText();
+    }
+    public void DisplayConstantShootingText()
+    {
+        if(weaponSwitcher.CurrentWeapon.CanConstantShoot == true)
+        {
+            bulletText.enabled = true;
+        }
+        else
+        {
+            bulletText.enabled = false;
+        }
     }
 }

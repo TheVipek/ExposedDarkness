@@ -40,15 +40,19 @@ public class WeaponReloader : MonoBehaviour
         reloadCanvas.enabled = true;
         while(leftTime >= 0)
         {
+            Debug.Log(leftTime);
             leftTime-= Time.deltaTime;
             reloadImage.fillAmount = leftTime/timeToReload;
             if(weapon.WeaponIndex !=weaponSwitcher.CurrentWeaponIndex)
             {
                 weapon.AudioSource.Stop();
+                Debug.Log("Stopped playing");
                 break;
             }
             yield return null;
         }
+        Debug.Log("After loop:"+leftTime);
+
         if(leftTime <= 0)
         {
             Ammo ammos = GetComponent<Ammo>();

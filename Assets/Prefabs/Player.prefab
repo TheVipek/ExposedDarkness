@@ -41,7 +41,7 @@ AudioSource:
   m_GameObject: {fileID: 717174629}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -8166511654241624430, guid: 2efcbaf5689b95345834fc3c68000d0b, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -186,7 +186,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 5
+  far clip plane: 10
   field of view: 80
   orthographic: 0
   orthographic size: 5
@@ -660,7 +660,7 @@ AudioSource:
   m_GameObject: {fileID: 536835279746954485}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -2820582054927157362, guid: 2efcbaf5689b95345834fc3c68000d0b, type: 2}
   m_audioClip: {fileID: 8300000, guid: 652b388af377c9e4d9f83301fd697eb1, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.2
@@ -931,6 +931,68 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 82354d1fee336984994fbdcc8154c89c, type: 3}
   - {fileID: 8300000, guid: 068414160a0ccf34ca0c11b55d43ffc8, type: 3}
   - {fileID: 8300000, guid: 02d4b2dff380d194fab91c0864b0c386, type: 3}
+  gravelSounds:
+  - {fileID: 8300000, guid: 5461cae585b64f64089805f0d313bc84, type: 3}
+  - {fileID: 8300000, guid: 2b3fc7e56f2686b48b9445e48c7db2c9, type: 3}
+  - {fileID: 8300000, guid: 87d51f07abec0584d805bbe3708a7c71, type: 3}
+  - {fileID: 8300000, guid: 9f96c8d3fef6ab440bdc9bd4ad3d08fe, type: 3}
+  - {fileID: 8300000, guid: 61abfb7bb17151f458862ef823ac0932, type: 3}
+  - {fileID: 8300000, guid: 2e14b3cc9c6906b42885675f3572d4b3, type: 3}
+  - {fileID: 8300000, guid: 846819fd62ca22b478d33e537cd61c8c, type: 3}
+  - {fileID: 8300000, guid: 6eee7f295d5ff8b4f934dec7f44eaf97, type: 3}
+  - {fileID: 8300000, guid: 9b1f6289334342841afe6a5a8349e7ec, type: 3}
+  - {fileID: 8300000, guid: afeb90013e6764449ae1616f47705ff7, type: 3}
+  grassSounds:
+  - {fileID: 8300000, guid: 551d550ab98e3cc4bb7793e752fe8628, type: 3}
+  - {fileID: 8300000, guid: 18e761ff5ef14fd4588d9283fcc9b829, type: 3}
+  - {fileID: 8300000, guid: 9c0c1f9411026f749bcb3746cd557bec, type: 3}
+  - {fileID: 8300000, guid: 38cb68a2a49e89c46bea091d75b27976, type: 3}
+  - {fileID: 8300000, guid: a62172e6f7275ff4f94c17edc8dfdd0d, type: 3}
+  - {fileID: 8300000, guid: 6a0b4267ac8ee8448b619bc9a3bca6d9, type: 3}
+  - {fileID: 8300000, guid: fc32c6fd07980144996b811e5d1f2971, type: 3}
+  - {fileID: 8300000, guid: 030e6a43a7d08bd4581668d53a9808f4, type: 3}
+  - {fileID: 8300000, guid: 56ea356e65429294f9098ef523fdb70b, type: 3}
+  - {fileID: 8300000, guid: 5799109e817d3704889f0499d06a23be, type: 3}
+  - {fileID: 8300000, guid: d3f3cc8ad058cad408e97b1875afec82, type: 3}
+  - {fileID: 8300000, guid: ed546d9af9b4e884cbe8d8047fa8c80a, type: 3}
+  - {fileID: 8300000, guid: ba6466c0db2d12649a51ba73749902d3, type: 3}
+  - {fileID: 8300000, guid: cee5e6c416359ef4cbb722f0cd3a5a14, type: 3}
+  - {fileID: 8300000, guid: be378a7ab9654eb41ab1e85da1701672, type: 3}
+  - {fileID: 8300000, guid: f3a60c89c8456614895e7e11520a19d5, type: 3}
+  - {fileID: 8300000, guid: 6f344c93a9337684995c262534fa85f1, type: 3}
+  - {fileID: 8300000, guid: e4f1c11a5b7fd27468ea8b131669f3a5, type: 3}
+  - {fileID: 8300000, guid: 33d23eef6cc170546a3c9ce3c9bef1f4, type: 3}
+  - {fileID: 8300000, guid: 3ba5fb80a58d03741b65a691dc434897, type: 3}
+  - {fileID: 8300000, guid: adf6356301a9fc14aaa03c2cfac83816, type: 3}
+  - {fileID: 8300000, guid: 5ad92c54c3f49654db8d62382e5f559b, type: 3}
+  - {fileID: 8300000, guid: c73956075c85d384a891d9da3762e5c9, type: 3}
+  - {fileID: 8300000, guid: a9e685e1af34121498a651c484426703, type: 3}
+  - {fileID: 8300000, guid: 09305e4eb78a4cf4ebee70c4b976fa18, type: 3}
+  - {fileID: 8300000, guid: a1d0e2d83ca2030428f1c772f47b9087, type: 3}
+  - {fileID: 8300000, guid: ff032cb5e57bd114ea87189c2ed8b3c9, type: 3}
+  - {fileID: 8300000, guid: ba6029ca248ff2247a1a9ca238be48ff, type: 3}
+  - {fileID: 8300000, guid: 3642dbceb97dc5d419752955421aca54, type: 3}
+  - {fileID: 8300000, guid: b4b126977b28e1d499d8f7f7c580d488, type: 3}
+  - {fileID: 8300000, guid: c79fa9a699dd93647a0729d726adb632, type: 3}
+  - {fileID: 8300000, guid: e41709e0fc1f25449a1e6290e3da9b87, type: 3}
+  - {fileID: 8300000, guid: eb9d0826f01bad94293a3ca6fa1f8427, type: 3}
+  - {fileID: 8300000, guid: a6801ed1ae1ed5648ba823232d0fcdf4, type: 3}
+  - {fileID: 8300000, guid: c98c6b4375d0b1e4193f9e678966559a, type: 3}
+  - {fileID: 8300000, guid: dd26e9057c37e2943993f701a764fc3e, type: 3}
+  - {fileID: 8300000, guid: 326f222e206f8d84bbced6f9d6a0f08e, type: 3}
+  - {fileID: 8300000, guid: fbb8ee09f6d45f54d84383b81ca5a5cd, type: 3}
+  - {fileID: 8300000, guid: 3fb042d8273dfd141955633820660a4f, type: 3}
+  - {fileID: 8300000, guid: eb73ae3e299f426418476df5f1fb0f53, type: 3}
+  - {fileID: 8300000, guid: 553615e2b22e2db44b1e1057668753ab, type: 3}
+  - {fileID: 8300000, guid: 837b2ac0dee4b2e49b7c4229129a2cd2, type: 3}
+  - {fileID: 8300000, guid: 55a810a67df804d4487e8f990523255b, type: 3}
+  - {fileID: 8300000, guid: dffb2ef44d2dd254aa89c2546475cf3c, type: 3}
+  - {fileID: 8300000, guid: 74a0ecc6d5d37bf4f8fe4544dfcd9e8b, type: 3}
+  - {fileID: 8300000, guid: 9133d407969ea654a9589b2169db5382, type: 3}
+  - {fileID: 8300000, guid: 6d1a50aa1ed16a645bfc3a480d77712c, type: 3}
+  - {fileID: 8300000, guid: 9cd93e6b4948e0c4abc089546af87c38, type: 3}
+  - {fileID: 8300000, guid: 97b97fae0b55ce141bff2005c510492e, type: 3}
+  - {fileID: 8300000, guid: 96860d4e7cdc1f746906da7b7bc7a388, type: 3}
   audioSource: {fileID: 717174631}
   distanceBetweenStep: 1.7
 --- !u!82 &661631547
@@ -942,7 +1004,7 @@ AudioSource:
   m_GameObject: {fileID: 536835279746954487}
   m_Enabled: 0
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -8166511654241624430, guid: 2efcbaf5689b95345834fc3c68000d0b, type: 2}
   m_audioClip: {fileID: 8300000, guid: ed93f53f5f9ed4d48b952fce779e9e18, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -1081,7 +1143,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentWeaponIndex: 0
-  currentWeapon: {fileID: 0}
+  currentWeapon: {fileID: 7809492981874784958}
   weaponEvent:
     m_PersistentCalls:
       m_Calls:
@@ -1161,7 +1223,7 @@ AudioSource:
   m_GameObject: {fileID: 536835279943692642}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -8166511654241624430, guid: 2efcbaf5689b95345834fc3c68000d0b, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 0.1
@@ -1256,6 +1318,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 536835279943692645}
     m_Modifications:
     - target: {fileID: 768694750, guid: 608ad27ae11507e4993698101b83b223, type: 3}
+      propertyPath: weapon
+      value: 
+      objectReference: {fileID: 1270539829}
+    - target: {fileID: 768694750, guid: 608ad27ae11507e4993698101b83b223, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 1694016888261944292}
+    - target: {fileID: 768694750, guid: 608ad27ae11507e4993698101b83b223, type: 3}
       propertyPath: flashlightSound
       value: 
       objectReference: {fileID: 11400000, guid: 0d849c887aed3bd4680c8043fccf6bc9, type: 2}
@@ -1274,6 +1344,10 @@ PrefabInstance:
     - target: {fileID: 1385271541, guid: 608ad27ae11507e4993698101b83b223, type: 3}
       propertyPath: m_Volume
       value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1385271541, guid: 608ad27ae11507e4993698101b83b223, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1385271541, guid: 608ad27ae11507e4993698101b83b223, type: 3}
       propertyPath: OutputAudioMixerGroup
@@ -1329,7 +1403,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1221728325957719288, guid: 608ad27ae11507e4993698101b83b223, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1694016886317651711, guid: 608ad27ae11507e4993698101b83b223, type: 3}
       propertyPath: m_Layer
@@ -1501,9 +1575,25 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 608ad27ae11507e4993698101b83b223, type: 3}
+--- !u!114 &1270539829 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1694016888246948000, guid: 608ad27ae11507e4993698101b83b223, type: 3}
+  m_PrefabInstance: {fileID: 1694016887261902485}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3344024077305a64986844ee358ca397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &532060070914678097 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1216001255471311812, guid: 608ad27ae11507e4993698101b83b223, type: 3}
+  m_PrefabInstance: {fileID: 1694016887261902485}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &1694016888261944292 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 1285526897, guid: 608ad27ae11507e4993698101b83b223, type: 3}
   m_PrefabInstance: {fileID: 1694016887261902485}
   m_PrefabAsset: {fileID: 0}
 --- !u!198 &4236576587377143744 stripped
@@ -1511,6 +1601,17 @@ ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 3263153249877481813, guid: 608ad27ae11507e4993698101b83b223, type: 3}
   m_PrefabInstance: {fileID: 1694016887261902485}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7809492981874784958 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8926907554157513771, guid: 608ad27ae11507e4993698101b83b223, type: 3}
+  m_PrefabInstance: {fileID: 1694016887261902485}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 614f6d989ff8192439a8d0b19f34fc29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3127131979990522276
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1521,6 +1622,10 @@ PrefabInstance:
     - target: {fileID: 1594511029188806219, guid: 6dce7fae96ed5844da7b1481a3597737, type: 3}
       propertyPath: m_Volume
       value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1594511029188806219, guid: 6dce7fae96ed5844da7b1481a3597737, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1594511029188806219, guid: 6dce7fae96ed5844da7b1481a3597737, type: 3}
       propertyPath: OutputAudioMixerGroup
@@ -1564,7 +1669,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3176505457819664364, guid: 6dce7fae96ed5844da7b1481a3597737, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3176996106723479168, guid: 6dce7fae96ed5844da7b1481a3597737, type: 3}
       propertyPath: range
@@ -1851,6 +1956,10 @@ PrefabInstance:
     - target: {fileID: 4176564732031091798, guid: 42cb65f8fe2de1a499fb6df8fd3a274f, type: 3}
       propertyPath: m_Volume
       value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4176564732031091798, guid: 42cb65f8fe2de1a499fb6df8fd3a274f, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4176564732031091798, guid: 42cb65f8fe2de1a499fb6df8fd3a274f, type: 3}
       propertyPath: OutputAudioMixerGroup

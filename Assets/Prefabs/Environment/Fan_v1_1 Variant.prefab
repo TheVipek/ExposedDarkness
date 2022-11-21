@@ -103,7 +103,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1000011892285424, guid: 8b9108df4cdcc6942b69367085ac52a1, type: 3}
       propertyPath: m_Name
-      value: Fan_v1_1
+      value: Fan_v1_1 Variant
       objectReference: {fileID: 0}
     - target: {fileID: 4000013503586546, guid: 8b9108df4cdcc6942b69367085ac52a1, type: 3}
       propertyPath: m_RootOrder
@@ -186,7 +186,7 @@ AudioSource:
   m_GameObject: {fileID: 2488310993459395379}
   m_Enabled: 0
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -8166511654241624430, guid: 2efcbaf5689b95345834fc3c68000d0b, type: 2}
   m_audioClip: {fileID: 8300000, guid: 00329dd05cee7a340a538a91be83dcac, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.1
