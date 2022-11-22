@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
 public class PlayerMovement : MonoBehaviour
 {
 
@@ -11,15 +11,16 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float movingSidesSpeed;
     [SerializeField] float sprintMultiplier;
     [SerializeField] float jumpStrength;
+    [SerializeField] float staminaLength;
+    [SerializeField] float staminaRegenerartionSpeed;
+    public float currentStamina;
+    public float CurrentStamina {get{return currentStamina;}}
+    public float StaminaLength {get{return staminaLength;}}
 
-    [Header("Slope")]
-    public float maxSlopeAngle;
-    private RaycastHit slopeHit;
 
 
     [Header("Binds")]
     [SerializeField] KeyCode sprintKey = KeyCode.LeftShift;
-    [SerializeField] KeyCode gaitKey = KeyCode.LeftAlt;
     [SerializeField] KeyCode jumpKey = KeyCode.Space;
 
     [SerializeField] KeyCode crouchKey = KeyCode.LeftControl;
@@ -58,19 +59,16 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] bool moving = false;
     public bool Moving{get{return moving;}}
     [SerializeField] bool sprinting = false;
+    public bool canSprinting = false;
     public bool Sprinting{get{return sprinting;}}
-    [SerializeField] bool gaiting = false;
-    public bool Gaiting{get{return gaiting;}}
     [SerializeField] bool isGrounded = false;
     public bool IsGrounded{get{return isGrounded;}}
     [SerializeField] bool canMove = true;
     Coroutine crouchTransition;
-    float gravity = -9.81f;
     float horizontalMove;
     float verticalMove;
-    Vector3 velocity;
-    float rigidbodySpeed;
     public static PlayerMovement instance;
+    public static Action onSprinting;
     private void Awake() {
         if(instance!= this && instance != null)
         {
@@ -87,6 +85,7 @@ public class PlayerMovement : MonoBehaviour
         if(_mCamera == null) PlayerCamera.instance.gameObject.GetComponent<Camera>();
         Cursor.lockState = CursorLockMode.Locked;
         capsuleCollider.height = defaultHeight;
+        currentStamina = staminaLength;
     }
 
     void Update()
@@ -148,29 +147,42 @@ public class PlayerMovement : MonoBehaviour
             //Checking for sprint
             if(moving == true)
             {
-                if (Input.GetKey(sprintKey))
+                
+                if (Input.GetKeyDown(sprintKey) && currentStamina > 0.0f)
                 {
-                    position *= sprintMultiplier;
-                    sprinting = true;
+          //          Debug.Log("Clicked sprintKey");
+                    canSprinting = true;
+                    onSprinting();
                 }
-                else if(Input.GetKey(gaitKey) && crouch == false)
+
+                if(canSprinting == true && Input.GetKey(sprintKey))
                 {
-                    position /= 1.5f;
-                    gaiting = true;
-                    
+         //           Debug.Log("Triggering sprint");
+
+                    if(currentStamina > 0)
+                    {
+                        sprinting = true;
+                        position *= sprintMultiplier;
+                     //   Debug.Log(currentStamina);
+                        currentStamina -= Time.deltaTime;
+                    }
+                    else
+                    {
+                        canSprinting = false;
+                        sprinting = false;
+                    }
                 }
                 else
                 {
                     sprinting = false;
-                    gaiting = false;
                 }
             }
-            else
-            {
-                sprinting = false;
-                gaiting = false;
-            }
             
+            if(sprinting == false && currentStamina < staminaLength)
+            {
+                currentStamina += Time.deltaTime * staminaRegenerartionSpeed;
+                if(currentStamina > staminaLength) currentStamina = staminaLength;
+            }
 
             if(crouch == true)
             {
