@@ -5,6 +5,7 @@ using UnityEngine;
 public class TimerDisplayer : MonoBehaviour,IDisplayUI
 {
      [SerializeField] Canvas timerCanvas;
+     [SerializeField] TimeCounter timeCounter;
     private void OnEnable() {
         WaveController.onWaveStartGlobal += DisplayUI;
         WaveController.onWaveEndGlobal += DisplayUI;
@@ -23,5 +24,15 @@ public class TimerDisplayer : MonoBehaviour,IDisplayUI
     {
         if(timerCanvas == null) return;
         timerCanvas.enabled = !timerCanvas.enabled;
+        if(timeCounter.TimerRunning == true)
+        {
+            timeCounter.stopTimer();
+        }
+        else
+        {
+            timeCounter.startTimer();
+        }
+
+        
     }
 }

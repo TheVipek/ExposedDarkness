@@ -30,6 +30,28 @@ public class VingetteBumping : MonoBehaviour
         }
        
     }
+    private void OnEnable() {
+        WaveController.onWaveStartGlobal += disableVingeteEffect;
+        WaveController.onWaveEndGlobal += enableVingetteEffect;
+    }
+    private void OnDisable() {
+        WaveController.onWaveStartGlobal -= disableVingeteEffect;
+        WaveController.onWaveEndGlobal -= enableVingetteEffect;
+
+        
+    }
+    public void disableVingeteEffect()
+    {
+        Debug.Log(vingette.active);
+        Debug.Log("Disabling vingette...");
+        vingette.active = false;
+        Debug.Log(vingette.active);
+
+    }
+    public void enableVingetteEffect()
+    {
+        vingette.active = true;
+    }
     public IEnumerator BloodBumping(float toVal,float fromVal = 0)
     {
        float complete = 0f;

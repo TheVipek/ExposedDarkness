@@ -7,6 +7,7 @@ public class WeaponReloader : MonoBehaviour
 {
     [SerializeField] Canvas reloadCanvas;
     [SerializeField] Image reloadImage;
+    [SerializeField] Image bgImage;
     public bool currentlyReloading= false;
     WeaponSwitcher weaponSwitcher;
     private Weapon weapon;
@@ -31,28 +32,32 @@ public class WeaponReloader : MonoBehaviour
     IEnumerator reloadInitialization(Weapon weapon,float timeToReload)
     {
         AudioManager.playSound(weapon.AudioSource,weapon.weaponSounds.ReloadSound);
-
-        weapon.enabled = false;
-        weaponZoom.enabled = false;
-
+        weapon.CanShoot = false;
+        weaponZoom.CanZoom = false;
+        reloadCanvas.enabled = true;
+        
         currentlyReloading = true;
         float leftTime = timeToReload;
-        reloadCanvas.enabled = true;
+
+//Reloading timer
         while(leftTime >= 0)
         {
-            Debug.Log(leftTime);
+
             leftTime-= Time.deltaTime;
             reloadImage.fillAmount = leftTime/timeToReload;
+            bgImage.fillAmount = reloadImage.fillAmount;
+//If player tries to swap weapon during reloading ,reloading process will be disturbed
             if(weapon.WeaponIndex !=weaponSwitcher.CurrentWeaponIndex)
             {
                 weapon.AudioSource.Stop();
-                Debug.Log("Stopped playing");
+//                Debug.Log("Stopped playing");
                 break;
             }
             yield return null;
         }
-        Debug.Log("After loop:"+leftTime);
+//        Debug.Log("After loop:"+leftTime);
 
+//If timer went to 0 ,which means that reload process ended
         if(leftTime <= 0)
         {
             Ammo ammos = GetComponent<Ammo>();
@@ -61,11 +66,11 @@ public class WeaponReloader : MonoBehaviour
         }
 
         reloadCanvas.enabled = false;
-        reloadImage.fillAmount =1;
-        
+        //Setting it to 1 after disabling so next time when player try to reload bar will be full
+        reloadImage.fillAmount = 1;
+        bgImage.fillAmount = 1;
         currentlyReloading = false;
-
-        weapon.enabled = true;
-        weaponZoom.enabled = true;
+        weapon.CanShoot = true;
+        weaponZoom.CanZoom = true;
     }
 }

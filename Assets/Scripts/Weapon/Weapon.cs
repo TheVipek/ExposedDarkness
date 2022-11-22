@@ -24,9 +24,8 @@ public class Weapon : MonoBehaviour
     public bool CanShoot{get{return canShoot;} set{canShoot = value;}}
     public bool EmptyAmmo{get{return emptyAmmo;} set{emptyAmmo = value;}}
     public float TimeToReload {get {return weaponSounds.ReloadSound.length;}}
-    private bool canShoot = true;
+    [SerializeField] bool canShoot = true;
     private bool emptyAmmo = false;
-    private WaitForSeconds wShootingDelay;
     [HideInInspector] public Ammo ammoSlot;
     [SerializeField] AmmoType ammoType;
     public AmmoType AmmoType{get{ return ammoType; }}
@@ -35,10 +34,9 @@ public class Weapon : MonoBehaviour
     [Header("Audio")]
     public WeaponSoundKit weaponSounds; 
     public AudioSource AudioSource{get; private set;}
-    private bool firstEnable = true;
-
     
-    [Header("VFX/Sprites")]
+    [Header("VFX/Sprites/Needed references")]
+    [SerializeField] WeaponReloader weaponReloader;
     [SerializeField] ParticleSystem shootVFX;
     [SerializeField] GameObject hitEffect;
     [SerializeField] Sprite weaponIcon;
@@ -46,21 +44,13 @@ public class Weapon : MonoBehaviour
     [SerializeField] Sprite bulletIcon;
     public Sprite BulletIcon{ get {return bulletIcon;}}
 
-
+    [SerializeField] float nextTimeShoot;
     
     
     void OnEnable() {
         WeaponShootingTypeChanger.onChangeShootingType += SwapConstantShooting;
-        if(firstEnable == true)
-        {
-            firstEnable = false;
-        }else
-        {
-//
-           // AudioManager.Instance.playSound(audioSource,WeaponSwitcher.Instance.weaponSwitch);
 
-        }
-        canShoot = true;
+        //canShoot = true;
 
     }
     void OnDisable() {
@@ -69,7 +59,7 @@ public class Weapon : MonoBehaviour
     private void Awake() 
     {
         //To avoid GC
-        wShootingDelay = new WaitForSeconds(shootingDelay);
+        //wShootingDelay = new WaitForSeconds(shootingDelay);
         ammoSlot = GetComponentInParent<Ammo>();
         WeaponIndex = transform.GetSiblingIndex();
         constantShooting = canConstantShoot;
@@ -78,14 +68,19 @@ public class Weapon : MonoBehaviour
 
     void Update()
     {
-        if((Input.GetMouseButton(0) && canShoot) && constantShooting && emptyAmmo == false)
+        if(Time.time > nextTimeShoot && canShoot)
         {
-            Shoot();
-        }
-        else if((Input.GetMouseButtonDown(0) && canShoot) && (constantShooting == false || emptyAmmo == true))
-        {
-            Shoot();
-
+            if(Input.GetMouseButton(0) && Time.time > nextTimeShoot && emptyAmmo == false && constantShooting == true)
+            {
+                Shoot();
+                nextTimeShoot = Time.time + shootingDelay;
+            }
+            else if(Input.GetMouseButtonDown(0) && Time.time > nextTimeShoot && emptyAmmo == false && constantShooting == false)
+            {
+                Shoot();
+                nextTimeShoot = Time.time + shootingDelay;
+                
+            }
         }
     }
     private void Shoot()
@@ -95,7 +90,6 @@ public class Weapon : MonoBehaviour
     }
     IEnumerator Shooting()
     {
-        canShoot = false;
         if(ammoSlot.GetAmmoInSlot(ammoType) > 0)
         {
             AudioManager.playSound(AudioSource,weaponSounds.ShootSound);
@@ -107,12 +101,9 @@ public class Weapon : MonoBehaviour
             AudioManager.playSound(AudioSource,weaponSounds.EmptySound);
             emptyAmmo = true;
         }
-        //To avoid GC
-        yield return wShootingDelay;
-        canShoot = true;
         yield return null;
-    }
 
+    }
     private void PlayMuzzleFlash()
     {
         shootVFX.Play();

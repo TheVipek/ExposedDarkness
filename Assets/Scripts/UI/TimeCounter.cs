@@ -7,18 +7,24 @@ public class TimeCounter : MonoBehaviour
     [SerializeField] TMP_Text timerText;
     [SerializeField] float startingTime;
     [SerializeField] float remainingTime;
+    private bool timerRunning = false;
+    public bool TimerRunning{get{return timerRunning;}}
     bool startedPoisoning = false;
     public float RemainingTime{get{return remainingTime;}}
-    public static TimeCounter instance;
+    private Coroutine timerCoroutine;
+
     private void Awake() {
-        instance = this;
+        remainingTime = startingTime;
     }
     private void OnEnable() {
-        StartCoroutine(Timer());
+
+        startTimer();
+    }
+    private void OnDisable() {
+        
     }
     IEnumerator Timer()
     {
-        remainingTime = startingTime;
         while(remainingTime>0)
         {
             remainingTime-=1;
@@ -34,6 +40,16 @@ public class TimeCounter : MonoBehaviour
             yield return new WaitForSeconds(1);
         }
         DeathHandler.instance.OutOfTime();
+    }
+    public void stopTimer()
+    {
+        timerRunning = false;
+        if(timerCoroutine != null) StopCoroutine(timerCoroutine);
+    }
+    public void startTimer()
+    {
+        timerRunning = true;
+        timerCoroutine = StartCoroutine(Timer());
     }
     void displayTimer()
     {

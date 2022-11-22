@@ -28,7 +28,7 @@ public class ObjectiveList : MonoBehaviour
       foreach (var item in objectivesInGame)
          {
             GameObject _objectivePrefab =Instantiate(objectivePrefab,objectivesUIBox.transform,false);
-            _objectivePrefab.gameObject.GetComponent<TMP_Text>().text += item.description;
+            _objectivePrefab.gameObject.GetComponent<ObjectiveText>().objectiveText.text += item.description;
             item.objectiveUI = _objectivePrefab;
          }
    }
@@ -37,9 +37,11 @@ public class ObjectiveList : MonoBehaviour
       if(objective.status==status) return;
       if(status == ObjectiveStatus.DONE)
       {
-         TMP_Text text = objective.objectiveUI.GetComponent<TMP_Text>();
+         ObjectiveText objText = objective.objectiveUI.GetComponent<ObjectiveText>();
+         TMP_Text text = objText.objectiveText;
          Color32 textColor = text.color;
          text.color = new Color32(textColor.r,textColor.g,textColor.b,32);
+         objText.SetObjectiveCheckBox(true);
          //text.fontStyle = FontStyles.Underline;
          // text.fontStyle = FontStyles.Strikethrough | FontStyles.SmallCaps;
          //text.fontStyle = FontStyles.SmallCaps;

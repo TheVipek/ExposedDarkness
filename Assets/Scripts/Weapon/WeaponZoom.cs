@@ -31,6 +31,8 @@ public class WeaponZoom : MonoBehaviour
     [SerializeField] float cameraZoomDuration = 1f;
     [SerializeField] float weaponZoomDuration = 1f;
     [Header("Booleans")]
+    private bool canZoom = true;
+    public bool CanZoom{get{return canZoom;} set{canZoom = value;}}
     private bool isTryingToZoom;
     private bool isZoomed;
     public bool IsZoomed{get{return isZoomed;}}
@@ -48,7 +50,7 @@ public class WeaponZoom : MonoBehaviour
     void Update() 
     {
        //Purpose of this line is that when player change weapon he needs to press again input(1) to zoom 
-        if(Input.GetMouseButtonDown(1))
+        if(Input.GetMouseButtonDown(1) && canZoom == true)
         {
             isTryingToZoom = true;
         }
@@ -56,7 +58,7 @@ public class WeaponZoom : MonoBehaviour
         {
             ZoomIn();
         }
-        else if(Input.GetMouseButtonUp(1))
+        else if(Input.GetMouseButtonUp(1) || canZoom == false)
         {
             isTryingToZoom = false;
             ZoomOut();
