@@ -9,6 +9,9 @@ public class WeaponSwitcher : MonoBehaviour
     public int CurrentWeaponIndex{get { return currentWeaponIndex; } }
 
     [SerializeField] Weapon currentWeapon;
+
+    [SerializeField] WeaponReloader weaponReloader;
+    [SerializeField] WeaponShootingTypeChanger weaponShootingTypeChanger;
     public Weapon CurrentWeapon{get{return currentWeapon;}}
     int previousWeapon;
     static WeaponSwitcher instance;
@@ -16,8 +19,8 @@ public class WeaponSwitcher : MonoBehaviour
     public delegate void OnWeaponChange();
     public static event OnWeaponChange onWeaponChange;
     
-     [Header("Get onWeaponChange so it may be"+"\n"+" called every time player shoots.")]
-    public UnityEvent weaponEvent;
+    //  [Header("Get onWeaponChange so it may be"+"\n"+" called every time player shoots.")]
+    // public UnityEvent weaponEvent;
     [Header("Audio")]
     [SerializeField] DefaultSoundKit weaponSwitch; 
     [SerializeField] AudioSource audioSource;
@@ -55,10 +58,10 @@ public class WeaponSwitcher : MonoBehaviour
             onWeaponChange();
         }
     }
-    public void weaponChange()
-    {
-        onWeaponChange();
-    }
+    // public void weaponChange()
+    // {
+    //     onWeaponChange();
+    // }
     private void ProcessScrollWheel()
     {
         if(Input.GetAxis("Mouse ScrollWheel") > 0)
@@ -118,5 +121,14 @@ public class WeaponSwitcher : MonoBehaviour
         private void getCurrentWeapon()
     {
         currentWeapon = transform.GetChild(currentWeaponIndex).GetComponent<Weapon>();
+        if(currentWeapon.WeaponType != WeaponType.Range)
+        {
+            weaponReloader.enabled = false;
+            weaponShootingTypeChanger.enabled = false;
+        }else
+        {
+            weaponReloader.enabled = true;
+            weaponShootingTypeChanger.enabled = true;
+        }
     }
 }

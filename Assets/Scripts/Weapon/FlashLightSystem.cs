@@ -53,12 +53,12 @@ public class FlashLightSystem : MonoBehaviour
     }
     public void SwapFlashLighter(int value = 2)
     {
-        if(canDisplay() == true)
-        {
+
             AudioManager.playSound(audioSource,flashlightSound.Sound);
+            //value 2 in enum is equal to DEFAULT which means if function is called with default parameter
+            //flaslight swpas - from OFF to ON / ON to OFF
             if(value == 2)
             {
-                //Debug.Log("Value is equal two");
                 if(flashlightActivated == 0)
                 {
                     flashlightActivated = FlashlightState.ON;
@@ -75,17 +75,7 @@ public class FlashLightSystem : MonoBehaviour
                 flashlightActivated = (FlashlightState)value;
                 Mylight.enabled = Convert.ToBoolean(value);
             }
-            FlashlightDisplayer.SetFlashlightTextState(flashlightActivated);
-        }
+    }
         
-    }
-    public static bool canDisplay()
-    {
-        if(WeaponSwitcher.Instance.CurrentWeapon.CanWieldFlashLight == true)
-        {
-            return true;
-        }
-        return false;
-
-    }
+    
 }

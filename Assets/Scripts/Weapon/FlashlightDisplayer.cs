@@ -7,20 +7,8 @@ using TMPro;
 
 public class FlashlightDisplayer : MonoBehaviour,IDisplayUI
 {
-    [SerializeField] TMP_Text stateText;
-    // [SerializeField] GameObject flashLightContainer;
-    // [SerializeField] GameObject deactivatedPanel;
     [SerializeField] Canvas flashLightCanvas;
-    public static FlashlightDisplayer Instance{get; private set;}
-    private void Awake() {
-        if(Instance!=this && Instance != null)
-        {
-            Destroy(this);
-        }else
-        {
-            Instance = this;
-        }
-    }
+    [SerializeField] GameObject flashLightObject;
     // Start is called before the first frame update
     private void OnEnable() {
         WeaponSwitcher.onWeaponChange+=DisplayUI;
@@ -31,8 +19,8 @@ public class FlashlightDisplayer : MonoBehaviour,IDisplayUI
     }
     public void DisplayUI()
     {
-        bool shouldBeVisible = FlashLightSystem.canDisplay() ? true : false;
-//        Debug.Log(shouldBeVisible);
+        bool shouldBeVisible = flashLightObject.activeInHierarchy ? true : false;
+
         if(shouldBeVisible == true)
         {
             flashLightCanvas.enabled = true;
@@ -41,10 +29,6 @@ public class FlashlightDisplayer : MonoBehaviour,IDisplayUI
         {
             flashLightCanvas.enabled = false;
         }
-    }
-    public static void SetFlashlightTextState(FlashlightState state)
-    {
-        FlashlightDisplayer.Instance.stateText.text = state.ToString();
     }
    
    

@@ -2,114 +2,94 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
-[RequireComponent(typeof(AudioSource))]
-public class Weapon : MonoBehaviour
-{
-    public int WeaponIndex {get; private set;}
-    
 
+
+[RequireComponent(typeof(AudioSource),typeof(WeaponAnimation))]
+public abstract class Weapon : MonoBehaviour,IAttack
+{  
     [Header("Weapon settings")]
+    [SerializeField] protected KeyCode primaryAction = KeyCode.Mouse0;
+
     [SerializeField] float range = 100f;
     [SerializeField] float damage;
-    [SerializeField] float shootingDelay;
-    [SerializeField] bool canConstantShoot = false;
-    [SerializeField] bool constantShooting;
-    [SerializeField] bool canWieldFlashLight;
+    [SerializeField] protected float attackDelay;
+    [SerializeField] WeaponType weaponType;
+    [SerializeField] protected WeaponAnimation weaponAnimation;
+    public WeaponType WeaponType{get{ return weaponType;}}
+    protected float nextAttackTime;
     
-    //Weapon Properties and fields
-    public bool CanWieldFlashLight{get{return canWieldFlashLight;}}
-    public bool CanConstantShoot{get{return canConstantShoot;}}
-    public bool ConstantShooting{get{return constantShooting;}set{constantShooting = value;}}
-    public bool CanShoot{get{return canShoot;} set{canShoot = value;}}
-    public bool EmptyAmmo{get{return emptyAmmo;} set{emptyAmmo = value;}}
-    public float TimeToReload {get {return weaponSounds.ReloadSound.length;}}
-    [SerializeField] bool canShoot = true;
-    private bool emptyAmmo = false;
-    [HideInInspector] public Ammo ammoSlot;
-    [SerializeField] AmmoType ammoType;
-    public AmmoType AmmoType{get{ return ammoType; }}
+    [Header("Weapon properties")]
+    [Tooltip("Which means ; does player need to click every time to attack")]
+
+    [SerializeField] protected bool canConstantAttack = false;
+    public bool CanConstantAttack{get{return canConstantAttack;}}
+    public bool IsConstantAttacking{get{return isConstantAttacking;}set{isConstantAttacking = value;}}
+    protected bool isConstantAttacking;
+    public bool CanAttack{get{return canAttack;} set{canAttack = value;}}
+    [SerializeField] protected bool canAttack = true;
+
+
 
     
-    [Header("Audio")]
+    [Header("Weapon audio")]
+    [SerializeField] AudioSource audioSource;
+    public AudioSource AudioSource{get {return audioSource;}}
     public WeaponSoundKit weaponSounds; 
-    public AudioSource AudioSource{get; private set;}
     
-    [Header("VFX/Sprites/Needed references")]
-    [SerializeField] WeaponReloader weaponReloader;
-    [SerializeField] ParticleSystem shootVFX;
+    [Header("Weapon VFX/Sprites/Needed references")]
+    [SerializeField] ParticleSystem attackVFX;
     [SerializeField] GameObject hitEffect;
     [SerializeField] Sprite weaponIcon;
     public Sprite WeaponIcon{ get {return weaponIcon;}}
-    [SerializeField] Sprite bulletIcon;
-    public Sprite BulletIcon{ get {return bulletIcon;}}
 
-    [SerializeField] float nextTimeShoot;
-    
-    
-    void OnEnable() {
-        WeaponShootingTypeChanger.onChangeShootingType += SwapConstantShooting;
 
-        //canShoot = true;
-
-    }
-    void OnDisable() {
-        WeaponShootingTypeChanger.onChangeShootingType -= SwapConstantShooting;
-    }
     private void Awake() 
     {
-        //To avoid GC
-        //wShootingDelay = new WaitForSeconds(shootingDelay);
-        ammoSlot = GetComponentInParent<Ammo>();
-        WeaponIndex = transform.GetSiblingIndex();
-        constantShooting = canConstantShoot;
-        AudioSource = GetComponent<AudioSource>();
+        isConstantAttacking = canConstantAttack;
+
     }
 
-    void Update()
+
+    protected virtual void Update()
     {
-        if(Time.time > nextTimeShoot && canShoot)
+        if(canAttack)
         {
-            if(Input.GetMouseButton(0) && Time.time > nextTimeShoot && emptyAmmo == false && constantShooting == true)
+            
+            if(Input.GetKey(primaryAction) && Time.time > nextAttackTime && isConstantAttacking == true)
             {
-                Shoot();
-                nextTimeShoot = Time.time + shootingDelay;
+                Attack();
+                nextAttackTime = Time.time + attackDelay;
             }
-            else if(Input.GetMouseButtonDown(0) && Time.time > nextTimeShoot && emptyAmmo == false && constantShooting == false)
+            else if(Input.GetKeyDown(primaryAction) && Time.time > nextAttackTime && isConstantAttacking == false)
             {
-                Shoot();
-                nextTimeShoot = Time.time + shootingDelay;
+                Attack();
+                nextAttackTime = Time.time + attackDelay;
                 
             }
         }
     }
-    private void Shoot()
-    {
-        
-        StartCoroutine(Shooting());
-    }
-    IEnumerator Shooting()
-    {
-        if(ammoSlot.GetAmmoInSlot(ammoType) > 0)
-        {
-            AudioManager.playSound(AudioSource,weaponSounds.ShootSound);
-            PlayMuzzleFlash();
-            ProcessRaycast();
-            ammoSlot.UseAmmo(ammoType);
-        }else
-        {
-            AudioManager.playSound(AudioSource,weaponSounds.EmptySound);
-            emptyAmmo = true;
-        }
-        yield return null;
 
-    }
-    private void PlayMuzzleFlash()
+    public abstract void Attack();
+    
+        // if(ammoContainer.GetAmmoInSlot(ammoType) > 0)
+        // {
+        //     AudioManager.playSound(AudioSource,weaponSounds.ShootSound);
+        //     PlayAttackSound();
+        //     ProcessRaycast();
+        //     ammoContainer.UseAmmo(ammoType);
+        // }else
+        // {
+        //     AudioManager.playSound(AudioSource,weaponSounds.EmptySound);
+        //     canAttack = false;
+        // }
+    
+    protected void PlayAttackSound()
     {
-        shootVFX.Play();
+        if(attackVFX == null) { Debug.LogWarning("No attack VFX attached"); return; }
+        attackVFX.Play();
     }
 
-    private void ProcessRaycast()
+    protected void ProcessRaycast()
     {
         RaycastHit hit;
         //point that we're looking at already
@@ -132,19 +112,14 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    private void CreateHitImpact(RaycastHit hit)
+    protected void CreateHitImpact(RaycastHit hit)
     {
+        if(attackVFX == null) { Debug.LogWarning("No Hit Effect attached"); return; }
         
         GameObject hitUFX = Instantiate(hitEffect,hit.point,Quaternion.LookRotation(hit.normal));
         ParticleSystem hitParticle = hitUFX.transform.GetChild(0).GetComponent<ParticleSystem>();
         Destroy(hitUFX,hitParticle.main.duration);
     }
     
-    public void SwapConstantShooting()
-    {
-        if(canConstantShoot == false) return;
-        constantShooting = !constantShooting;
-        AudioManager.playSound(AudioSource,weaponSounds.ShootingTypeSound);
-        WeaponDisplayer.instance.DisplayChangeShootingType();
-    }
+    
 }

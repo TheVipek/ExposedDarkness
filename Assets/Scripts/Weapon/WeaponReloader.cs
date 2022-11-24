@@ -20,19 +20,26 @@ public class WeaponReloader : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.R) && currentlyReloading == false) 
         {
             weapon = weaponSwitcher.CurrentWeapon;
-            weaponZoom = weapon.GetComponent<WeaponZoom>();
-            if(weapon.ammoSlot.GetAmmoInSlot(weapon.AmmoType) != weapon.ammoSlot.GetAmmoPerSlot(weapon.AmmoType) && weapon.ammoSlot.GetAmmoAmount(weapon.AmmoType) > 0)
+            if(weapon.WeaponType == WeaponType.Range)
             {
-                StartCoroutine(reloadInitialization(weapon,weapon.TimeToReload));
+                RangeWeapon currentWeapon = weapon.GetComponent<RangeWeapon>();
+                weaponZoom = weapon.GetComponent<WeaponZoom>();
+                if(Ammo.Instance.GetAmmoInSlot(currentWeapon.AmmoType) != Ammo.Instance.GetAmmoPerSlot(currentWeapon.AmmoType) && Ammo.Instance.GetAmmoAmount(currentWeapon.AmmoType) > 0)
+                {
+                    StartCoroutine(reloadInitialization(currentWeapon,currentWeapon.TimeToReload));
+                }
+
             }
             
 
         }
     }
-    IEnumerator reloadInitialization(Weapon weapon,float timeToReload)
+
+    IEnumerator reloadInitialization(RangeWeapon weapon,float timeToReload)
     {
+        bool couldShootBefore = weapon.CanAttack;
         AudioManager.playSound(weapon.AudioSource,weapon.weaponSounds.ReloadSound);
-        weapon.CanShoot = false;
+        weapon.CanAttack = false;
         weaponZoom.CanZoom = false;
         reloadCanvas.enabled = true;
         
@@ -47,8 +54,9 @@ public class WeaponReloader : MonoBehaviour
             reloadImage.fillAmount = leftTime/timeToReload;
             bgImage.fillAmount = reloadImage.fillAmount;
 //If player tries to swap weapon during reloading ,reloading process will be disturbed
-            if(weapon.WeaponIndex !=weaponSwitcher.CurrentWeaponIndex)
+            if(weapon!= weaponSwitcher.CurrentWeapon)
             {
+//                Debug.Log(weapon.name + "is not " + weaponSwitcher.CurrentWeapon.name);
                 weapon.AudioSource.Stop();
 //                Debug.Log("Stopped playing");
                 break;
@@ -62,15 +70,17 @@ public class WeaponReloader : MonoBehaviour
         {
             Ammo ammos = GetComponent<Ammo>();
             ammos.ReloadAmmo(weapon.AmmoType);
-            weapon.EmptyAmmo = false;
+            weapon.CanAttack = true;
         }
-
+        else
+        {
+            weapon.CanAttack = couldShootBefore;
+        }
         reloadCanvas.enabled = false;
         //Setting it to 1 after disabling so next time when player try to reload bar will be full
         reloadImage.fillAmount = 1;
         bgImage.fillAmount = 1;
         currentlyReloading = false;
-        weapon.CanShoot = true;
         weaponZoom.CanZoom = true;
     }
 }

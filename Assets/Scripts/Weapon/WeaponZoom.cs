@@ -16,7 +16,7 @@ public class WeaponZoom : MonoBehaviour
     [Header("Default options")]
     [Tooltip("Higher value equals weaker camera zoom")]
     private CamerasController camerasController;
-    public Vector3 defaultWeaponPosition;
+    private Vector3 defaultWeaponPosition;
 
 
     [Header("Zoom-IN options")]
@@ -41,6 +41,7 @@ public class WeaponZoom : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         camerasController = CamerasController.Instance;
+        defaultWeaponPosition = GetComponent<WeaponAnimation>().defaultWeaponPosition;
     }
     private void OnEnable() {
         

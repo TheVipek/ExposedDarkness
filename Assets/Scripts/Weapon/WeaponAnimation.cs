@@ -6,24 +6,18 @@ public class WeaponAnimation : MonoBehaviour
 {
     [Range(-1,1)]
     [SerializeField] float showWeaponOffset = -0.5f;
-    WeaponZoom weaponZoom;
-    Vector3 desiredPosition;
     float timeToAccomplish = 0.1f;  
     Animator animator;
+    public Vector3 defaultWeaponPosition;
+
     void Awake()
     {
-        weaponZoom = GetComponent<WeaponZoom>();
-        desiredPosition = weaponZoom.defaultWeaponPosition;
         animator = GetComponent<Animator>();
     }
     private void OnEnable() {
-//        Debug.Log(animator);
-        animator.enabled = false;
-  //      Debug.Log(animator.isActiveAndEnabled);
-        StartCoroutine(showWeapon(desiredPosition));
-        transform.localRotation = Quaternion.Euler(0,0,0);
 
-        //Debug.Log("Enabling");
+        animator.enabled = false;
+        StartCoroutine(showWeapon(defaultWeaponPosition));
     }
 
     // Update is called once per frame
@@ -64,4 +58,8 @@ public class WeaponAnimation : MonoBehaviour
         animator.enabled = true;
     }
 
+    public void WeaponAttack(string stateName)
+    {
+        animator.Play(stateName,0);
+    }
 }

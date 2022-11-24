@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   reloadSounds: {fileID: 8300000, guid: 394a66ed6e85c4345a093b6bda10c45c, type: 3}
   emptySounds: {fileID: 8300000, guid: 4ff983e882a9c3b4395780cb54487e15, type: 3}
-  shootSounds: {fileID: 8300000, guid: 830e5f1c11950664db77e7a454d31286, type: 3}
+  shootSounds: {fileID: 8300000, guid: 1b145bcffd767854fb0c71c37678ebaa, type: 3}
   shootingTypeSounds: {fileID: 8300000, guid: 0113463f7ef76f74aa34d753667deba3, type: 3}

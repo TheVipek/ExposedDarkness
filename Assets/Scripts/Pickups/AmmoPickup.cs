@@ -4,26 +4,15 @@ using UnityEngine;
 
 public class AmmoPickup : MonoBehaviour
 {
-    Ammo ammo;
     [SerializeField] AmmoType ammoType;
     [SerializeField] int ammoCount;
     public int AmmoCount{get{return ammoCount;}}
     public AmmoType AmmoType {get{return ammoType;}}
-    private void Start() {
-        ammo = Ammo.instance;
-    }
-    // private void OnTriggerEnter(Collider other) 
-    // {
-    //     if(other.gameObject.tag == "Player")
-    //     {
-    //         GetAmmoFromPickup();
-    //         gameObject.SetActive(false);
-    //     }
-    // }
+
     
     public void GetAmmoFromPickup()
     {
-        ammo.AddAmmo(ammoType,ammoCount);
+        Ammo.Instance.AddAmmo(ammoType,ammoCount);
 
     }
 }
