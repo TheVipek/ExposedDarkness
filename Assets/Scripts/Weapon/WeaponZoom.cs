@@ -11,9 +11,9 @@ public class WeaponZoom : MonoBehaviour
 
     [Header("Components")]
     [SerializeField] PlayerMovement playerController;
-
     
     [Header("Default options")]
+    [SerializeField] KeyCode zoomKeyCode = KeyCode.Mouse1;
     [Tooltip("Higher value equals weaker camera zoom")]
     private CamerasController camerasController;
     private Vector3 defaultWeaponPosition;
@@ -51,17 +51,16 @@ public class WeaponZoom : MonoBehaviour
     void Update() 
     {
        //Purpose of this line is that when player change weapon he needs to press again input(1) to zoom 
-        if(Input.GetMouseButtonDown(1) && canZoom == true)
+        if(Input.GetKeyDown(zoomKeyCode) && canZoom == true)
         {
             isTryingToZoom = true;
         }
-        if(Input.GetMouseButton(1) && isTryingToZoom == true && isZoomed == false)
+        if(Input.GetKey(zoomKeyCode) && isTryingToZoom == true && isZoomed == false)
         {
             ZoomIn();
         }
-        else if(Input.GetMouseButtonUp(1) || canZoom == false)
+        else if(Input.GetKeyUp(zoomKeyCode) || canZoom == false)
         {
-            isTryingToZoom = false;
             ZoomOut();
         }
     }
@@ -72,6 +71,7 @@ public class WeaponZoom : MonoBehaviour
     private void ZoomOut()
     { 
     
+        isTryingToZoom = false;
         StartCoroutine(weaponToZoom(defaultWeaponPosition,weaponZoomDuration,false));
         StartCoroutine(cameraToZoom(camerasController.DefaultFov,cameraZoomDuration));
         playerController.setDefaultMouseValues();

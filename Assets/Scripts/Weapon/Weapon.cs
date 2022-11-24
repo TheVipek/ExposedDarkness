@@ -5,18 +5,21 @@ using UnityEngine;
 
 
 [RequireComponent(typeof(AudioSource),typeof(WeaponAnimation))]
-public abstract class Weapon : MonoBehaviour,IAttack
+public abstract class Weapon : MonoBehaviour,IPrimaryAction
 {  
     [Header("Weapon settings")]
-    [SerializeField] protected KeyCode primaryAction = KeyCode.Mouse0;
+    [SerializeField] protected KeyCode primaryActionKey = KeyCode.Mouse0;
+    public KeyCode PrimaryActionKey { get{return primaryActionKey;}}
+    
 
     [SerializeField] float range = 100f;
-    [SerializeField] float damage;
-    [SerializeField] protected float attackDelay;
+    [SerializeField] protected float primaryAttackDamage;
+    [SerializeField] protected float primaryAttackDelay;
+
     [SerializeField] WeaponType weaponType;
     [SerializeField] protected WeaponAnimation weaponAnimation;
     public WeaponType WeaponType{get{ return weaponType;}}
-    protected float nextAttackTime;
+    protected float nextPrimaryAttackTime;
     
     [Header("Weapon properties")]
     [Tooltip("Which means ; does player need to click every time to attack")]
@@ -34,7 +37,7 @@ public abstract class Weapon : MonoBehaviour,IAttack
     [Header("Weapon audio")]
     [SerializeField] AudioSource audioSource;
     public AudioSource AudioSource{get {return audioSource;}}
-    public WeaponSoundKit weaponSounds; 
+   
     
     [Header("Weapon VFX/Sprites/Needed references")]
     [SerializeField] ParticleSystem attackVFX;
@@ -52,36 +55,24 @@ public abstract class Weapon : MonoBehaviour,IAttack
 
     protected virtual void Update()
     {
+
         if(canAttack)
         {
             
-            if(Input.GetKey(primaryAction) && Time.time > nextAttackTime && isConstantAttacking == true)
+            if(Input.GetKey(primaryActionKey) && Time.time > nextPrimaryAttackTime && isConstantAttacking == true)
             {
-                Attack();
-                nextAttackTime = Time.time + attackDelay;
+                PrimaryAction();
+                nextPrimaryAttackTime = Time.time + primaryAttackDelay;
             }
-            else if(Input.GetKeyDown(primaryAction) && Time.time > nextAttackTime && isConstantAttacking == false)
+            else if(Input.GetKeyDown(primaryActionKey) && Time.time > nextPrimaryAttackTime && isConstantAttacking == false)
             {
-                Attack();
-                nextAttackTime = Time.time + attackDelay;
-                
+                PrimaryAction();
+                nextPrimaryAttackTime = Time.time + primaryAttackDelay;  
             }
         }
     }
 
-    public abstract void Attack();
-    
-        // if(ammoContainer.GetAmmoInSlot(ammoType) > 0)
-        // {
-        //     AudioManager.playSound(AudioSource,weaponSounds.ShootSound);
-        //     PlayAttackSound();
-        //     ProcessRaycast();
-        //     ammoContainer.UseAmmo(ammoType);
-        // }else
-        // {
-        //     AudioManager.playSound(AudioSource,weaponSounds.EmptySound);
-        //     canAttack = false;
-        // }
+    public abstract void PrimaryAction();
     
     protected void PlayAttackSound()
     {
@@ -89,7 +80,7 @@ public abstract class Weapon : MonoBehaviour,IAttack
         attackVFX.Play();
     }
 
-    protected void ProcessRaycast()
+    protected void ProcessRaycast(float hitDamage)
     {
         RaycastHit hit;
         //point that we're looking at already
@@ -101,7 +92,7 @@ public abstract class Weapon : MonoBehaviour,IAttack
             {
                 CreateHitImpact(hit);
                 Enemy target = hit.transform.gameObject.GetComponent<Enemy>();
-                target.TakeDamage(damage);
+                target.TakeDamage(hitDamage);
             }
             
 
@@ -112,7 +103,7 @@ public abstract class Weapon : MonoBehaviour,IAttack
         }
     }
 
-    protected void CreateHitImpact(RaycastHit hit)
+    protected virtual void CreateHitImpact(RaycastHit hit)
     {
         if(attackVFX == null) { Debug.LogWarning("No Hit Effect attached"); return; }
         
@@ -121,5 +112,10 @@ public abstract class Weapon : MonoBehaviour,IAttack
         Destroy(hitUFX,hitParticle.main.duration);
     }
     
-    
+    public IEnumerator DisableCanAttack(float disabledTime)
+    {
+        canAttack = false;
+        yield return new WaitForSecondsRealtime(disabledTime);
+        canAttack = true;
+    }
 }

@@ -4,6 +4,6 @@ using UnityEngine;
 
 
 [CreateAssetMenu(fileName = "SoundKit", menuName = "SoundKit", order = 0)]
-public class SoundKit : ScriptableObject {
+public abstract class SoundKit : ScriptableObject {
    
 }

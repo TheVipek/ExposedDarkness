@@ -5,13 +5,15 @@ using UnityEngine;
 [RequireComponent(typeof(WeaponZoom))]
 public class RangeWeapon : Weapon
 {
-    
+    [SerializeField] Sprite bulletIcon;
     [HideInInspector] public Ammo ammoContainer;
+    [Header("Ammo")]
     [SerializeField] AmmoType ammoType;
     public AmmoType AmmoType{get{ return ammoType; }}
     public float TimeToReload {get {return weaponSounds.ReloadSound.length;}}
     private WeaponZoom weaponZoom;
-    [SerializeField] Sprite bulletIcon;
+    [Header("SoundKit")]
+    public RangeWeaponSoundKit weaponSounds; 
     public Sprite BulletIcon{ get {return bulletIcon;}}
     private void OnEnable() {
         WeaponShootingTypeChanger.onChangeShootingType += SwapConstantShooting;
@@ -27,13 +29,13 @@ public class RangeWeapon : Weapon
         ammoContainer = Ammo.Instance;
         weaponZoom = GetComponent<WeaponZoom>();
     }
-    public override void Attack()
+    public override void PrimaryAction()
     {
         if(ammoContainer.GetAmmoInSlot(ammoType) > 0)
         {
             AudioManager.playSound(AudioSource,weaponSounds.ShootSound);
             PlayAttackSound();
-            ProcessRaycast();
+            ProcessRaycast(primaryAttackDamage);
             ammoContainer.UseAmmo(ammoType);
         }else
         {
@@ -45,6 +47,8 @@ public class RangeWeapon : Weapon
     protected override void Update()
     {
            base.Update();
+
+
     }
     protected void SwapConstantShooting()
     {
