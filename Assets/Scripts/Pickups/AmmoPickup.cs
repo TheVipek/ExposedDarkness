@@ -10,7 +10,7 @@ public class AmmoPickup : MonoBehaviour
     public AmmoType AmmoType {get{return ammoType;}}
 
     
-    public void GetAmmoFromPickup()
+    public void GetAmmo()
     {
         Ammo.Instance.AddAmmo(ammoType,ammoCount);
 

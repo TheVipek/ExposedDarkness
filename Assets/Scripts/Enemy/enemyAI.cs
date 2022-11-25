@@ -101,7 +101,7 @@ public abstract class enemyAI : MonoBehaviour
             
             if(PlayerHealth.instance.IsDead == false)
             {
-                if(PlayerMovement.instance.Crouch == false)
+                if(PlayerMovement.Instance.Crouch == false)
                 {
                     if(distanceToTarget <= enemySetting.baseChaseRange)
                     {

@@ -34,7 +34,7 @@ public class DeathHandler : MonoBehaviour
         {
             PlayerHealth.instance.IsDead = true;
             PlayerHealth.instance.animator.enabled = true;
-            PlayerMovement.instance.enabled = false;
+            PlayerMovement.Instance.enabled = false;
             WeaponSwitcher.Instance.gameObject.SetActive(false);
             gameOverCanvas.enabled = true;
             Cursor.lockState = CursorLockMode.Confined;
@@ -53,7 +53,7 @@ public class DeathHandler : MonoBehaviour
         PlayerHealth.instance.IsDead = true;
         deathText.text = "YOU HAVE"+"\n"+"BEEN"+"\n"+"POISONED";
         PlayerHealth.instance.animator.enabled = true;
-        PlayerMovement.instance.enabled = false;
+        PlayerMovement.Instance.enabled = false;
         WeaponSwitcher.Instance.gameObject.SetActive(false);
         gameOverCanvas.enabled = true;
         Cursor.lockState = CursorLockMode.Confined;

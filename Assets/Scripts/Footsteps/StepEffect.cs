@@ -25,7 +25,7 @@ public class StepEffect : MonoBehaviour
         {
             //Debug.Log(Vector3.Distance(lastStep,transform.position) + ", " + distanceBetweenStep);
             //Debug.Log(PlayerMovement.instance.IsGrounded);
-            if(PlayerMovement.instance.IsGrounded == true)
+            if(PlayerMovement.Instance.IsGrounded == true)
             {
                 StepSound();
                 lastStep = transform.position;

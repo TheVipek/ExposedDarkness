@@ -10,7 +10,7 @@ public class Interaction : MonoBehaviour,IResponseInteraction
     [HideInInspector] public bool interactionActivated = false;
     [HideInInspector] public bool interactionEnded = false;
     [HideInInspector] public GameObject lookingAt = null;
-    [HideInInspector] public GameObject lastInteracted = null;
+  //  [HideInInspector] public GameObject lastInteracted = null;
     Ray ray;
     RaycastHit hit;
 
@@ -39,10 +39,11 @@ public class Interaction : MonoBehaviour,IResponseInteraction
                     // Debug.Log("You're looking at interactable object!");
                     // Debug.Log(lookingAt);
                     // Debug.Log(lastInteracted);
-                    if(hit.transform.gameObject != lastInteracted || lastInteracted == null)
-                    {
-                        OnSelect(hit.transform.gameObject);
-                    }
+                    // if(hit.transform.gameObject != lastInteracted || lastInteracted == null)
+                    // {
+                    //     OnSelect(hit.transform.gameObject);
+                    // }
+                    OnSelect(hit.transform.gameObject);
                 }
             }
             else
@@ -69,8 +70,8 @@ public class Interaction : MonoBehaviour,IResponseInteraction
         interactionActivated = false;
         interactionUI.SetActive(false);
     }
-    public void setLastInteracted()
-    {
-        lastInteracted = lookingAt;
-    }
+    // public void setLastInteracted()
+    // {
+    //     lastInteracted = lookingAt;
+    // }
 }

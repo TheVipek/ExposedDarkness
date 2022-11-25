@@ -40,8 +40,14 @@ public class WeaponZoom : MonoBehaviour
     private void Awake() 
     {
         animator = GetComponent<Animator>();
-        camerasController = CamerasController.Instance;
         defaultWeaponPosition = GetComponent<WeaponAnimation>().defaultWeaponPosition;
+    }
+    private void Start() {
+        playerController = PlayerMovement.Instance; 
+        camerasController = CamerasController.Instance;
+        viewCamera = camerasController.playerCamera;
+        weaponCamera = camerasController.weaponCamera;
+        
     }
     private void OnEnable() {
         

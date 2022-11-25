@@ -67,15 +67,15 @@ public class PlayerMovement : MonoBehaviour
     Coroutine crouchTransition;
     float horizontalMove;
     float verticalMove;
-    public static PlayerMovement instance;
+    public static PlayerMovement Instance {get; private set;}
     public static Action onSprinting;
     private void Awake() {
-        if(instance!= this && instance != null)
+        if(Instance!= this && Instance != null)
         {
             Destroy(this);
         }else
         {
-            instance = this;
+            Instance = this;
         }
     }
     void Start()

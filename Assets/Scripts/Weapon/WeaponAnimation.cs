@@ -24,14 +24,14 @@ public class WeaponAnimation : MonoBehaviour
     void Update()
     {
 
-        if(PlayerMovement.instance.Moving == true)
+        if(PlayerMovement.Instance.Moving == true)
         {
             animator.SetBool("moving" , true);
         }else
         {
             animator.SetBool("moving" , false);
         }
-        if(PlayerMovement.instance.Sprinting == true)
+        if(PlayerMovement.Instance.Sprinting == true)
         {
             animator.SetBool("sprinting" , true);
         }else

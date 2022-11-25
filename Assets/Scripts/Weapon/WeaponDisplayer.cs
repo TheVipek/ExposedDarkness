@@ -59,7 +59,7 @@ public class WeaponDisplayer : MonoBehaviour
             totalAmmo.enabled = true;
             RangeWeapon currentWeapon = weaponSwitcher.CurrentWeapon.GetComponent<RangeWeapon>();
 
-            Debug.Log("Current weapon type is : "+weaponSwitcher.CurrentWeapon.GetType());
+//            Debug.Log("Current weapon type is : "+weaponSwitcher.CurrentWeapon.GetType());
 
             ammoInSlot.text = ammoContainer.GetAmmoInSlot(currentWeapon.AmmoType).ToString();
             //which means that weapon has been changed or reloaded
@@ -72,8 +72,8 @@ public class WeaponDisplayer : MonoBehaviour
    
     public void DisplayChangeWeapon()
     {
-        Debug.Log(weaponName.text);
-        Debug.Log(weaponSwitcher.CurrentWeapon.name);
+      //  Debug.Log(weaponName.text);
+     //   Debug.Log(weaponSwitcher.CurrentWeapon.name);
         if(weaponName.text != weaponSwitcher.CurrentWeapon.name)
             {
                 weaponName.text = weaponSwitcher.CurrentWeapon.name;

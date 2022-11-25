@@ -7,17 +7,20 @@ public class WeaponSwitcher : MonoBehaviour
 {
     [SerializeField] int currentWeaponIndex = 0;
     public int CurrentWeaponIndex{get { return currentWeaponIndex; } }
-
     [SerializeField] Weapon currentWeapon;
+    public Weapon CurrentWeapon{get{return currentWeapon;}}
 
+    private List<Weapon> alLWeapons = new List<Weapon>();
+    public List<Weapon> AllWeapons {get {return alLWeapons;}}
     [SerializeField] WeaponReloader weaponReloader;
     [SerializeField] WeaponShootingTypeChanger weaponShootingTypeChanger;
-    public Weapon CurrentWeapon{get{return currentWeapon;}}
-    int previousWeapon;
+    int previousWeaponIdx;
+    Weapon previousWeapon;
     static WeaponSwitcher instance;
     public static WeaponSwitcher Instance{get{return instance;}}
-    public delegate void OnWeaponChange();
-    public static event OnWeaponChange onWeaponChange;
+    // public delegate void OnWeaponChange();
+    // public static event OnWeaponChange onWeaponChange;
+    public static Action onWeaponChange;
     
     //  [Header("Get onWeaponChange so it may be"+"\n"+" called every time player shoots.")]
     // public UnityEvent weaponEvent;
@@ -34,13 +37,13 @@ public class WeaponSwitcher : MonoBehaviour
 
         }
     }
-    private void OnEnable() {
-    }
+
     void Start() 
     {
         AudioManager.playSound(audioSource,weaponSwitch.Sound); 
-        previousWeapon = currentWeaponIndex;
+        previousWeaponIdx = currentWeaponIndex;
         SetWeaponActive();    
+        getAllWeapons();
         getCurrentWeapon();
         onWeaponChange();
     }
@@ -49,10 +52,11 @@ public class WeaponSwitcher : MonoBehaviour
         ProcessKeyInput();
         ProcessScrollWheel();
 
-        if(previousWeapon!=currentWeaponIndex)
+        if(previousWeaponIdx!=currentWeaponIndex || previousWeapon != currentWeapon)
         {
             AudioManager.playSound(audioSource,weaponSwitch.Sound); 
-            previousWeapon=currentWeaponIndex;
+            previousWeaponIdx=currentWeaponIndex;
+            previousWeapon = currentWeapon;
             SetWeaponActive();
             getCurrentWeapon();
             onWeaponChange();
@@ -118,7 +122,22 @@ public class WeaponSwitcher : MonoBehaviour
             weaponIndex+=1;
         }
     }
-        private void getCurrentWeapon()
+    
+    private void getAllWeapons()
+    {
+        //Debug.Log(transform.childCount);
+        foreach (Transform child in transform)
+        {
+            Weapon childItem = child.gameObject.GetComponent<Weapon>();
+            if(childItem != null)
+            {
+                //Debug.Log(childItem.name);
+                alLWeapons.Add(childItem);
+            }
+        }
+       // Debug.Log(alLWeapons.Count);
+    }
+    public void getCurrentWeapon()
     {
         currentWeapon = transform.GetChild(currentWeaponIndex).GetComponent<Weapon>();
         if(currentWeapon.WeaponType != WeaponType.Range)

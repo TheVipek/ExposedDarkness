@@ -6,6 +6,7 @@ using UnityEngine;
 public class RangeWeapon : Weapon
 {
     [SerializeField] Sprite bulletIcon;
+
     [HideInInspector] public Ammo ammoContainer;
     [Header("Ammo")]
     [SerializeField] AmmoType ammoType;
@@ -23,11 +24,12 @@ public class RangeWeapon : Weapon
         WeaponShootingTypeChanger.onChangeShootingType -= SwapConstantShooting;
         
     }
-
+    private void Awake() {
+        weaponZoom = GetComponent<WeaponZoom>();
+    }
     void Start()
     {
         ammoContainer = Ammo.Instance;
-        weaponZoom = GetComponent<WeaponZoom>();
     }
     public override void PrimaryAction()
     {

@@ -24,11 +24,11 @@ public class SprintingDisplayer : MonoBehaviour
     {
         //calling to avoid going out of while loop at start
         yield return null;
-        sprintingSlider.value = PlayerMovement.instance.currentStamina/PlayerMovement.instance.StaminaLength;
+        sprintingSlider.value = PlayerMovement.Instance.currentStamina/PlayerMovement.Instance.StaminaLength;
         animator.SetTrigger("appear");
-        while(PlayerMovement.instance.CurrentStamina < PlayerMovement.instance.StaminaLength)
+        while(PlayerMovement.Instance.CurrentStamina < PlayerMovement.Instance.StaminaLength)
         {
-            float currValue =  PlayerMovement.instance.CurrentStamina / PlayerMovement.instance.StaminaLength;
+            float currValue =  PlayerMovement.Instance.CurrentStamina / PlayerMovement.Instance.StaminaLength;
             sprintingSlider.value = currValue;
             yield return null;
         }

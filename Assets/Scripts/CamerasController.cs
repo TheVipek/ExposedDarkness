@@ -6,6 +6,8 @@ public class CamerasController : MonoBehaviour
 {
     public static CamerasController Instance{get; private set;}
     public Camera[] cameras;
+    public Camera weaponCamera;
+    public Camera playerCamera;
     [SerializeField] float defaultFov = 80f;
     public float DefaultFov{ get {return defaultFov;}}
     

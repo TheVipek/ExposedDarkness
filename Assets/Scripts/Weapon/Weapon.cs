@@ -19,8 +19,13 @@ public abstract class Weapon : MonoBehaviour,IPrimaryAction
     [SerializeField] WeaponType weaponType;
     [SerializeField] protected WeaponAnimation weaponAnimation;
     public WeaponType WeaponType{get{ return weaponType;}}
+    
     protected float nextPrimaryAttackTime;
     
+    [Header("WeaponRole")]
+    [SerializeField] WeaponRole weaponRole;
+    public WeaponRole WeaponRole {get{return weaponRole;}}
+
     [Header("Weapon properties")]
     [Tooltip("Which means ; does player need to click every time to attack")]
 
@@ -49,7 +54,9 @@ public abstract class Weapon : MonoBehaviour,IPrimaryAction
     private void Awake() 
     {
         isConstantAttacking = canConstantAttack;
-
+        weaponAnimation = GetComponent<WeaponAnimation>();
+        audioSource = GetComponent<AudioSource>();
+        
     }
 
 
