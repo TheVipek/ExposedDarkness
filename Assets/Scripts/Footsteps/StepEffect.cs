@@ -48,7 +48,7 @@ public class StepEffect : MonoBehaviour
             if(hit.transform.GetComponent<Terrain>() != null)
             {
                 int terrainTextureIndex = terrainGroundDetector.GetTerrainAtPosition(transform.position);
-                Debug.Log(terrainTextureIndex);
+//                Debug.Log(terrainTextureIndex);
                 switch (terrainTextureIndex)
                     {
                         case 0:

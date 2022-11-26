@@ -18,12 +18,6 @@ public class Ammo : MonoBehaviour
             Instance = this;
         }
     }
-    private void OnEnable() {
-        
-    }
-    private void OnDisable() {
-        
-    }
     [System.Serializable]
     private class AmmoSlot
     {

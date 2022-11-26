@@ -46,7 +46,11 @@ public class PlayerHealth : MonoBehaviour
         }
         
     }
-   
+    public void restoreHp()
+    {
+        currentHealth = maxHealth;
+        onFightOver();
+    } 
     IEnumerator RegeneratingChecker()
     {
         float timer =0f;

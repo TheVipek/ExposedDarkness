@@ -5,22 +5,31 @@ using UnityEngine;
 using UnityEngine.Events;
 public class WeaponSwitcher : MonoBehaviour
 {
+    [Header("Current Weapon Settings")]
     [SerializeField] int currentWeaponIndex = 0;
     public int CurrentWeaponIndex{get { return currentWeaponIndex; } }
     [SerializeField] Weapon currentWeapon;
-    public Weapon CurrentWeapon{get{return currentWeapon;}}
+    public Weapon CurrentWeapon{get{return currentWeapon;} set{currentWeapon = value;}}
 
-    private List<Weapon> alLWeapons = new List<Weapon>();
-    public List<Weapon> AllWeapons {get {return alLWeapons;}}
+    [Header("Weapons containers")]
+    // [SerializeField] GameObject meeleWeaponsContainer;
+    // [SerializeField] GameObject rangeWeaponsContainer;
+    [SerializeField] const int rangeContaienrWeaponIndex = 0;
+    [SerializeField] const int meeleContainerWeaponIndex = 1;
+    [SerializeField] List<GameObject> weaponsContainers = new List<GameObject>();
+    [SerializeField] List<Weapon> allWeapons = new List<Weapon>();
+    public List<Weapon> AllWeapons {get {return allWeapons;}}
+    [Header("References")]
     [SerializeField] WeaponReloader weaponReloader;
     [SerializeField] WeaponShootingTypeChanger weaponShootingTypeChanger;
-    int previousWeaponIdx;
+    int previousWeaponIndex;
     Weapon previousWeapon;
     static WeaponSwitcher instance;
     public static WeaponSwitcher Instance{get{return instance;}}
     // public delegate void OnWeaponChange();
     // public static event OnWeaponChange onWeaponChange;
     public static Action onWeaponChange;
+    public Action onWeaponPickup;
     
     //  [Header("Get onWeaponChange so it may be"+"\n"+" called every time player shoots.")]
     // public UnityEvent weaponEvent;
@@ -36,41 +45,46 @@ public class WeaponSwitcher : MonoBehaviour
             instance = this;
 
         }
+        getAllWeapons();
     }
-
+    private void OnEnable() {
+        onWeaponPickup += getAllWeapons;
+    }
+    private void OnDisable() {
+        onWeaponPickup -= getAllWeapons;
+        
+    }
     void Start() 
     {
-        AudioManager.playSound(audioSource,weaponSwitch.Sound); 
-        previousWeaponIdx = currentWeaponIndex;
-        SetWeaponActive();    
-        getAllWeapons();
-        getCurrentWeapon();
-        onWeaponChange();
+        weaponChange();
     }
     void Update() 
     {
         ProcessKeyInput();
         ProcessScrollWheel();
 
-        if(previousWeaponIdx!=currentWeaponIndex || previousWeapon != currentWeapon)
+        if(previousWeaponIndex!=currentWeaponIndex || previousWeapon != currentWeapon)
         {
-            AudioManager.playSound(audioSource,weaponSwitch.Sound); 
-            previousWeaponIdx=currentWeaponIndex;
-            previousWeapon = currentWeapon;
-            SetWeaponActive();
-            getCurrentWeapon();
-            onWeaponChange();
+            weaponChange();
         }
     }
-    // public void weaponChange()
-    // {
-    //     onWeaponChange();
-    // }
+    public void weaponChange(int weaponToSet = -1)
+    {
+        
+        AudioManager.playSound(audioSource,weaponSwitch.Sound);
+        
+        //getAllWeapons();
+        //Look for weapon with the same index as currentWeapon
+        SetWeaponActive(weaponToSet);
+        onWeaponChange();
+    }
+    
+    
     private void ProcessScrollWheel()
     {
         if(Input.GetAxis("Mouse ScrollWheel") > 0)
         {
-            if(currentWeaponIndex >= transform.childCount-1)
+            if(currentWeaponIndex >= allWeapons.Count - 1)
             {
                 currentWeaponIndex = 0;
             }else
@@ -83,7 +97,7 @@ public class WeaponSwitcher : MonoBehaviour
         {
             if(currentWeaponIndex <= 0)
             {
-                currentWeaponIndex = transform.childCount-1;
+                currentWeaponIndex = allWeapons.Count - 1;
             }else
             {
                 currentWeaponIndex-=1;
@@ -91,7 +105,6 @@ public class WeaponSwitcher : MonoBehaviour
 
         }
     }
-
     private void ProcessKeyInput()
     {
         if(Input.GetKeyDown(KeyCode.Alpha1))
@@ -106,48 +119,76 @@ public class WeaponSwitcher : MonoBehaviour
         }
     }
 
-    private void SetWeaponActive()
+    private void SetWeaponActive(int weaponToSet)
     {
-        int weaponIndex =0;
-        foreach (Transform weapon in transform)
+        //Set currentWeapon and currentWeaponIdx to previous variables 
+        if(currentWeapon != null)
         {
-            if(weaponIndex == currentWeaponIndex)
-            {
-                weapon.gameObject.SetActive(true);
-                
-            }else
-            {
-                weapon.gameObject.SetActive(false);
-            }
-            weaponIndex+=1;
+            previousWeaponIndex = currentWeaponIndex;
+            previousWeapon = currentWeapon;
         }
-    }
-    
-    private void getAllWeapons()
-    {
-        //Debug.Log(transform.childCount);
-        foreach (Transform child in transform)
+
+        //Disable all weapons
+        allWeapons.ForEach(x => x.gameObject.SetActive(false));
+        //Active wanted weapon and set it as currentWeapon
+        if(weaponToSet != -1)
         {
-            Weapon childItem = child.gameObject.GetComponent<Weapon>();
-            if(childItem != null)
-            {
-                //Debug.Log(childItem.name);
-                alLWeapons.Add(childItem);
-            }
-        }
-       // Debug.Log(alLWeapons.Count);
-    }
-    public void getCurrentWeapon()
-    {
-        currentWeapon = transform.GetChild(currentWeaponIndex).GetComponent<Weapon>();
-        if(currentWeapon.WeaponType != WeaponType.Range)
-        {
-            weaponReloader.enabled = false;
-            weaponShootingTypeChanger.enabled = false;
+           currentWeapon = allWeapons[weaponToSet];
+           currentWeaponIndex = weaponToSet;
+
         }else
         {
-            weaponReloader.enabled = true;
-            weaponShootingTypeChanger.enabled = true;
+            currentWeapon = AllWeapons[currentWeaponIndex];
+        }
+        currentWeapon.gameObject.SetActive(true);
+        
+        //If previous weapon parent is different that means that we need to disable it and activate current weapon parent
+        if(currentWeapon != null && previousWeapon != null)
+        {
+            SetWeaponsContainer(currentWeapon.transform.parent);
+        }
+        // int weaponIndex =0;
+        // foreach (Transform weapon in transform)
+        // {
+        //     if(weaponIndex == currentWeaponIndex)
+        //     {
+        //         weapon.gameObject.SetActive(true);
+        //         currentWeapon = weapon.GetComponent<Weapon>();
+                
+        //     }else
+        //     {
+        //         weapon.gameObject.SetActive(false);
+        //     }
+        //     weaponIndex+=1;
+        // }
+    }
+    private void SetWeaponsContainer(Transform containterTransform)
+    {
+        foreach (GameObject container in weaponsContainers)
+        {
+            if(container.transform == containterTransform)
+            {
+                container.SetActive(true);
+            }else
+            {
+                container.SetActive(false);
+            }
+        }
+    }
+    private void getAllWeapons()
+    {
+        if(allWeapons.Count > 0) allWeapons.Clear();
+        for(int i=0 ; i < weaponsContainers.Count ; i++)
+        {
+            foreach(Transform child in weaponsContainers[i].transform)
+            {
+                Weapon childItem = child.gameObject.GetComponent<Weapon>();
+                if(childItem != null)
+                {
+                    allWeapons.Add(childItem);
+                    Debug.Log(childItem.name);
+                } 
+            }
         }
     }
 }

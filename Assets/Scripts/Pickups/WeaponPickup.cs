@@ -7,16 +7,18 @@ public class WeaponPickup : MonoBehaviour
     [SerializeField] GameObject weaponPrefab;
     [SerializeField] WeaponRole weaponRole;
     [SerializeField] GameObject weaponToReplace;
+    private WeaponSwitcher weaponSwitcher;
     public void GetWeapon()
     {
+        weaponSwitcher = WeaponSwitcher.Instance;
 //        Debug.Log(WeaponSwitcher.Instance.AllWeapons.Count);
         foreach (Weapon item in WeaponSwitcher.Instance.AllWeapons)
         {
             Debug.Log(item.name);
-            if(item.WeaponRole == weaponRole)
+            if(item.WeaponRole == weaponRole && item != null)
             {
                 Debug.Log(item.WeaponRole);
-                // Replace Item;
+                Debug.Log("Replace Item");
                 ReplaceWeapon(item.gameObject);
 
 
@@ -24,7 +26,8 @@ public class WeaponPickup : MonoBehaviour
                 return;
             }
         }
-        SetWeapon(WeaponSwitcher.Instance.CurrentWeapon.transform);
+        Debug.Log("Set weapon");
+        SetWeapon(weaponSwitcher.CurrentWeapon.transform);
     }
     public void ReplaceWeapon(GameObject _weaponToReplace)
     {
@@ -51,8 +54,10 @@ public class WeaponPickup : MonoBehaviour
         }
         if(idxToSet == -1)
         {
+            idxToSet = (int)weaponRole;
             // 0 for primary , 1 for secondary , 2 for teritiary
-            weaponPrefab.transform.SetSiblingIndex((int)weaponRole);
+            weaponPrefab.transform.SetSiblingIndex(idxToSet);
+
         }else
         {
            // Debug.Log(idxToSet);
@@ -60,16 +65,20 @@ public class WeaponPickup : MonoBehaviour
             PutOnGround();
 
         }
-        WeaponSwitcher.Instance.getCurrentWeapon();
+        
+
+        weaponSwitcher.onWeaponPickup();
+        weaponSwitcher.weaponChange(idxToSet);
     }
        
     public void PutOnGround()
     {
-
         foreach(Behaviour comp in weaponToReplace.GetComponents<Behaviour>())
         {
+            Debug.Log(comp);
             comp.enabled = false;
         }
+        if(!weaponToReplace.activeSelf) weaponToReplace.SetActive(true);
         weaponToReplace.transform.SetParent(gameObject.transform);
         weaponToReplace.transform.localPosition = new Vector3(0,0,0);
         weaponToReplace.transform.rotation = Quaternion.Euler(0,0,0);

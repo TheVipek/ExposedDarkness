@@ -148,27 +148,26 @@ public class PlayerMovement : MonoBehaviour
             if(moving == true)
             {
                 
-                if (Input.GetKeyDown(sprintKey) && currentStamina > 0.0f)
+                if (Input.GetKey(sprintKey) && currentStamina > 0.0f && canSprinting == false)
                 {
-          //          Debug.Log("Clicked sprintKey");
+                    Debug.Log("Clicked sprintKey");
+                    sprinting = true;
                     canSprinting = true;
                     onSprinting();
                 }
 
-                if(canSprinting == true && Input.GetKey(sprintKey))
+                if(sprinting == true && Input.GetKey(sprintKey))
                 {
          //           Debug.Log("Triggering sprint");
 
-                    if(currentStamina > 0)
+                    if(currentStamina > 0.0f)
                     {
-                        sprinting = true;
                         position *= sprintMultiplier;
                      //   Debug.Log(currentStamina);
                         currentStamina -= Time.deltaTime;
                     }
                     else
                     {
-                        canSprinting = false;
                         sprinting = false;
                     }
                 }
@@ -176,6 +175,14 @@ public class PlayerMovement : MonoBehaviour
                 {
                     sprinting = false;
                 }
+                if(Input.GetKeyUp(sprintKey))
+                {
+                    canSprinting = false;
+                }
+            }
+            else
+            {
+                sprinting = false;
             }
             
             if(sprinting == false && currentStamina < staminaLength)
@@ -260,6 +267,11 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void RestoreStamina()
+    {
+        currentStamina = staminaLength;
+        onSprinting();
+    }
     public void setCustomMouseValues(float x,float y)
     {
         xSensitivity = x;

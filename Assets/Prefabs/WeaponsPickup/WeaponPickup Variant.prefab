@@ -181,6 +181,14 @@ PrefabInstance:
       propertyPath: m_Center.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8088863422320288898, guid: 4d2354d419d27734da01f1387700658c, type: 3}
+      propertyPath: m_Volume
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8088863422320288898, guid: 4d2354d419d27734da01f1387700658c, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -8166511654241624430, guid: 2efcbaf5689b95345834fc3c68000d0b, type: 2}
     - target: {fileID: 8088863422320288899, guid: 4d2354d419d27734da01f1387700658c, type: 3}
       propertyPath: meshFilter
       value: 

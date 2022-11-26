@@ -1276,7 +1276,7 @@ AudioSource:
   m_GameObject: {fileID: 8125172136448280389}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -8166511654241624430, guid: 2efcbaf5689b95345834fc3c68000d0b, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -1398,7 +1398,7 @@ MonoBehaviour:
   weaponCamera: {fileID: 0}
   viewCamera: {fileID: 0}
   playerController: {fileID: 0}
-  weapon: {fileID: 3407196875404373516}
+  zoomKeyCode: 324
   zoomInField: 20
   zoomInSensitivity: {x: 0.6, y: 0.6}
   weaponZoomInPosition: {x: 0, y: -0.35, z: 0.8}
@@ -1431,24 +1431,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   primaryActionKey: 323
-  secondaryActionKey: 324
   range: 35
-  damage: 25
-  attackDelay: 0.1
-  secondaryAttackDelay: 0
+  primaryAttackDamage: 35
+  primaryAttackDelay: 0
   weaponType: 1
   weaponAnimation: {fileID: 4176564732031091802}
-  nextAttackTime: 0
+  weaponRole: 0
   canConstantAttack: 1
   canAttack: 1
   audioSource: {fileID: 4176564732031091798}
-  weaponSounds: {fileID: 11400000, guid: 84e4d2d91a8ad2d4590261508bea1385, type: 2}
   attackVFX: {fileID: 7983599459750615441}
   hitEffect: {fileID: 7564172096902744805, guid: c1a7fb52c355c314fafe11903c10d1f9, type: 3}
   weaponIcon: {fileID: 21300046, guid: 6674e8c43c63e4f4184cbd009379498d, type: 3}
+  bulletIcon: {fileID: 21300012, guid: 5163ae49a0de665458bba61cd20c99b1, type: 3}
   ammoContainer: {fileID: 0}
   ammoType: 2
-  bulletIcon: {fileID: 21300012, guid: 5163ae49a0de665458bba61cd20c99b1, type: 3}
+  weaponSounds: {fileID: 11400000, guid: 84e4d2d91a8ad2d4590261508bea1385, type: 2}
 --- !u!1 &8326074969932912839
 GameObject:
   m_ObjectHideFlags: 0

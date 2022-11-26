@@ -48,7 +48,7 @@ AudioSource:
   m_GameObject: {fileID: 1221728325957719288}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -8166511654241624430, guid: 2efcbaf5689b95345834fc3c68000d0b, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -204,7 +204,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   primaryActionKey: 323
   range: 35
-  primaryAttackDamage: 0
+  primaryAttackDamage: 40
   primaryAttackDelay: 0
   weaponType: 1
   weaponAnimation: {fileID: 875745954}

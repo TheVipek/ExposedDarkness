@@ -20,16 +20,14 @@ public class WeaponReloader : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.R) && currentlyReloading == false) 
         {
             weapon = weaponSwitcher.CurrentWeapon;
-            if(weapon.WeaponType == WeaponType.Range)
+            RangeWeapon currentWeapon = weapon.GetComponent<RangeWeapon>();
+            weaponZoom = weapon.GetComponent<WeaponZoom>();
+            if(Ammo.Instance.GetAmmoInSlot(currentWeapon.AmmoType) != Ammo.Instance.GetAmmoPerSlot(currentWeapon.AmmoType) && Ammo.Instance.GetAmmoAmount(currentWeapon.AmmoType) > 0)
             {
-                RangeWeapon currentWeapon = weapon.GetComponent<RangeWeapon>();
-                weaponZoom = weapon.GetComponent<WeaponZoom>();
-                if(Ammo.Instance.GetAmmoInSlot(currentWeapon.AmmoType) != Ammo.Instance.GetAmmoPerSlot(currentWeapon.AmmoType) && Ammo.Instance.GetAmmoAmount(currentWeapon.AmmoType) > 0)
-                {
-                    StartCoroutine(reloadInitialization(currentWeapon,currentWeapon.TimeToReload));
-                }
-
+                StartCoroutine(reloadInitialization(currentWeapon,currentWeapon.TimeToReload));
             }
+
+            
             
 
         }

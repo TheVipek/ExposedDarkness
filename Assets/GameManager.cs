@@ -6,10 +6,10 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance {get;private set;}
     [SerializeField] GameObject player;
-    [SerializeField] GameObject playerWeaponsMain;
-    [SerializeField] MonoBehaviour[] playerWeaponsScripts;
+    [SerializeField] GameObject mainWeaponsContainer;
+    // [SerializeField] MonoBehaviour[] playerWeaponsScripts;
     private Weapon currentWeapon;
-    private MonoBehaviour[] currentWeaponComponents;
+    // private MonoBehaviour[] currentWeaponComponents;
     private void Awake() {
         if(Instance != null && Instance != this)
         {
@@ -39,26 +39,28 @@ public class GameManager : MonoBehaviour
         player.GetComponent<PlayerMovement>().enabled = false;
         player.GetComponent<PlayerHealth>().enabled = false;
 
-        foreach(MonoBehaviour _comp in playerWeaponsScripts) _comp.enabled = false;
+        mainWeaponsContainer.gameObject.SetActive(false);
+        // foreach(MonoBehaviour _comp in playerWeaponsScripts) _comp.enabled = false;
   
-        currentWeapon = playerWeaponsMain.GetComponent<WeaponSwitcher>().CurrentWeapon;
-        currentWeaponComponents = currentWeapon.GetComponents<MonoBehaviour>();
+        // currentWeapon = playerWeaponsMain.GetComponent<WeaponSwitcher>().CurrentWeapon;
+        // currentWeaponComponents = currentWeapon.GetComponents<MonoBehaviour>();
 
-        foreach(MonoBehaviour _comp in currentWeaponComponents)
-        {
-            if(_comp.GetType() == typeof(WeaponAnimation)) continue; 
-            _comp.enabled = false;
-        }
+        // foreach(MonoBehaviour _comp in currentWeaponComponents)
+        // {
+        //     if(_comp.GetType() == typeof(WeaponAnimation)) continue; 
+        //     _comp.enabled = false;
+        // }
       
     }
     public void unfreezePlayerActions()
     {
         player.GetComponent<PlayerMovement>().enabled = true;
         player.GetComponent<PlayerHealth>().enabled = true;
+        mainWeaponsContainer.gameObject.SetActive(true);
 
-        foreach(MonoBehaviour _comp in playerWeaponsScripts) _comp.enabled = true;
+        // foreach(MonoBehaviour _comp in playerWeaponsScripts) _comp.enabled = true;
 
-        foreach(MonoBehaviour _comp in currentWeaponComponents) _comp.enabled = true;
+        // foreach(MonoBehaviour _comp in currentWeaponComponents) _comp.enabled = true;
     }
     private void OnEnable() {
         DialogueController.OnGlobalDialogueStarted += freezeTime;

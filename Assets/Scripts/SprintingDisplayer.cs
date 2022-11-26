@@ -18,22 +18,34 @@ public class SprintingDisplayer : MonoBehaviour
     public void sprintCounterCall()
     {
         Debug.Log(sprintingCoroutine);
-        if(sprintingCoroutine == null) sprintingCoroutine = StartCoroutine(sprintingCounter()); 
+        if(sprintingCoroutine == null) 
+        {
+            sprintingCoroutine = StartCoroutine(sprintingCounter()); 
+        }
+        else
+        {
+            StopCoroutine(sprintingCoroutine);
+            sprintingCoroutine = StartCoroutine(sprintingCounter()); 
+
+        }
     }
     public IEnumerator sprintingCounter()
     {
         //calling to avoid going out of while loop at start
         yield return null;
         sprintingSlider.value = PlayerMovement.Instance.currentStamina/PlayerMovement.Instance.StaminaLength;
-        animator.SetTrigger("appear");
+        animator.SetBool("appear",true);
         while(PlayerMovement.Instance.CurrentStamina < PlayerMovement.Instance.StaminaLength)
         {
             float currValue =  PlayerMovement.Instance.CurrentStamina / PlayerMovement.Instance.StaminaLength;
+       //     Debug.Log(currValue);
             sprintingSlider.value = currValue;
             yield return null;
         }
-        animator.SetTrigger("disappear");
         sprintingCoroutine = null;
+        animator.SetBool("appear",false);
+
+       // animator.SetBool("disappear",true);
 
     }
 }

@@ -87,7 +87,7 @@ public class WeaponZoom : MonoBehaviour
         gameObject.transform.localRotation = Quaternion.Euler(0,0,0);
         transform.localPosition = defaultWeaponPosition;
         CamerasController.Instance.setDefaultFov();
-        playerController.setDefaultMouseValues();
+        PlayerMovement.Instance.setDefaultMouseValues();
 
     }
     private void ZoomIn()

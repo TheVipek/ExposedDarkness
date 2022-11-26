@@ -17,10 +17,10 @@ public abstract class InteractionContainer : MonoBehaviour,IInteractionActions
     public virtual IEnumerator interactionWaiter(float delay)
     {
         boxCollider.enabled = false;
-        SetActiveChild(false);
+       // SetActiveChild(false);
         WaitForSeconds _delay = new WaitForSeconds(delay);
         yield return _delay;
-        SetActiveChild(true);
+        //SetActiveChild(true);
         boxCollider.enabled = true;
 
         
