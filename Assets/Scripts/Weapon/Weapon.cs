@@ -51,6 +51,9 @@ public abstract class Weapon : MonoBehaviour,IPrimaryAction
     public Sprite WeaponIcon{ get {return weaponIcon;}}
 
 
+    private void OnEnable() {
+        CanAttack = true;
+    }
     private void Awake() 
     {
         isConstantAttacking = canConstantAttack;

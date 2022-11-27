@@ -6,15 +6,19 @@ using TMPro;
 using UnityEngine.Events;
 using System;
 
-
+[RequireComponent(typeof(AudioSource))]
 public class DialogueController : MonoBehaviour
 {
+    [Header("Typing sound")]
+    [SerializeField] AudioClip audioClip;
+    [SerializeField] AudioSource audioSource;
     public static DialogueController Instance { get; private set; }
-    [SerializeField] Image dialoguePanel;
-    
+    [Header("Object / components references")]
+    [SerializeField] Image dialoguePanel;    
     [SerializeField] GameObject dialogueEndPossibility;
     [SerializeField] Animator dialogueAnimator;
     [SerializeField] TMP_Text dialogueTMP;
+    [Header("Dialogue settings")]
     [SerializeField] float timePerCharacter;
     [SerializeField] float timePerSentence;
     private WaitForSecondsRealtime waitForTimePerCharacter;
@@ -34,6 +38,7 @@ public class DialogueController : MonoBehaviour
         {
             Instance = this;
         }
+        audioSource.ignoreListenerPause = true;
     }
     private void OnEnable() {
         waitForTimePerCharacter = new WaitForSecondsRealtime(timePerCharacter);
@@ -132,9 +137,14 @@ public class DialogueController : MonoBehaviour
                 else
                 {
                     dialogueTMP.text += text[i][currentIndex];
+                    AudioManager.playSound(audioSource,audioClip);
                 }
                 #region endOfSentenceDetecting
-               // if(text[i][currentIndex] == '.' || text[i][currentIndex] == '!' || text[i][currentIndex] == '?') yield return waitForTimePerSentence.waitTime/2;
+                if(text[i][currentIndex] == '.' || text[i][currentIndex] == '!' || text[i][currentIndex] == '?' || text[i][currentIndex] == ',')
+                {
+                    Debug.Log(text[i][currentIndex]);
+                    yield return new WaitForSecondsRealtime(timePerSentence/3);
+                }
                 #endregion
                 currentIndex += 1;
                 yield return waitForTimePerCharacter;

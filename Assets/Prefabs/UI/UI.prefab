@@ -1106,7 +1106,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9e0059842cb9e745818850909fed662, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
 --- !u!95 &564808324
 Animator:
   serializedVersion: 4
@@ -2095,7 +2094,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9e0059842cb9e745818850909fed662, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
 --- !u!95 &1208855412
 Animator:
   serializedVersion: 4
@@ -6191,7 +6189,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: GameScene
+          m_StringArgument: GameScene1
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!1 &3332528558823891302

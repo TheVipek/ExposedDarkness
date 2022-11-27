@@ -6,8 +6,12 @@ using UnityEngine.UI;
 public class DisplayController : MonoBehaviour
 {
     public Toggle fullScreenCheckBox;
+    [SerializeField] Image checkmark;
+    [SerializeField] Image checkmarkBackground;
+    [SerializeField] Color32 checkedBackgroundColor;
+    [SerializeField] Color32 uncheckedBackgroundColor; 
+    
     public TMP_Dropdown resolution;
-
     private void Awake() {
         fullScreenCheckBox.onValueChanged.AddListener(delegate
         {
@@ -16,6 +20,7 @@ public class DisplayController : MonoBehaviour
 
         resolution.onValueChanged.AddListener(delegate{
             ResolutionChangeHanlder(resolution);
+            
         });
     }
 
@@ -27,6 +32,9 @@ public class DisplayController : MonoBehaviour
         //if isOn is true ,fullscreen is activated
         if(toggle.isOn == true)
         {
+            checkmark.enabled = true;
+            checkmarkBackground.color = checkedBackgroundColor;
+
             resolution.interactable = false;
             //Set resolution to player screen current resolution
             int[] intParameters = {Screen.currentResolution.width,Screen.currentResolution.height};
@@ -44,6 +52,9 @@ public class DisplayController : MonoBehaviour
 
         }else
         {
+            checkmark.enabled = false;
+            checkmarkBackground.color = uncheckedBackgroundColor;
+
             resolution.interactable = true;
             ResolutionChangeHanlder(resolution);
         }

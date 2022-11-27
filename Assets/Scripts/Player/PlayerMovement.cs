@@ -29,6 +29,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Camera _mCamera;
     [SerializeField] Rigidbody rb;
     [SerializeField] CapsuleCollider capsuleCollider;
+    [SerializeField] AudioSource breathingSource;
 
     [Header("Camera Settings")]
     [SerializeField] float defaultHeight;
@@ -59,7 +60,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] bool moving = false;
     public bool Moving{get{return moving;}}
     [SerializeField] bool sprinting = false;
-    public bool canSprinting = false;
+    private bool canSprinting = true;
     public bool Sprinting{get{return sprinting;}}
     [SerializeField] bool isGrounded = false;
     public bool IsGrounded{get{return isGrounded;}}
@@ -145,21 +146,18 @@ public class PlayerMovement : MonoBehaviour
             Vector3 position = cameraForward * verticalMove + cameraSides * horizontalMove;
 
             //Checking for sprint
-            if(moving == true)
+            if(moving == true && isGrounded == true)
             {
                 
-                if (Input.GetKey(sprintKey) && currentStamina > 0.0f && canSprinting == false)
+                if (Input.GetKey(sprintKey) && currentStamina > 0.0f  && (sprinting == false && canSprinting == true))
                 {
-                    Debug.Log("Clicked sprintKey");
                     sprinting = true;
-                    canSprinting = true;
+                    Debug.Log("Clicked sprintKey");
                     onSprinting();
                 }
 
                 if(sprinting == true && Input.GetKey(sprintKey))
                 {
-         //           Debug.Log("Triggering sprint");
-
                     if(currentStamina > 0.0f)
                     {
                         position *= sprintMultiplier;
@@ -169,15 +167,13 @@ public class PlayerMovement : MonoBehaviour
                     else
                     {
                         sprinting = false;
+                        canSprinting = false;
+                        breathingSource.enabled = true;
                     }
                 }
                 else
                 {
                     sprinting = false;
-                }
-                if(Input.GetKeyUp(sprintKey))
-                {
-                    canSprinting = false;
                 }
             }
             else
@@ -188,7 +184,13 @@ public class PlayerMovement : MonoBehaviour
             if(sprinting == false && currentStamina < staminaLength)
             {
                 currentStamina += Time.deltaTime * staminaRegenerartionSpeed;
-                if(currentStamina > staminaLength) currentStamina = staminaLength;
+                if(currentStamina >= staminaLength)
+                {
+                    currentStamina = staminaLength;
+                    canSprinting = true;
+                    breathingSource.enabled = false;
+
+                }
             }
 
             if(crouch == true)

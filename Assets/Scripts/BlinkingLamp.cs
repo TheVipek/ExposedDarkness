@@ -11,8 +11,9 @@ public class BlinkingLamp : MonoBehaviour
     [SerializeField] int timeToOverheat;
     //[SerializeField] AudioClip buzzingSound;
     [SerializeField] AudioSource audioSource;
+    private float powerOutTime = 1f;
     private void Start() {
-        StartCoroutine(TriggerBlinking());
+        //StartCoroutine(TriggerBlinking());
     }
     public IEnumerator TriggerBlinking()
     {
@@ -37,6 +38,31 @@ public class BlinkingLamp : MonoBehaviour
             }
             yield return new WaitForSeconds(randomTime);
             
+        }
+    }
+    public void PowerOut()
+    {
+        StartCoroutine(StartPowerOut());
+    }
+    private IEnumerator StartPowerOut()
+    {
+        float currentPowerOut = powerOutTime;
+        List<float> startingIntensities = new List<float>();
+        lights.ForEach( x => startingIntensities.Add(x.intensity));
+        while(true)
+        {
+            currentPowerOut -= Time.deltaTime;
+            for(int i=0 ; i<lights.Count ; i++)
+            {
+                lights[i].intensity = startingIntensities[i] * (currentPowerOut / powerOutTime);
+            }
+            audioSource.volume = audioSource.volume * (currentPowerOut / powerOutTime);
+            if(currentPowerOut <= 0)
+            {
+
+                yield break;
+            }
+            yield return null;
         }
     }
 }

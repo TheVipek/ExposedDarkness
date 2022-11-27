@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
+[RequireComponent(typeof(Animator))]
 public class ButtonMouseOverTrigger : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler
 {
-    [SerializeField] Animator animator;
+    Animator animator;
     private void Awake() {
         animator = GetComponent<Animator>();
     }

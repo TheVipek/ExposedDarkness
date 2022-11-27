@@ -7,18 +7,11 @@ public class LampsDischarge : MonoBehaviour
     [SerializeField] List<GameObject> lights;
     [SerializeField] AudioSource generator;
     bool reached = false;
-    void Start()
-    {
-        
-    }
-
     void lampDischarge()
     {
         for (int i = 0; i < lights.Count; i++)
         {
-            lights[i].GetComponent<BlinkingLamp>().enabled = false;
-            lights[i].GetComponent<AudioSource>().enabled = false;
-            lights[i].transform.GetChild(0).gameObject.SetActive(false);
+            lights[i].GetComponent<BlinkingLamp>().PowerOut();
         }
     }
     private void OnTriggerEnter(Collider other) {
@@ -26,6 +19,7 @@ public class LampsDischarge : MonoBehaviour
         {
             generator.Play();
             lampDischarge();
+            reached = true;
         }
     }
 }

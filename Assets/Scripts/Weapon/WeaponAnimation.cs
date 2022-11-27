@@ -7,17 +7,22 @@ public class WeaponAnimation : MonoBehaviour
     [Range(-1,1)]
     [SerializeField] float showWeaponOffset = -0.5f;
     float timeToAccomplish = 0.1f;  
-    Animator animator;
+    [HideInInspector] public Animator animator;
     public Vector3 defaultWeaponPosition;
+    private Vector3 defaultWeaponRotation;
 
     void Awake()
     {
         animator = GetComponent<Animator>();
+        defaultWeaponRotation = transform.localEulerAngles;
     }
     private void OnEnable() {
-
         animator.enabled = false;
         StartCoroutine(showWeapon(defaultWeaponPosition));
+    }
+    private void OnDisable() {
+        transform.localPosition = defaultWeaponPosition;
+        transform.localEulerAngles = defaultWeaponRotation;
     }
 
     // Update is called once per frame
