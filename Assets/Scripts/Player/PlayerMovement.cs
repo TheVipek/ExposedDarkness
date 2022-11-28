@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float movingFrontSpeed;
     [SerializeField] float movingBackSpeed;
     [SerializeField] float movingSidesSpeed;
+    private float defaultSprintValue;
     [SerializeField] float sprintMultiplier;
     [SerializeField] float jumpStrength;
     [SerializeField] float staminaLength;
@@ -30,7 +31,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Rigidbody rb;
     [SerializeField] CapsuleCollider capsuleCollider;
     [SerializeField] AudioSource breathingSource;
-
+    [SerializeField] LayerMask groundLayer;
     [Header("Camera Settings")]
     [SerializeField] float defaultHeight;
     [SerializeField] float crouchHeight;
@@ -87,10 +88,12 @@ public class PlayerMovement : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         capsuleCollider.height = defaultHeight;
         currentStamina = staminaLength;
+        defaultSprintValue = sprintMultiplier;
     }
 
     void Update()
     {
+        CheckSlope();
         ProcessCrouch();
         Jumping();
         if(rb.velocity.y > 0)
@@ -146,13 +149,13 @@ public class PlayerMovement : MonoBehaviour
             Vector3 position = cameraForward * verticalMove + cameraSides * horizontalMove;
 
             //Checking for sprint
-            if(moving == true && isGrounded == true)
+            if(moving == true && CheckGround())
             {
                 
                 if (Input.GetKey(sprintKey) && currentStamina > 0.0f  && (sprinting == false && canSprinting == true))
                 {
                     sprinting = true;
-                    Debug.Log("Clicked sprintKey");
+                    //Debug.Log("Clicked sprintKey");
                     onSprinting();
                 }
 
@@ -204,6 +207,7 @@ public class PlayerMovement : MonoBehaviour
             //Moving it
 
             //frame independent
+        
             transform.Translate(position * Time.fixedDeltaTime);
             // physics of free fall
             /*if(isGrounded == false)
@@ -219,15 +223,16 @@ public class PlayerMovement : MonoBehaviour
 
     void Jumping()
     {
-        if(Input.GetKeyDown(jumpKey) && isGrounded == true)
-            {
+        if(Input.GetKeyDown(jumpKey) && CheckGround())
+        {
                 // formula 
             rb.AddForce(new Vector3(0,Mathf.Sqrt(jumpStrength * -2 * Physics.gravity.y),0),ForceMode.Impulse);
-        
+            jumping = true;
             //isGrounded = false;
             // velocity.y = Mathf.Sqrt(jumpStrength * -2 * gravity);
-            
-            }
+        
+        }
+        
     }
     void ProcessCrouch()
     {
@@ -262,17 +267,47 @@ public class PlayerMovement : MonoBehaviour
         crouchTransition = null;
     }
 
-    private void OnCollisionStay(Collision other) {
-        if(other.gameObject.tag == "Ground")
+    // private void OnCollisionStay(Collision other) {
+    //     if(rb.velocity.y == 0)
+    //         isGrounded=true;
+    // }
+    private bool CheckGround()
+    {
+        RaycastHit groundHit;
+        if(Physics.Raycast(origin:capsuleCollider.bounds.center,direction:Vector3.down,maxDistance:capsuleCollider.bounds.extents.y + 0.1f,layerMask:groundLayer,hitInfo:out groundHit))
         {
-            isGrounded=true;
+            jumping = false;
+            return true;
+        }
+        return false;
+    }
+    private void CheckSlope()
+    {
+        RaycastHit slopeHit;
+        if(Physics.Raycast(capsuleCollider.bounds.center,Vector3.down,out slopeHit,capsuleCollider.bounds.extents.y + 0.1f))
+        {
+            Debug.Log(Vector3.Angle(Vector3.up,slopeHit.normal));
         }
     }
-
+    private void OnCollisionStay(Collision other) {
+        // Debug.Log(other.gameObject.layer.);
+        // Debug.Log(groundLayer + ":"+groundLayer.ToString());
+        // if(other.gameObject.layer == groundLayer.value)
+        //     isGrounded = true;
+    }
+    private void OnDrawGizmos() {
+        Vector3 pos = new Vector3(capsuleCollider.bounds.center.x,capsuleCollider.bounds.min.y,capsuleCollider.bounds.center.z);
+        Debug.DrawRay(pos,Vector3.down,Color.blue);
+    }
     public void RestoreStamina()
     {
         currentStamina = staminaLength;
         onSprinting();
+    }
+    ///<summary>Set value of sprinting speed beetwen 0 to 1, 0 is equal to minimum acceptable and 1 is equal to maximum acceptable value. </summary>
+    public void SetSprintingSpeed(float value)
+    {
+        sprintMultiplier = defaultSprintValue * value;
     }
     public void setCustomMouseValues(float x,float y)
     {

@@ -12,21 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca5d00b0c72bd1c4b8251753b89825a6, type: 3}
   m_Name: ZombieSoundKit
   m_EditorClassIdentifier: 
-  attackSounds:
+  <AttackSound>k__BackingField:
   - {fileID: 8300000, guid: 2628db55e50fe41cc9879051d359847a, type: 3}
   - {fileID: 8300000, guid: 94e452828af664292a97c95ec9452126, type: 3}
   - {fileID: 8300000, guid: 2c706f39dc7b645e0a17766d7757d4c5, type: 3}
-  patrollingSounds:
+  <PatrollingSounds>k__BackingField:
   - {fileID: 8300000, guid: 90d342cf6f89440b9aa6c6ef4af6af88, type: 3}
   - {fileID: 8300000, guid: 8c8b4012f639545b2a1f70a2082307b3, type: 3}
   - {fileID: 8300000, guid: ad7b6eb3c723442b483e6b280fa02230, type: 3}
-  damagedSounds:
-  - {fileID: 0}
-  - {fileID: 0}
-  deathSounds:
+  <DeathSounds>k__BackingField:
   - {fileID: 8300000, guid: 137bb003119aa47dfb5ed791d840d650, type: 3}
   - {fileID: 8300000, guid: 0e84038961d6c4b72af49c11e1553b9e, type: 3}
   - {fileID: 8300000, guid: 931523c039e8648f2ae2785389e68571, type: 3}
-  provokeSounds:
+  <ProvokeSounds>k__BackingField:
   - {fileID: 8300000, guid: e66b136e063cc4049b96679b13228187, type: 3}
-  searchingSounds: []

@@ -47,9 +47,11 @@ public class DialogueController : MonoBehaviour
     }
     public IEnumerator DialogueStartPhase(Dialogue _dialogue, bool transitionInside = true)
     {
+        currentDialogue = _dialogue;
+        
         OnGlobalDialogueStarted();
         currentDialogue.callStartEvents();
-        currentDialogue = _dialogue;
+        
         // dialoguePanel.SetActive(true);
         if (transitionInside == true)
         {

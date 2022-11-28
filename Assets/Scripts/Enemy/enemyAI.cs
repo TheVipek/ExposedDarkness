@@ -9,7 +9,7 @@ public abstract class enemyAI : MonoBehaviour
     Enemy enemy;
     EnemySetting enemySetting;
     EnemySoundKit enemySoundKit;
-    AudioSource audioSource;
+    AudioSource mainAudioSource;
     
     protected Transform target;
     
@@ -43,6 +43,7 @@ public abstract class enemyAI : MonoBehaviour
 
     protected virtual void OnEnable(){
         enemy.onDamageTaken += ProvokeTrigger;
+        
     }
     protected virtual void OnDisable() {
         enemy.onDamageTaken -= ProvokeTrigger;
@@ -58,7 +59,7 @@ public abstract class enemyAI : MonoBehaviour
         enemy = GetComponent<Enemy>();
         enemySetting = enemy.enemySetting;
         enemySoundKit = enemy.enemySoundKit;
-        audioSource = GetComponent<AudioSource>();
+        mainAudioSource = GetComponent<AudioSource>();
         NormalMode();
     }
     
@@ -201,7 +202,11 @@ public abstract class enemyAI : MonoBehaviour
     }
     public virtual void ProvokeTrigger()
     {
-        isProvoked = true;
+        if(isProvoked == false)
+        {
+            isProvoked = true;
+            AudioManager.playSound(mainAudioSource,AudioManager.GetRandom(enemySoundKit.ProvokeSounds));
+        }
     }
     public virtual void ChaseTarget()
     {
@@ -287,11 +292,13 @@ public abstract class enemyAI : MonoBehaviour
     {
         //Debug.Log("Patrolling settings...");
 
-        if(state == true)
+        if(state)
         {
             navMeshAgent.speed = enemySetting.baseSpeed;
             enemyState = AIState.Patrolling;
-            AudioManager.playSound(audioSource,enemySoundKit.PatrollingSound,false);
+            //AudioManager.playSound(audioSource,enemySoundKit.PatrollingSound,false);
+ //           Debug.Log("Playing patrolling sound...");
+
 
         }
         animator.SetBool("patrol",state);
@@ -302,7 +309,8 @@ public abstract class enemyAI : MonoBehaviour
         {
             enemyState = AIState.Chasing;
             navMeshAgent.speed = enemySetting.baseChaseSpeed;
-            AudioManager.playSound(audioSource,enemySoundKit.ProvokeSound,false);
+         //   AudioManager.playSound(audioSource,enemySoundKit.ProvokeSound,false);
+    //        Debug.Log("Playing provoke sound...");
 
         }
         animator.SetBool("chase",state);
@@ -312,7 +320,8 @@ public abstract class enemyAI : MonoBehaviour
         if(state)
         {
             enemyState = AIState.Idling;
-            AudioManager.playSound(audioSource,enemySoundKit.PatrollingSound,false);
+           // AudioManager.playSound(audioSource,enemySoundKit.PatrollingSound,false);
+//            Debug.Log("Playing idle sound...");
 
         }
         animator.SetTrigger("idle");

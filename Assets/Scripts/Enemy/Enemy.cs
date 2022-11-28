@@ -13,7 +13,9 @@ public abstract class Enemy : MonoBehaviour {
     protected float baseHitpoints;
     public float BaseHitpoints{get{return baseHitpoints;}}
     protected float deathStateLength;
-
+    public float chaseSpeedBase{get; private set;}
+    private WaitForSeconds idleWaitTime;
+    private bool isDeath;
     // References
     protected Animator animator;
     PlayerHealth target;
@@ -22,10 +24,11 @@ public abstract class Enemy : MonoBehaviour {
     [SerializeField] CapsuleCollider capsuleCollider;
     public EnemySetting enemySetting; 
     public EnemySoundKit enemySoundKit;
-    public float chaseSpeedBase{get; private set;}
 
     
-    protected AudioSource audioSource;
+    //Audio 
+    protected AudioSource mainAudioSource;
+    [SerializeField] protected AudioSource breathingAudioSource;
     //Properties
     public Animator getAnimator{get{return animator;}}
     public PlayerHealth Target{get{return target;}}
@@ -42,8 +45,8 @@ public abstract class Enemy : MonoBehaviour {
     protected virtual void Awake() {
         //Debug.Log("baseHitpoints Awake: " + baseHitpoints);
        // InitStats();
-        audioSource = GetComponent<AudioSource>();
         animator = GetComponentInChildren<Animator>();
+        mainAudioSource = GetComponent<AudioSource>();
         //Make sure every enemy has it's own animation 
         Assert.IsNotNull(animator.runtimeAnimatorController,gameObject.name + " not set runtimeAnimatorController");
     }
@@ -51,9 +54,15 @@ public abstract class Enemy : MonoBehaviour {
        
         //calling method with true parameter so if zombie was choosen from pool he'll be able to move
        if(canMove == false) MovePossibility(true);
-       //AudioManager.playSound(audioSource,enemySoundKit.PatrollingSound);
+       
        InitStats();
-       //Debug.Log("baseHitpoints onEnable: " + baseHitpoints);
+       
+       isDeath = false;
+
+       StartCoroutine(playIdleSounds(enemySoundKit.PatrollingSounds));
+       
+       EnemiesAliveCounter.increaseEnemiesCount();
+
 
     }
     protected virtual void OnDisable()
@@ -69,10 +78,9 @@ public abstract class Enemy : MonoBehaviour {
     }
     public virtual void Attack()
     {
-        //AudioManager.playSound(audioSource,enemySoundKit.AttackSound);
         //If player dont exist or is dead dont call anything;
         if(target == null || target.IsDead == true) return;
-        AudioManager.playSound(audioSource,enemySoundKit.AttackSound,false);
+        AudioManager.playSound(mainAudioSource,AudioManager.GetRandom(enemySoundKit.AttackSound));
         
         //Player damage dealing
         target.TakeDamage(baseDamage);
@@ -82,7 +90,7 @@ public abstract class Enemy : MonoBehaviour {
     public virtual void TakeDamage(float damage)
     {
         onDamageTaken?.Invoke();
-        //AudioManager.playSound(audioSource,enemySoundKit.DamageSound);
+       // AudioManager.playSound(audioSource,enemySoundKit.DamageSound);
         //Make it always positive
         baseHitpoints-=Mathf.Abs(damage);
 
@@ -101,7 +109,8 @@ public abstract class Enemy : MonoBehaviour {
     
     public virtual void Death()
     {
-        AudioManager.playSound(audioSource,enemySoundKit.DeathSound);
+        isDeath = true;
+        AudioManager.playSound(mainAudioSource,AudioManager.GetRandom(enemySoundKit.DeathSounds));
         if(animator!=null) animator.SetTrigger("death");
         MovePossibility(false);
 
@@ -115,6 +124,21 @@ public abstract class Enemy : MonoBehaviour {
     }
     public virtual void gotProvoked()
     {
-        AudioManager.playSound(audioSource,enemySoundKit.ProvokeSound);
+        Debug.Log("Got provoked");
+   
+    }
+    IEnumerator playIdleSounds(AudioClip[] idleSounds)
+    {
+        while(true)
+        {
+            foreach(AudioClip clip in idleSounds)
+            {
+                if(isDeath == true) yield break;
+                idleWaitTime = new WaitForSeconds(clip.length);
+                AudioManager.playSound(breathingAudioSource,clip);
+                yield return idleWaitTime;
+            }
+            yield return null;
+        }
     }
 }

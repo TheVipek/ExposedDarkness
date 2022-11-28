@@ -27,15 +27,17 @@ public class DisplayManager : MonoBehaviour
         {
             if(fullScreenMode == 1)
             {
-                Debug.Log("fullScreen On");
-                displayController.fullScreenCheckBox.isOn = true;
-                displayController.resolution.interactable = false;
+               Debug.Log("fullScreen On");
+                displayController.ResolutionInteractable(false);
+                // displayController.fullScreenCheckBox.isOn = true;
+                // displayController.resolution.interactable = false;
             }
             else
             {
                 Debug.Log("fullScreen Off");
-                displayController.fullScreenCheckBox.isOn = false;
-                displayController.resolution.interactable = true;
+                displayController.ResolutionInteractable(true);
+                // displayController.fullScreenCheckBox.isOn = false;
+                // displayController.resolution.interactable = true;
 
             }
 

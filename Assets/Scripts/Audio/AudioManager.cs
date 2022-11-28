@@ -50,6 +50,10 @@ public class AudioManager : MonoBehaviour
         
 
     }
+   public static AudioClip GetRandom(AudioClip[] clips)
+   {
+        return clips[Random.Range(0,clips.Length)];
+   }
     IEnumerator soundVolumeTransitor(AudioSource source,float transitionLength,bool mute)
     {
         float currentSoundPoint = source.volume;

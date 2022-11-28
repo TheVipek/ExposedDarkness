@@ -5,13 +5,19 @@ using TMPro;
 using UnityEngine.UI;
 public class DisplayController : MonoBehaviour
 {
+    [Header("FullScreen checkbox settings")]
     public Toggle fullScreenCheckBox;
     [SerializeField] Image checkmark;
     [SerializeField] Image checkmarkBackground;
     [SerializeField] Color32 checkedBackgroundColor;
     [SerializeField] Color32 uncheckedBackgroundColor; 
-    
+    [Header("Resolution dropdown settings")]
     public TMP_Dropdown resolution;
+    [SerializeField] Image resolutionBackground;
+    [SerializeField] TMP_Text resolutionText;
+    [SerializeField] float interactableResolutionAlpha;
+    [SerializeField] float uninteractableResolutionAlpha;
+
     private void Awake() {
         fullScreenCheckBox.onValueChanged.AddListener(delegate
         {
@@ -27,15 +33,12 @@ public class DisplayController : MonoBehaviour
     //Checks for fullscreen option and depending on it changes window-type
     void FullScreenChecker(Toggle toggle)
     {
-        Debug.Log(toggle.isOn);
+        //Debug.Log(toggle.isOn);
 
         //if isOn is true ,fullscreen is activated
         if(toggle.isOn == true)
         {
-            checkmark.enabled = true;
-            checkmarkBackground.color = checkedBackgroundColor;
-
-            resolution.interactable = false;
+            ResolutionInteractable(false);
             //Set resolution to player screen current resolution
             int[] intParameters = {Screen.currentResolution.width,Screen.currentResolution.height};
             Screen.SetResolution(intParameters[0],intParameters[1],FullScreenMode.FullScreenWindow);
@@ -52,13 +55,28 @@ public class DisplayController : MonoBehaviour
 
         }else
         {
-            checkmark.enabled = false;
-            checkmarkBackground.color = uncheckedBackgroundColor;
-
-            resolution.interactable = true;
+            ResolutionInteractable(true);
             ResolutionChangeHanlder(resolution);
         }
-    } 
+    }
+    public void ResolutionInteractable(bool interactable)
+    {
+        //To ensure that value is right
+        if(fullScreenCheckBox.isOn != !interactable) fullScreenCheckBox.isOn = !interactable;
+        Debug.Log(interactable);
+        resolution.interactable = interactable;
+        // Checkmark always has opposite value to resolution
+        checkmark.enabled = !interactable;
+        if(interactable == true)
+        {
+            checkmarkBackground.color = uncheckedBackgroundColor;
+        }
+        else
+        {
+            checkmarkBackground.color = checkedBackgroundColor;
+        }
+
+    }
     void ResolutionChangeHanlder(TMP_Dropdown dropdown)
     {
         //dropdown.options.IndexOf(dropdown.options[dropdown.value]);
