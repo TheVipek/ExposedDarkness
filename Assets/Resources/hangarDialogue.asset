@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: hangarDialogue
   m_EditorClassIdentifier: 
   textToDisplayAtOnce:
-  - Is there anyone?
-  - Please ,respond me! I'm here to help you!
-  - Holy shit... What those people are thinking about...
+  - Is there anyone??? I'm Gentle Stinger, millitary officer.
+  - You need to respond me,otherwise help won't come!
+  - Listen to me--
   - '!?!?!'
   - I feel that problems are coming...

@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: EnterDialogue
   m_EditorClassIdentifier: 
   textToDisplayAtOnce:
-  - Gentle Stinger! Let's recap what we told you earlier this week. Your mission
-    is <b>high-risk</b> ,beacuse of large amount of newly born <b>zombies</b> and
-    people that you have to rescue!
-  - Eliminate all<b> zombies </b>and give us <b>sign </b>,so everyone can leave<b>
-    this island</b>.
-  - Remember,one moment of weakness is equal <b>death</b>!
+  - Gentle Stinger! Your mission is simple.Rescue <b>people</b> that are hiding in
+    hangar.
+  - You may encounter few <b>zombies</b>.Eliminating them shouldn't be problem for
+    you.
+  - Your weapons are the quietest among all to not bring <b>wave</b>.
+  - Remember ,that your only way to live is to rescue all <b>people</b> otherwise
+    toxic planted inside your body will be detonated.
