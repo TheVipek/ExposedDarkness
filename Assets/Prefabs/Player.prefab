@@ -643,19 +643,19 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.01
-  far clip plane: 100
+  far clip plane: 1500
   field of view: 80
   orthographic: 0
   orthographic size: 5
   m_Depth: 1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 767
+    m_Bits: 6911
   m_RenderingPath: 3
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
-  m_HDR: 0
+  m_HDR: 1
   m_AllowMSAA: 0
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
@@ -943,6 +943,9 @@ MonoBehaviour:
   rb: {fileID: 845382123}
   capsuleCollider: {fileID: 845382119}
   breathingSource: {fileID: 650316372}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
   defaultHeight: 1.8
   crouchHeight: 1
   crouchDuration: 0.5
