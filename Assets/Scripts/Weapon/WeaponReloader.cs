@@ -65,7 +65,7 @@ public class WeaponReloader : MonoBehaviour
         currentlyReloading = true;
         float leftTime = timeToReload;
 
-        PlayerMovement.Instance.SetSprintingSpeed(0.7f);
+       // PlayerMovement.Instance.SetSprintingSpeed(0.7f);
 //Reloading timer
         while(leftTime >= 0)
         {
@@ -78,7 +78,7 @@ public class WeaponReloader : MonoBehaviour
             {
 //                Debug.Log(weapon.name + "is not " + weaponSwitcher.CurrentWeapon.name);
                 weapon.AudioSource.Stop();
-                        PlayerMovement.Instance.SetSprintingSpeed(1);
+                        //PlayerMovement.Instance.SetSprintingSpeed(1);
 
 //                Debug.Log("Stopped playing");
                 break;
@@ -101,7 +101,7 @@ public class WeaponReloader : MonoBehaviour
 
             weapon.CanAttack = couldShootBefore;
         }
-        PlayerMovement.Instance.SetSprintingSpeed(1);
+       // PlayerMovement.Instance.SetSprintingSpeed(1);
         ResetUI();
         currentlyReloading = false;
         weaponZoom.CanZoom = true;

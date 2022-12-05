@@ -2,322 +2,429 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-public class PlayerMovement : MonoBehaviour
+using UnityEngine.InputSystem;
+
+[RequireComponent(typeof(PlayerCamera))]
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(CapsuleCollider))]
+[RequireComponent(typeof(AudioSource))]
+public class PlayerMovement : MonoBehaviour 
 {
-
-    [Header("Movement Values")]
-    [SerializeField] float movingFrontSpeed;
-    [SerializeField] float movingBackSpeed;
-    [SerializeField] float movingSidesSpeed;
-    private float defaultSprintValue;
-    [SerializeField] float sprintMultiplier;
-    [SerializeField] float jumpStrength;
-    [SerializeField] float staminaLength;
-    [SerializeField] float staminaRegenerartionSpeed;
-    public float currentStamina;
-    public float CurrentStamina {get{return currentStamina;}}
-    public float StaminaLength {get{return staminaLength;}}
-
-
-
-    [Header("Binds")]
-    [SerializeField] KeyCode sprintKey = KeyCode.LeftShift;
-    [SerializeField] KeyCode jumpKey = KeyCode.Space;
-
-    [SerializeField] KeyCode crouchKey = KeyCode.LeftControl;
-
+    
     [Header("Components")]
-    [SerializeField] Camera _mCamera;
+    [SerializeField] PlayerCamera playerCamera;
     [SerializeField] Rigidbody rb;
     [SerializeField] CapsuleCollider capsuleCollider;
+    [Tooltip("Ground collision detector")]
+    [SerializeField] Transform feet;
     [SerializeField] AudioSource breathingSource;
-    [SerializeField] LayerMask groundLayer;
-    [Header("Camera Settings")]
+    [Header("Movement Settings")]
+
+    [Header("Direction speed")]
+    [Tooltip("W speed")]
+    [SerializeField] float movingFrontSpeed;
+    [Tooltip("S speed")]
+    [SerializeField] float movingBackSpeed;
+    [Tooltip("A/D speed")]
+    [SerializeField] float movingSidesSpeed;
+
+    [Header("Base")]
+    [Tooltip("How fast player speed will increase")]
+    [SerializeField] float baseSpeedForce;
+    [Tooltip("Maximum speed that player can reach")]
+    [SerializeField] float baseMoveSpeed;
+
+    [Header("Sprint")]
+    [Tooltip("baseSpeedForce is multiplied by this value")]
+    [SerializeField] float sprintSpeedForce;
+    [Tooltip("baseMoveSpeed is multiplied by this value")]
+    [SerializeField] float sprintMoveSpeed;
+
+    [Header("Crouch")]
+    [Tooltip("baseSpeedForce is multiplied by this value")]
+    [SerializeField] float crouchSpeedForce;
+    [Tooltip("baseMoveSpeed is multiplied by this value")]
+    [SerializeField] float crouchMoveSpeed;
+
+    [Header("Jump and fall")]
+    [Tooltip("baseSpeedForce is multiplied by this value")]
+    [SerializeField] float jumpSpeedForce;
+    [Tooltip("baseMoveSpeed is multiplied by this value")]
+    [SerializeField] float jumpMoveSpeed;
+    [Tooltip("How high player can jump")]
+    [SerializeField] float jumpHeight;
+    [SerializeField] float fallMultiplier;
+    [Header("Stamina")]
+    [SerializeField] float staminaLength;
+    public float StaminaLength { get { return staminaLength; } }
+    [SerializeField] float staminaRegenerartionSpeed;
+
+
+    private float currentSpeedForce;
+    private float currentMoveLimit;
+    [HideInInspector] public float currentStamina;
+    public float CurrentStamina { get { return currentStamina; } }
+    [Header("Drag")]
+    [SerializeField] float groundDrag;
+    [SerializeField] float airDrag;
+
+    [Header("Slope")]
+    [SerializeField] float maxSlopeAngle;
+    private RaycastHit slopeHit;
+    [Header("LayerMask")]
+    public LayerMask groundLayer;
+
+    [Header("Collider Height")]
     [SerializeField] float defaultHeight;
     [SerializeField] float crouchHeight;
+    [Tooltip("How long is crouch transition")]
     [SerializeField] float crouchDuration;
     float crouchVelocity;
-
-
-
-    [Header("Mouse Values")]
-    [Tooltip("This one is truly for sensivity in game that players are allowed to change via options")]
-    [SerializeField] Vector2 defaultSensitivity;
-    public float xSensitivity;
-    public float ySensitivity;
-    [Tooltip("Default sensivity multiplier,better not change!")]
-    public float defaultMouseSensivityMultiplier = 100f;
-    float xMouse, yMouse;
-    float xRotation;
-    float maxXAngle = 50f;
-
-
-
-
-    [Header("Other meaningfull movement stuff")]
-    [SerializeField] bool crouch = false;
-    public bool Crouch{get{return crouch;}}
-    [SerializeField] bool jumping = false;
-    [SerializeField] bool moving = false;
-    public bool Moving{get{return moving;}}
-    [SerializeField] bool sprinting = false;
+    private float currentHeight;
+    public MovementActions movementActions;
+    private bool crouch = false;
+    public bool Crouch { get { return crouch; } }
+    [HideInInspector] public bool jumping = false;
+    private bool moving = false;
+    public bool Moving { get { return moving; } }
+    private bool sprinting = false;
     private bool canSprinting = true;
-    public bool Sprinting{get{return sprinting;}}
-    [SerializeField] bool isGrounded = false;
-    public bool IsGrounded{get{return isGrounded;}}
-    [SerializeField] bool canMove = true;
-    Coroutine crouchTransition;
-    float horizontalMove;
-    float verticalMove;
-    public static PlayerMovement Instance {get; private set;}
+    private bool isExhausted = false;
+    public bool Sprinting { get { return sprinting; } }
+    private bool isGrounded = false;
+    public bool IsGrounded{get{return isGrounded;} set{isGrounded = value;}}
+    private Coroutine crouchTransition;
+    private float horizontalMove;
+    private float verticalMove;
+    private Vector3 movementDirection;
+    public static PlayerMovement Instance { get; private set; }
     public static Action onSprinting;
-    private void Awake() {
-        if(Instance!= this && Instance != null)
+    public PlayerControls playerControls;
+    private void Awake()
+    {
+        if (Instance != this && Instance != null)
         {
             Destroy(this);
-        }else
+        }
+        else
         {
             Instance = this;
         }
+        playerControls = new PlayerControls();
+        InitActions();
+    }
+    private void OnEnable()
+    {
+        playerControls.Enable();
     }
     void Start()
     {
-        if(capsuleCollider == null) gameObject.GetComponent<CapsuleCollider>();
-        if(rb == null) GetComponent<Rigidbody>();
-        if(_mCamera == null) PlayerCamera.instance.gameObject.GetComponent<Camera>();
-        Cursor.lockState = CursorLockMode.Locked;
+        if (capsuleCollider == null || rb == null || playerCamera == null || breathingSource == null || feet == null)
+            Debug.LogError(this.GetType().Name + " not all components attached.");
+
         capsuleCollider.height = defaultHeight;
+        feet.localPosition = new Vector3(0,-capsuleCollider.height/2,0);
         currentStamina = staminaLength;
-        defaultSprintValue = sprintMultiplier;
+        
+        SetSpeed();
     }
+
 
     void Update()
     {
-        CheckSlope();
-        ProcessCrouch();
-        Jumping();
-        if(rb.velocity.y > 0)
+        if(rb.velocity.y < 0)
         {
-            isGrounded = false;
+            rb.velocity += new Vector3(0,Physics.gravity.y * (fallMultiplier-1)*Time.deltaTime,0);
         }
-
         
+        if (playerControls.Player.Sprint.IsPressed() && moving && isGrounded && !isExhausted)
+        {
+            
+            //if (currentSpeedForce != baseSpeedForce * sprintSpeedForce) SetSpeed(sprintSpeedForce);
+            
+            if (currentStamina > 0.0f)
+            {
+                currentStamina -= Time.deltaTime;
+               // onSprinting();
+            }
+            else
+            {
+                Debug.Log("Exhaustion!");
+                Exhaustion(true);
+                OnSprintingCanceled();
+            }
+        }
+        //If player was exhausted ,but stamina is regenerated fully variable isExhausted is set to false
+        else if (currentStamina < staminaLength)
+        {
+            currentStamina += Time.deltaTime * staminaRegenerartionSpeed;
+            if (currentStamina >= staminaLength)
+            {
+                currentStamina = staminaLength;
+                if (isExhausted == true)
+                {
+                    Exhaustion(false);
+                }
+            }
+        }
+        
+        DragControl();
+        SpeedController();
+
     }
-    private void FixedUpdate() {
+    private void FixedUpdate()
+    {
         Movement();
     }
-    private void LateUpdate() {
-        CameraMouseLook();
-    }
-    void CameraMouseLook()
+    private void OnDisable()
     {
-        xMouse = (Input.GetAxis("Mouse X") * xSensitivity * Time.deltaTime) * defaultMouseSensivityMultiplier;
-        yMouse = (Input.GetAxis("Mouse Y") * ySensitivity * Time.deltaTime) * defaultMouseSensivityMultiplier;
-        
-        xRotation -= yMouse;
-        xRotation = Mathf.Clamp(xRotation, -maxXAngle, maxXAngle);
-        _mCamera.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-        transform.Rotate(Vector3.up * xMouse,Space.Self);
+        playerControls.Disable();
     }
     void Movement()
     {
-       
-            //Vertical - Z-axis
-            verticalMove = Input.GetAxis("Vertical");
-            verticalMove = verticalMove > 0 ? verticalMove *= movingFrontSpeed : verticalMove < 0 ? verticalMove *= movingBackSpeed : 0;
 
-            //Horizontal - X-axis
-            horizontalMove = Input.GetAxis("Horizontal") * movingSidesSpeed;
-            if(verticalMove != 0 || horizontalMove != 0)
-            {
-                moving = true;
-            }else
-            {
-                moving = false;
-            }
+        if (verticalMove != 0 || horizontalMove != 0)
+        {
+            moving = true;
+        }
+        else
+        {
+            moving = false;
+        }
+        // Debug.Log($"jumping:{!jumping}");
+        // Debug.Log($"moving:{!moving}");
+        // Debug.Log($"isGrounded:{isGrounded}");
 
-            //Get local camera direction ,by using forward we get space ahead of us , by right we get on side and inverse those vectors to player direction
-            Vector3 cameraForward = transform.InverseTransformVector(_mCamera.transform.forward);
-            Vector3 cameraSides = transform.InverseTransformVector(_mCamera.transform.right);
-        
-            // this is changed to 0 to get rid of going unnecesary down or up 
-            cameraForward.y = 0;
-            cameraSides.y = 0;
-            cameraForward = cameraForward.normalized;
-            cameraSides = cameraSides.normalized;
+       // if(!moving && !jumping && isGrounded) rb.Sleep();
+        movementDirection = playerCamera.orientation.forward * horizontalMove + playerCamera.orientation.right * verticalMove;
 
-            Vector3 position = cameraForward * verticalMove + cameraSides * horizontalMove;
-
-            //Checking for sprint
-            if(moving == true && CheckGround())
-            {
-                
-                if (Input.GetKey(sprintKey) && currentStamina > 0.0f  && (sprinting == false && canSprinting == true))
-                {
-                    sprinting = true;
-                    //Debug.Log("Clicked sprintKey");
-                    onSprinting();
-                }
-
-                if(sprinting == true && Input.GetKey(sprintKey))
-                {
-                    if(currentStamina > 0.0f)
-                    {
-                        position *= sprintMultiplier;
-                     //   Debug.Log(currentStamina);
-                        currentStamina -= Time.deltaTime;
-                    }
-                    else
-                    {
-                        sprinting = false;
-                        canSprinting = false;
-                        breathingSource.enabled = true;
-                    }
-                }
-                else
-                {
-                    sprinting = false;
-                }
-            }
-            else
-            {
-                sprinting = false;
-            }
-            
-            if(sprinting == false && currentStamina < staminaLength)
-            {
-                currentStamina += Time.deltaTime * staminaRegenerartionSpeed;
-                if(currentStamina >= staminaLength)
-                {
-                    currentStamina = staminaLength;
-                    canSprinting = true;
-                    breathingSource.enabled = false;
-
-                }
-            }
-
-            if(crouch == true)
-            {
-                position /= 2f;
-            }
-            
-            // multiplying it by Time.deltaTime to make it frame-independent
-            //velocity.y += gravity * Time.deltaTime;
-            
-            //Moving it
-
-            //frame independent
-        
-            transform.Translate(position * Time.fixedDeltaTime);
-            // physics of free fall
-            /*if(isGrounded == false)
-            {
-                //transform.Translate(velocity * Time.deltaTime);
-
-            }*/
-
-        
+        if(isGrounded && OnSlope())
+        {
+            rb.AddForce(GetSlopeMoveDirection() * currentSpeedForce,ForceMode.Acceleration);
+            if(rb.velocity.y > 0 || rb.velocity.y < 0) rb.AddForce(Vector3.down*80f, ForceMode.Force);
+        } 
+        else if(isGrounded && !OnSlope()) rb.AddForce(movementDirection.normalized * currentSpeedForce,ForceMode.Acceleration);
+        else if(!isGrounded && !OnSlope()) rb.AddForce(movementDirection.normalized * currentSpeedForce, ForceMode.Acceleration);
     }
 
-
-
-    void Jumping()
+    public void SpeedController()
     {
-        if(Input.GetKeyDown(jumpKey) && CheckGround())
+        Vector3 currentMoveSpeed = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+        if (currentMoveSpeed.magnitude >= currentMoveLimit)
         {
-                // formula 
-            rb.AddForce(new Vector3(0,Mathf.Sqrt(jumpStrength * -2 * Physics.gravity.y),0),ForceMode.Impulse);
+            Vector3 limitCurrentMoveSpeed = currentMoveSpeed.normalized * currentMoveLimit;
+            rb.velocity = new Vector3(limitCurrentMoveSpeed.x, rb.velocity.y, limitCurrentMoveSpeed.z);
+        }
+    }
+
+    public void OnMove(InputAction.CallbackContext ctx)
+    {
+        if (!jumping && !crouch && !sprinting && currentSpeedForce != baseSpeedForce) SetSpeed();
+        //Debug.Log("OnMove started");
+
+        Vector2 value = ctx.ReadValue<Vector2>();
+        //Debug.Log(value);
+
+        verticalMove = value.x;
+        verticalMove = verticalMove > 0 ? verticalMove *= movingFrontSpeed : verticalMove < 0 ? verticalMove *= movingBackSpeed : 0;
+        //Debug.Log("VerticalMove:"+verticalMove);
+
+        horizontalMove = value.y;
+        horizontalMove *= movingSidesSpeed;
+        // Debug.Log("HorizontalMove:"+horizontalMove);
+    }
+    public void OnJump(InputAction.CallbackContext ctx)
+    {
+        if (isGrounded)
+        {
+            movementActions = MovementActions.JUMPING;
             jumping = true;
-            //isGrounded = false;
-            // velocity.y = Mathf.Sqrt(jumpStrength * -2 * gravity);
-        
+            SetSpeed(jumpSpeedForce);
+            Jump();
         }
-        
     }
-    void ProcessCrouch()
+    private void Jump() => rb.AddForce(new Vector3(0, Mathf.Sqrt(-2.0f * Physics2D.gravity.y * jumpHeight), 0), ForceMode.Impulse);
+    public void OnSprint(InputAction.CallbackContext ctx)
     {
-        //Debug.Log(crouchTransition);
-        if (Input.GetKeyDown(crouchKey) && crouchTransition == null && isGrounded == true)
+        if (ctx.started)
         {
-            crouch = !crouch;
-
-            if (crouch == true)
-            {
-                Debug.Log("Crouching!");
-                crouchTransition = StartCoroutine(CrouchTransition(crouchHeight, crouchDuration));
-            }
-            else
-            {
-                crouchTransition = StartCoroutine(CrouchTransition(defaultHeight, crouchDuration));
-
-            }
+            OnSprintingStart();
         }
+        else if (ctx.canceled)
+        {
+
+            OnSprintingCanceled();
+        }
+    }
+    public void OnSprintingStart()
+    {
+        Debug.Log("Sprint Started");
+
+        //If player isn't exhausted (exhaustion state is triggered when player is sprinting to 0 stamina) sprint is triggered
+        if (currentStamina > 0.0f && !isExhausted)
+        {
+            if (!jumping && !crouch) SetSpeed(sprintSpeedForce);
+            sprinting = true;
+            onSprinting();
+        }
+    }
+    public void OnSprintingCanceled()
+    {
+        Debug.Log("Sprint canceled");
+        if (sprinting)
+        {
+            sprinting = false;
+            if (!crouch && !jumping) SetSpeed();
+        }
+
+    }
+    public void OnCrouch(InputAction.CallbackContext ctx)
+    {
+        if (ctx.started)
+        {
+            OnCrouchStarted();
+           //Debug.Log("started");
+        }
+
+        if (ctx.canceled)
+        {
+            OnCrouchCanceled();
+            //Debug.Log("canceled");
+            
+        }
+    }
+    public void OnCrouchStarted()
+    {
+        if (movementActions != MovementActions.JUMPING)
+        {
+            movementActions = MovementActions.CROUCHING;
+            crouch = true;
+            SetSpeed(crouchSpeedForce);
+            if (crouchTransition != null) StopCoroutine(crouchTransition);
+            crouchTransition = StartCoroutine(CrouchTransition(crouchHeight, crouchDuration));
+        }
+    }
+    public void OnCrouchCanceled()
+    {
+        crouch = false;
+        if(capsuleCollider.height != defaultHeight) capsuleCollider.height = defaultHeight;
+        feet.localPosition = new Vector3(0,-capsuleCollider.height/2,0);
+        SetSpeed();
     }
     IEnumerator CrouchTransition(float desiredValue, float crouchDur)
     {
-        float durationCrouch = crouchDur;
         float timeElapsed = 0f;
-        while (timeElapsed <= durationCrouch)
+        float currentHeight = capsuleCollider.height;
+        while (timeElapsed <= crouchDur)
         {
-            capsuleCollider.height = Mathf.Lerp(capsuleCollider.height, desiredValue, timeElapsed / durationCrouch);
+            if(!crouch)
+            {
+                yield break;
+            } 
+            float currValue = Mathf.Lerp(currentHeight, desiredValue, timeElapsed / crouchDur);
+            capsuleCollider.height = currValue;
+            feet.localPosition = new Vector3(0,-currValue/2,0);
             timeElapsed += Time.deltaTime;
             yield return null;
         }
-        capsuleCollider.height = desiredValue;
+        capsuleCollider.height = desiredValue; 
+        feet.localPosition = new Vector3(0,-capsuleCollider.height/2,0);
         crouchTransition = null;
     }
 
-    // private void OnCollisionStay(Collision other) {
-    //     if(rb.velocity.y == 0)
-    //         isGrounded=true;
-    // }
-    private bool CheckGround()
+   
+    
+    private bool OnSlope()
     {
-        RaycastHit groundHit;
-        if(Physics.Raycast(origin:capsuleCollider.bounds.center,direction:Vector3.down,maxDistance:capsuleCollider.bounds.extents.y + 0.1f,layerMask:groundLayer,hitInfo:out groundHit))
+        if(Physics.Raycast(transform.position,Vector3.down,out slopeHit, capsuleCollider.height * 0.5f + 0.3f,layerMask:groundLayer))
         {
-            jumping = false;
-            return true;
+            float angle = Vector3.Angle(Vector3.up,slopeHit.normal);
+            return angle < maxSlopeAngle && angle != 0;
         }
         return false;
+    }
+    private Vector3 GetSlopeMoveDirection()
+    {
+        return Vector3.ProjectOnPlane(movementDirection,slopeHit.normal).normalized;
     }
     private void CheckSlope()
     {
         RaycastHit slopeHit;
-        if(Physics.Raycast(capsuleCollider.bounds.center,Vector3.down,out slopeHit,capsuleCollider.bounds.extents.y + 0.1f))
+        if (Physics.Raycast(capsuleCollider.bounds.center, Vector3.down, out slopeHit, capsuleCollider.bounds.extents.y + 0.1f))
         {
-            Debug.Log(Vector3.Angle(Vector3.up,slopeHit.normal));
+            //    Debug.Log(Vector3.Angle(Vector3.up,slopeHit.normal));
         }
     }
-    private void OnCollisionStay(Collision other) {
-        // Debug.Log(other.gameObject.layer.);
-        // Debug.Log(groundLayer + ":"+groundLayer.ToString());
-        // if(other.gameObject.layer == groundLayer.value)
-        //     isGrounded = true;
-    }
-    private void OnDrawGizmos() {
-        Vector3 pos = new Vector3(capsuleCollider.bounds.center.x,capsuleCollider.bounds.min.y,capsuleCollider.bounds.center.z);
-        Debug.DrawRay(pos,Vector3.down,Color.blue);
+
+    private void OnDrawGizmos()
+    {
+        Vector3 pos = new Vector3(capsuleCollider.bounds.center.x, capsuleCollider.bounds.min.y, capsuleCollider.bounds.center.z);
+        Debug.DrawRay(pos, Vector3.down, Color.blue);
     }
     public void RestoreStamina()
     {
         currentStamina = staminaLength;
         onSprinting();
     }
-    ///<summary>Set value of sprinting speed beetwen 0 to 1, 0 is equal to minimum acceptable and 1 is equal to maximum acceptable value. </summary>
-    public void SetSprintingSpeed(float value)
+
+    ///<summary>Set value of speed - default is 1 which is equal to normal walk.Value can't be equal 0.</summary>
+    public void SetMoveBasedOnState()
     {
-        sprintMultiplier = defaultSprintValue * value;
+        //If sprint is pressed ,sprinting start will execute
+        if(playerControls.Player.Sprint.IsPressed())
+        {
+            OnSprintingStart();
+        }
+        //If crouch is pressed ,crouching start will execute
+        else if(playerControls.Player.Crouch.IsPressed())
+        {
+            OnCrouchStarted();
+        }
+        else if(jumping)
+        {
+            SetSpeed(jumpMoveSpeed);
+        }
+        //If any of above conditions isn't fullfiled ,move is going to default state 
+        else
+        {
+            SetSpeed();
+        }
     }
-    public void setCustomMouseValues(float x,float y)
+    private void DragControl()
     {
-        xSensitivity = x;
-        ySensitivity = y;
+        if(isGrounded) rb.drag = groundDrag;
+        else rb.drag = airDrag;
     }
-    public void setDefaultMouseValues()
+    private void SetSpeed(float value = 1)
     {
-        xSensitivity = defaultSensitivity.x;
-        ySensitivity = defaultSensitivity.y;
+        if (value == 0) Debug.LogWarning($"{value} can't be equal to 0 !");
+        else
+        {
+            currentSpeedForce = baseSpeedForce * value;
+            currentMoveLimit = baseMoveSpeed * value;
+        }
+    }
+    public void Exhaustion(bool value) => SetExhaustion(value);
+    public void SetExhaustion(bool value)
+    {
+        isExhausted = value;
+        breathingSource.enabled = value;
+    }
+
+    public void InitActions()
+    {
+
+        playerControls.Player.Move.started += OnMove;
+        playerControls.Player.Move.performed += OnMove;
+        playerControls.Player.Move.canceled += OnMove;
+
+        playerControls.Player.Sprint.started += OnSprint;
+        playerControls.Player.Sprint.canceled += OnSprint;
+
+        playerControls.Player.Jump.started += OnJump;
+
+        playerControls.Player.Crouch.started += OnCrouch;
+        playerControls.Player.Crouch.canceled += OnCrouch;
     }
 }
 

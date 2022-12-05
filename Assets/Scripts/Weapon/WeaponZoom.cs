@@ -80,14 +80,14 @@ public class WeaponZoom : MonoBehaviour
         isTryingToZoom = false;
         StartCoroutine(weaponToZoom(defaultWeaponPosition,weaponZoomDuration,false));
         StartCoroutine(cameraToZoom(camerasController.DefaultFov,cameraZoomDuration));
-        playerController.setDefaultMouseValues();
+   //     playerController.setDefaultMouseValues();
     }
     private void resetOnChangeWeapon()
     {
         gameObject.transform.localRotation = Quaternion.Euler(0,0,0);
         transform.localPosition = defaultWeaponPosition;
         CamerasController.Instance.setDefaultFov();
-        PlayerMovement.Instance.setDefaultMouseValues();
+ //       PlayerMovement.Instance.setDefaultMouseValues();
 
     }
     private void ZoomIn()
@@ -99,7 +99,7 @@ public class WeaponZoom : MonoBehaviour
 
         StartCoroutine(weaponToZoom(weaponZoomInPosition,weaponZoomDuration,true));
         StartCoroutine(cameraToZoom(zoomInField,cameraZoomDuration));
-        playerController.setCustomMouseValues(zoomInSensitivity.x,zoomInSensitivity.y);
+ //       playerController.setCustomMouseValues(zoomInSensitivity.x,zoomInSensitivity.y);
 
     }
 

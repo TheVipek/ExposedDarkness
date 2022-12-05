@@ -8,16 +8,19 @@ public class StepEffect : MonoBehaviour
     [SerializeField] List<AudioClip> rockSounds;
     [SerializeField] List<AudioClip> gravelSounds;
     [SerializeField] List<AudioClip> grassSounds;
-
-
     [SerializeField] AudioSource audioSource;
     private TerrainGroundDetector terrainGroundDetector;
     [SerializeField] float distanceBetweenStep = 1f;
     Vector3 lastStep;
-    void Awake()
+    private PlayerMovement playerMovement;
+    private void Awake()
     {
         terrainGroundDetector = new TerrainGroundDetector();
         lastStep = new Vector3(transform.position.x,transform.position.y,transform.position.z);
+    }
+    private void Start() {
+        playerMovement = PlayerMovement.Instance;
+        
     }
     private void Update() {
 
@@ -25,7 +28,7 @@ public class StepEffect : MonoBehaviour
         {
             //Debug.Log(Vector3.Distance(lastStep,transform.position) + ", " + distanceBetweenStep);
             //Debug.Log(PlayerMovement.instance.IsGrounded);
-            if(PlayerMovement.Instance.IsGrounded == true)
+            if(playerMovement.IsGrounded == true)
             {
                 StepSound();
                 lastStep = transform.position;
