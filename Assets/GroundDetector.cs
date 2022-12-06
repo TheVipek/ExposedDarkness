@@ -10,10 +10,15 @@ public class GroundDetector : MonoBehaviour
         // if(playerMovement == null) Debug.LogWarning($"Player movement is null: {playerMovement} in {GetType()}.");
         playerMovement = PlayerMovement.Instance;
     }
+    private void OnTriggerEnter(Collider other) {
+        int othLayer = 1<<other.gameObject.layer;
+        if(playerMovement.IsGrounded == false && playerMovement.groundLayer.value == othLayer && playerMovement.movementActions == MovementActions.JUMPING)
+            playerMovement.movementActions = MovementActions.DEFAULT;
+    }
      private void OnTriggerStay(Collider other) {
         int othLayer = 1<< other.gameObject.layer;
         // Debug.Log($"groundLayer:{playerMovement.groundLayer.value} | otherLayer:{othLayer}");
-        if(playerMovement.IsGrounded == false && (playerMovement.groundLayer.value == othLayer))
+        if(playerMovement.IsGrounded == false && playerMovement.groundLayer.value == othLayer)
         {
             Debug.Log("Grounded!");
             playerMovement.IsGrounded = true;

@@ -35,22 +35,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float baseMoveSpeed;
 
     [Header("Sprint")]
-    [Tooltip("baseSpeedForce is multiplied by this value")]
-    [SerializeField] float sprintSpeedForce;
-    [Tooltip("baseMoveSpeed is multiplied by this value")]
-    [SerializeField] float sprintMoveSpeed;
-
+    [Tooltip("baseSpeedForce and baseMoveSpeed is multiplied by this value")]
+    [SerializeField] float baseSprintMultiplier;
     [Header("Crouch")]
-    [Tooltip("baseSpeedForce is multiplied by this value")]
-    [SerializeField] float crouchSpeedForce;
-    [Tooltip("baseMoveSpeed is multiplied by this value")]
-    [SerializeField] float crouchMoveSpeed;
-
+    [Tooltip("baseSpeedForce and baseMoveSpeed is multiplied by this value")]
+    [SerializeField] float baseCrouchMultiplier;
     [Header("Jump and fall")]
-    [Tooltip("baseSpeedForce is multiplied by this value")]
-    [SerializeField] float jumpSpeedForce;
-    [Tooltip("baseMoveSpeed is multiplied by this value")]
-    [SerializeField] float jumpMoveSpeed;
+    [Tooltip("baseSpeedForce and baseMoveSpeed is multiplied by this value")]
+    [SerializeField] float baseJumpMultiplier;
     [Tooltip("How high player can jump")]
     [SerializeField] float jumpHeight;
     [SerializeField] float fallMultiplier;
@@ -71,6 +63,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Slope")]
     [SerializeField] float maxSlopeAngle;
     private RaycastHit slopeHit;
+
     [Header("LayerMask")]
     public LayerMask groundLayer;
 
@@ -81,7 +74,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float crouchDuration;
     float crouchVelocity;
     private float currentHeight;
+    
+    [Header("Current MovementAction")]
     public MovementActions movementActions;
+
+
+
     private bool crouch = false;
     public bool Crouch { get { return crouch; } }
     [HideInInspector] public bool jumping = false;
@@ -94,12 +92,15 @@ public class PlayerMovement : MonoBehaviour
     private bool isGrounded = false;
     public bool IsGrounded{get{return isGrounded;} set{isGrounded = value;}}
     private Coroutine crouchTransition;
-    private float horizontalMove;
-    private float verticalMove;
-    private Vector3 movementDirection;
+
+    private Vector3 move;
+    private Vector3 moveMultiplier;
+    private Vector3 moveDirection;
+    
     public static PlayerMovement Instance { get; private set; }
     public static Action onSprinting;
-    public PlayerControls playerControls;
+    private PlayerControls playerControls;
+
     private void Awake()
     {
         if (Instance != this && Instance != null)
@@ -125,8 +126,6 @@ public class PlayerMovement : MonoBehaviour
         capsuleCollider.height = defaultHeight;
         feet.localPosition = new Vector3(0,-capsuleCollider.height/2,0);
         currentStamina = staminaLength;
-        
-        SetSpeed();
     }
 
 
@@ -139,13 +138,11 @@ public class PlayerMovement : MonoBehaviour
         
         if (playerControls.Player.Sprint.IsPressed() && moving && isGrounded && !isExhausted)
         {
-            
-            //if (currentSpeedForce != baseSpeedForce * sprintSpeedForce) SetSpeed(sprintSpeedForce);
+            if(!sprinting) OnSprintingStart();
             
             if (currentStamina > 0.0f)
             {
                 currentStamina -= Time.deltaTime;
-               // onSprinting();
             }
             else
             {
@@ -168,9 +165,9 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         
+
         DragControl();
         SpeedController();
-
     }
     private void FixedUpdate()
     {
@@ -183,7 +180,7 @@ public class PlayerMovement : MonoBehaviour
     void Movement()
     {
 
-        if (verticalMove != 0 || horizontalMove != 0)
+        if (move.x != 0 || move.z != 0)
         {
             moving = true;
         }
@@ -191,47 +188,54 @@ public class PlayerMovement : MonoBehaviour
         {
             moving = false;
         }
+     //   if(!moving && isGrounded) rb.Sleep();
         // Debug.Log($"jumping:{!jumping}");
         // Debug.Log($"moving:{!moving}");
         // Debug.Log($"isGrounded:{isGrounded}");
 
        // if(!moving && !jumping && isGrounded) rb.Sleep();
-        movementDirection = playerCamera.orientation.forward * horizontalMove + playerCamera.orientation.right * verticalMove;
+        moveDirection = playerCamera.orientation.forward * move.z + playerCamera.orientation.right * move.x;
 
         if(isGrounded && OnSlope())
         {
             rb.AddForce(GetSlopeMoveDirection() * currentSpeedForce,ForceMode.Acceleration);
             if(rb.velocity.y > 0 || rb.velocity.y < 0) rb.AddForce(Vector3.down*80f, ForceMode.Force);
         } 
-        else if(isGrounded && !OnSlope()) rb.AddForce(movementDirection.normalized * currentSpeedForce,ForceMode.Acceleration);
-        else if(!isGrounded && !OnSlope()) rb.AddForce(movementDirection.normalized * currentSpeedForce, ForceMode.Acceleration);
+        else if(isGrounded && !OnSlope()) rb.AddForce(moveDirection* currentSpeedForce, ForceMode.Acceleration);
+        else if(!isGrounded && !OnSlope()) rb.AddForce(moveDirection * currentSpeedForce, ForceMode.Acceleration);
     }
 
     public void SpeedController()
     {
-        Vector3 currentMoveSpeed = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-        if (currentMoveSpeed.magnitude >= currentMoveLimit)
+        if(OnSlope())
         {
-            Vector3 limitCurrentMoveSpeed = currentMoveSpeed.normalized * currentMoveLimit;
-            rb.velocity = new Vector3(limitCurrentMoveSpeed.x, rb.velocity.y, limitCurrentMoveSpeed.z);
+            if(rb.velocity.magnitude > currentMoveLimit) rb.velocity = rb.velocity.normalized * currentMoveLimit;
+        }
+        else
+        {
+            Vector3 currentMoveSpeed = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+            if (currentMoveSpeed.magnitude >= currentMoveLimit)
+            {
+                Vector3 limitCurrentMoveSpeed = currentMoveSpeed.normalized * currentMoveLimit;
+                rb.velocity = new Vector3(limitCurrentMoveSpeed.x, rb.velocity.y, limitCurrentMoveSpeed.z);
+            }
+
         }
     }
 
     public void OnMove(InputAction.CallbackContext ctx)
     {
-        if (!jumping && !crouch && !sprinting && currentSpeedForce != baseSpeedForce) SetSpeed();
+        //Making sure that player is moving with correct speed
+        if (movementActions == MovementActions.DEFAULT && currentSpeedForce != baseSpeedForce) SetSpeed();
         //Debug.Log("OnMove started");
 
         Vector2 value = ctx.ReadValue<Vector2>();
         //Debug.Log(value);
+        //                x - vertical, z - horizontal
+        move = new Vector3(value.x,0,value.y).normalized;
 
-        verticalMove = value.x;
-        verticalMove = verticalMove > 0 ? verticalMove *= movingFrontSpeed : verticalMove < 0 ? verticalMove *= movingBackSpeed : 0;
-        //Debug.Log("VerticalMove:"+verticalMove);
-
-        horizontalMove = value.y;
-        horizontalMove *= movingSidesSpeed;
-        // Debug.Log("HorizontalMove:"+horizontalMove);
+        move.x *= movingSidesSpeed;
+        move.z = move.z > 0 ? move.z *= movingFrontSpeed : move.z < 0 ? move.z *= movingBackSpeed : 0;
     }
     public void OnJump(InputAction.CallbackContext ctx)
     {
@@ -239,7 +243,7 @@ public class PlayerMovement : MonoBehaviour
         {
             movementActions = MovementActions.JUMPING;
             jumping = true;
-            SetSpeed(jumpSpeedForce);
+            SetSpeed(baseJumpMultiplier);
             Jump();
         }
     }
@@ -261,23 +265,63 @@ public class PlayerMovement : MonoBehaviour
         Debug.Log("Sprint Started");
 
         //If player isn't exhausted (exhaustion state is triggered when player is sprinting to 0 stamina) sprint is triggered
-        if (currentStamina > 0.0f && !isExhausted)
+        if(movementActions == MovementActions.DEFAULT)
         {
-            if (!jumping && !crouch) SetSpeed(sprintSpeedForce);
-            sprinting = true;
-            onSprinting();
+            if (currentStamina > 0.0f && !isExhausted)
+            {
+                movementActions = MovementActions.SPRINTING;
+                SetSpeed(baseSprintMultiplier);
+                sprinting = true;
+                onSprinting();
+            }
         }
     }
     public void OnSprintingCanceled()
     {
-        Debug.Log("Sprint canceled");
-        if (sprinting)
+        if(movementActions == MovementActions.SPRINTING)
         {
-            sprinting = false;
-            if (!crouch && !jumping) SetSpeed();
+            if (sprinting)
+            {
+                sprinting = false;
+                movementActions = MovementActions.DEFAULT;
+                SetSpeed();
+            }
         }
 
     }
+    
+    public void OnSprintingHolded()
+    {
+        if (moving && IsGrounded && !isExhausted)
+        {
+            if(!sprinting) OnSprintingStart();
+
+            if(sprinting)
+            {
+                if (currentStamina > 0.0f) currentStamina -= Time.deltaTime;
+                else
+                {
+                    Debug.Log("Exhaustion!");
+                    Exhaustion(true);
+                    OnSprintingCanceled();
+                }
+            }
+        }
+        //If player was exhausted ,but stamina is regenerated fully variable isExhausted is set to false
+        else if (currentStamina < staminaLength)
+        {
+            currentStamina += Time.deltaTime * staminaRegenerartionSpeed;
+            if (currentStamina >= staminaLength)
+            {
+                currentStamina = staminaLength;
+                if (isExhausted == true)
+                {
+                    Exhaustion(false);
+                }
+            }
+        }
+    }
+    
     public void OnCrouch(InputAction.CallbackContext ctx)
     {
         if (ctx.started)
@@ -299,7 +343,7 @@ public class PlayerMovement : MonoBehaviour
         {
             movementActions = MovementActions.CROUCHING;
             crouch = true;
-            SetSpeed(crouchSpeedForce);
+            SetSpeed(baseCrouchMultiplier);
             if (crouchTransition != null) StopCoroutine(crouchTransition);
             crouchTransition = StartCoroutine(CrouchTransition(crouchHeight, crouchDuration));
         }
@@ -307,6 +351,7 @@ public class PlayerMovement : MonoBehaviour
     public void OnCrouchCanceled()
     {
         crouch = false;
+        movementActions = MovementActions.DEFAULT;
         if(capsuleCollider.height != defaultHeight) capsuleCollider.height = defaultHeight;
         feet.localPosition = new Vector3(0,-capsuleCollider.height/2,0);
         SetSpeed();
@@ -322,13 +367,15 @@ public class PlayerMovement : MonoBehaviour
                 yield break;
             } 
             float currValue = Mathf.Lerp(currentHeight, desiredValue, timeElapsed / crouchDur);
+            Debug.Log($"currValue: {currValue}");
+            Debug.Log($"timeElapsed: {timeElapsed}");
             capsuleCollider.height = currValue;
             feet.localPosition = new Vector3(0,-currValue/2,0);
             timeElapsed += Time.deltaTime;
             yield return null;
         }
         capsuleCollider.height = desiredValue; 
-        feet.localPosition = new Vector3(0,-capsuleCollider.height/2,0);
+        feet.localPosition = new Vector3(0,-capsuleCollider.height/2 ,0);
         crouchTransition = null;
     }
 
@@ -345,7 +392,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private Vector3 GetSlopeMoveDirection()
     {
-        return Vector3.ProjectOnPlane(movementDirection,slopeHit.normal).normalized;
+        return Vector3.ProjectOnPlane(moveDirection,slopeHit.normal).normalized;
     }
     private void CheckSlope()
     {
@@ -382,7 +429,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else if(jumping)
         {
-            SetSpeed(jumpMoveSpeed);
+            SetSpeed(baseJumpMultiplier);
         }
         //If any of above conditions isn't fullfiled ,move is going to default state 
         else
@@ -395,9 +442,9 @@ public class PlayerMovement : MonoBehaviour
         if(isGrounded) rb.drag = groundDrag;
         else rb.drag = airDrag;
     }
-    private void SetSpeed(float value = 1)
+    public void SetSpeed(float value = 1)
     {
-        if (value == 0) Debug.LogWarning($"{value} can't be equal to 0 !");
+        if (value == 0) Debug.LogWarning($"value can't be equal to 0 !");
         else
         {
             currentSpeedForce = baseSpeedForce * value;

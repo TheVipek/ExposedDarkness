@@ -1098,10 +1098,10 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 536835279746954487}
-  m_Material: {fileID: 13400000, guid: c2815a7ab32e42c4bb42f59caacb8ec1, type: 2}
+  m_Material: {fileID: 13400000, guid: efaf3126e5adb6349bfe55a54567ba54, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.6
+  m_Radius: 0.4
   m_Height: 1.8
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
@@ -1349,12 +1349,9 @@ MonoBehaviour:
   movingSidesSpeed: 1.5
   baseSpeedForce: 10
   baseMoveSpeed: 5
-  sprintSpeedForce: 1.5
-  sprintMoveSpeed: 1.5
-  crouchSpeedForce: 0.5
-  crouchMoveSpeed: 0.5
-  jumpSpeedForce: 0.75
-  jumpMoveSpeed: 0.75
+  baseSprintMultiplier: 1.5
+  baseCrouchMultiplier: 0.5
+  baseJumpMultiplier: 0.5
   jumpHeight: 1.25
   fallMultiplier: 2.25
   staminaLength: 8
@@ -1368,7 +1365,8 @@ MonoBehaviour:
     m_Bits: 4096
   defaultHeight: 1.8
   crouchHeight: 1
-  crouchDuration: 0.5
+  crouchDuration: 0.2
+  movementActions: 0
   jumping: 0
 --- !u!114 &536835280683943630
 MonoBehaviour:

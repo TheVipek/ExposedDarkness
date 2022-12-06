@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using UnityEngine.InputSystem;
+
 public class WeaponReloader : MonoBehaviour
 {
     [SerializeField] Canvas reloadCanvas;
@@ -16,7 +18,7 @@ public class WeaponReloader : MonoBehaviour
 
     private bool couldShootBefore;
     private void Start() {
-        weaponSwitcher = WeaponSwitcher.Instance;
+        weaponSwitcher = WeaponSwitcher.Instance; 
     }
     void Update()
     {
@@ -52,6 +54,7 @@ public class WeaponReloader : MonoBehaviour
 
         }
     }
+    
     IEnumerator reloadInitialization(RangeWeapon weapon,float timeToReload)
     {
         couldShootBefore = weapon.CanAttack;
@@ -65,7 +68,7 @@ public class WeaponReloader : MonoBehaviour
         currentlyReloading = true;
         float leftTime = timeToReload;
 
-       // PlayerMovement.Instance.SetSprintingSpeed(0.7f);
+       PlayerMovement.Instance.SetSpeed(0.7f);
 //Reloading timer
         while(leftTime >= 0)
         {
@@ -78,7 +81,8 @@ public class WeaponReloader : MonoBehaviour
             {
 //                Debug.Log(weapon.name + "is not " + weaponSwitcher.CurrentWeapon.name);
                 weapon.AudioSource.Stop();
-                        //PlayerMovement.Instance.SetSprintingSpeed(1);
+                PlayerMovement.Instance.SetSpeed(1f);
+
 
 //                Debug.Log("Stopped playing");
                 break;
@@ -101,7 +105,7 @@ public class WeaponReloader : MonoBehaviour
 
             weapon.CanAttack = couldShootBefore;
         }
-       // PlayerMovement.Instance.SetSprintingSpeed(1);
+        PlayerMovement.Instance.SetSpeed(1f);
         ResetUI();
         currentlyReloading = false;
         weaponZoom.CanZoom = true;
