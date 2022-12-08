@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(AudioSource),typeof(WeaponAnimation))]
 public abstract class Weapon : MonoBehaviour,IPrimaryAction
@@ -49,32 +49,35 @@ public abstract class Weapon : MonoBehaviour,IPrimaryAction
     [SerializeField] GameObject hitEffect;
     [SerializeField] Sprite weaponIcon;
     public Sprite WeaponIcon{ get {return weaponIcon;}}
-
+    [SerializeField] InputActionReference primaryAction;
+    
+    
 
     private void OnEnable() {
         CanAttack = true;
     }
-    private void Awake() 
+    protected virtual void Awake() 
     {
         isConstantAttacking = canConstantAttack;
         weaponAnimation = GetComponent<WeaponAnimation>();
         audioSource = GetComponent<AudioSource>();
         
     }
-
-
+    protected virtual void Start()
+    {
+    }
     protected virtual void Update()
     {
 
         if(canAttack)
         {
             
-            if(Input.GetKey(primaryActionKey) && Time.time > nextPrimaryAttackTime && isConstantAttacking == true)
+            if(primaryAction.action.IsPressed() && Time.time > nextPrimaryAttackTime && isConstantAttacking == true)
             {
                 PrimaryAction();
                 nextPrimaryAttackTime = Time.time + primaryAttackDelay;
             }
-            else if(Input.GetKeyDown(primaryActionKey) && Time.time > nextPrimaryAttackTime && isConstantAttacking == false)
+            else if(primaryAction.action.WasPressedThisFrame() && Time.time > nextPrimaryAttackTime && isConstantAttacking == false)
             {
                 PrimaryAction();
                 nextPrimaryAttackTime = Time.time + primaryAttackDelay;  

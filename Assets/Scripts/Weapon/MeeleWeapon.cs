@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.InputSystem;
 public class MeeleWeapon : Weapon,ISecondaryAction
 {
-
+    [SerializeField] InputActionReference secondaryAction;
     protected const string primaryOneA = "PrimaryAttackOne";
     protected int primaryOneProbability = 70;
     protected const string primaryTwoA = "PrimaryAttackTwo";
@@ -21,9 +21,13 @@ public class MeeleWeapon : Weapon,ISecondaryAction
 
     [Header("SoundKit")]
     public MeeleWeaponSoundKit weaponSounds;
-    void Start()
+    protected override void Awake()
     {
-        
+        base.Awake();
+    }
+    protected override void Start()
+    {
+        base.Start();
     }
 
     // Update is called once per frame
@@ -33,7 +37,7 @@ public class MeeleWeapon : Weapon,ISecondaryAction
 
         if(canAttack)
         {
-            if(Time.time > nextSecondaryAttackTime && Input.GetKey(secondaryActionKey))
+            if(Time.time > nextSecondaryAttackTime && secondaryAction.action.IsPressed())
             {
                 SecondaryAction();
                 nextSecondaryAttackTime = Time.time + secondaryAttackDelay;

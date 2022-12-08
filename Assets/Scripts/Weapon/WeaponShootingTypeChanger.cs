@@ -1,14 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.InputSystem;
 public class WeaponShootingTypeChanger : MonoBehaviour
 {
     public static Action onChangeShootingType;
-    [SerializeField] KeyCode typeChanger = KeyCode.B;
+    [SerializeField] InputActionReference shootingTypeAction;
+
     void Update()
     {
-        if(Input.GetKeyDown(typeChanger))
+        if(shootingTypeAction.action.WasPerformedThisFrame())
         {
             onChangeShootingType();
         }

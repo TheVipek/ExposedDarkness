@@ -169,13 +169,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponCamera: {fileID: 0}
   viewCamera: {fileID: 0}
-  playerController: {fileID: 0}
   zoomKeyCode: 324
   zoomInField: 20
   zoomInSensitivity: {x: 0.6, y: 0.6}
   weaponZoomInPosition: {x: 0, y: -0.18, z: 1}
   cameraZoomDuration: 0.3
   weaponZoomDuration: 0.3
+  zoomAction: {fileID: -4896973177741197611, guid: dbecc125ae805f54ebd57e40c44b667a, type: 3}
 --- !u!114 &875745954
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,6 +189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showWeaponOffset: -0.5
+  animator: {fileID: 0}
   defaultWeaponPosition: {x: 0.498, y: -0.583, z: 0.72}
 --- !u!114 &3817949913807836986
 MonoBehaviour:
@@ -215,6 +216,7 @@ MonoBehaviour:
   attackVFX: {fileID: 3263153249877481813}
   hitEffect: {fileID: 7564172096902744805, guid: c1a7fb52c355c314fafe11903c10d1f9, type: 3}
   weaponIcon: {fileID: 21300010, guid: 6674e8c43c63e4f4184cbd009379498d, type: 3}
+  primaryAction: {fileID: 5774324482834898595, guid: dbecc125ae805f54ebd57e40c44b667a, type: 3}
   bulletIcon: {fileID: 21300000, guid: 5163ae49a0de665458bba61cd20c99b1, type: 3}
   ammoContainer: {fileID: 0}
   ammoType: 0
@@ -492,10 +494,11 @@ MonoBehaviour:
   flashlightMesh: {fileID: 1694016886315452479}
   Mylight: {fileID: 9026986607412998664}
   needActivateBySelf: 0
-  flashlightKey: 102
   weapon: {fileID: 0}
   flashlightSound: {fileID: 0}
   audioSource: {fileID: 0}
+  flashlightAction: {fileID: -3001822175442654749, guid: dbecc125ae805f54ebd57e40c44b667a, type: 3}
+  zoomAction: {fileID: -4896973177741197611, guid: dbecc125ae805f54ebd57e40c44b667a, type: 3}
 --- !u!4 &1694016886317877983 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: b694b8ec5c41f6247843a2b67222fda6, type: 3}

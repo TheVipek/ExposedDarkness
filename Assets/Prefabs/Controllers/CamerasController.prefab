@@ -47,4 +47,6 @@ MonoBehaviour:
   cameras:
   - {fileID: 0}
   - {fileID: 0}
+  weaponCamera: {fileID: 0}
+  playerCamera: {fileID: 0}
   defaultFov: 80

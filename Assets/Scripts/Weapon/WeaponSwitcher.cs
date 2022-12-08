@@ -28,16 +28,12 @@ public class WeaponSwitcher : MonoBehaviour
     Weapon previousWeapon;
     static WeaponSwitcher instance;
     public static WeaponSwitcher Instance{get{return instance;}}
-    // public delegate void OnWeaponChange();
-    // public static event OnWeaponChange onWeaponChange;
     public static Action onWeaponChange;
     public Action onWeaponPickup;
-    
-    //  [Header("Get onWeaponChange so it may be"+"\n"+" called every time player shoots.")]
-    // public UnityEvent weaponEvent;
     [Header("Audio")]
     [SerializeField] DefaultSoundKit weaponSwitch; 
     [SerializeField] AudioSource audioSource;
+    [SerializeField] InputActionReference weaponSwitchMouse,weaponSwitchButtons;
     private void Awake() {
         if(instance != null && instance != this)
         {
@@ -51,10 +47,13 @@ public class WeaponSwitcher : MonoBehaviour
     }
     private void OnEnable() {
         onWeaponPickup += getAllWeapons;
+        weaponSwitchMouse.action.started += OnMouseScroll;
+        weaponSwitchButtons.action.started += OnButtonClick;
     }
     private void OnDisable() {
         onWeaponPickup -= getAllWeapons;
-        
+        weaponSwitchMouse.action.started -= OnMouseScroll;
+        weaponSwitchButtons.action.started -= OnButtonClick;
     }
     void Start() 
     {
@@ -62,62 +61,44 @@ public class WeaponSwitcher : MonoBehaviour
     }
     void Update() 
     {
-        ProcessKeyInput();
-        ProcessScrollWheel();
-
-        if(previousWeaponIndex!=currentWeaponIndex || previousWeapon != currentWeapon)
-        {
-            weaponChange();
-        }
+        if(previousWeaponIndex!=currentWeaponIndex || previousWeapon != currentWeapon) weaponChange();
     }
     public void weaponChange(int weaponToSet = -1)
     {
         
         AudioManager.playSound(audioSource,weaponSwitch.Sound);
-        
-        //getAllWeapons();
         //Look for weapon with the same index as currentWeapon
         SetWeaponActive(weaponToSet);
         onWeaponChange();
     }
     
-    
-    private void ProcessScrollWheel()
+    public void OnMouseScroll(InputAction.CallbackContext ctx)
     {
-        if(Input.GetAxis("Mouse ScrollWheel") > 0)
+        Debug.Log(ctx.phase);
+        if(ctx.started)
         {
-            if(currentWeaponIndex >= allWeapons.Count - 1)
+            float value = ctx.ReadValue<float>();
+            if(value > 0)
             {
-                currentWeaponIndex = 0;
-            }else
-            {
-                currentWeaponIndex+=1;
+                if(currentWeaponIndex >= allWeapons.Count - 1) currentWeaponIndex = 0;
+                else currentWeaponIndex += 1;
             }
-            
-        }
-        if(Input.GetAxis("Mouse ScrollWheel") < 0)
-        {
-            if(currentWeaponIndex <= 0)
+            else
             {
-                currentWeaponIndex = allWeapons.Count - 1;
-            }else
-            {
-                currentWeaponIndex-=1;
+                if(currentWeaponIndex <= 0) currentWeaponIndex = allWeapons.Count -1;
+                else currentWeaponIndex -= 1;
             }
-
         }
     }
-    private void ProcessKeyInput()
+    public void OnButtonClick(InputAction.CallbackContext ctx)
     {
-        if(Input.GetKeyDown(KeyCode.Alpha1))
+        Debug.Log(ctx.phase);
+        
+        if(ctx.started)
         {
-            currentWeaponIndex=0;
-        }else if(Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            currentWeaponIndex=1;
-        }else if(Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            currentWeaponIndex=2;
+            if(ctx.control.name == "1") currentWeaponIndex=0;
+            else if(ctx.control.name == "2") currentWeaponIndex=1;
+            else if(ctx.control.name == "3") currentWeaponIndex=2;
         }
     }
 
@@ -149,20 +130,6 @@ public class WeaponSwitcher : MonoBehaviour
         {
             SetWeaponsContainer(currentWeapon.transform.parent);
         }
-        // int weaponIndex =0;
-        // foreach (Transform weapon in transform)
-        // {
-        //     if(weaponIndex == currentWeaponIndex)
-        //     {
-        //         weapon.gameObject.SetActive(true);
-        //         currentWeapon = weapon.GetComponent<Weapon>();
-                
-        //     }else
-        //     {
-        //         weapon.gameObject.SetActive(false);
-        //     }
-        //     weaponIndex+=1;
-        // }
     }
     private void SetWeaponsContainer(Transform containterTransform)
     {
@@ -188,7 +155,6 @@ public class WeaponSwitcher : MonoBehaviour
                 if(childItem != null)
                 {
                     allWeapons.Add(childItem);
-                    Debug.Log(childItem.name);
                 } 
             }
         }

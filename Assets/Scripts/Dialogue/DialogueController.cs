@@ -144,7 +144,7 @@ public class DialogueController : MonoBehaviour
                 #region endOfSentenceDetecting
                 if(text[i][currentIndex] == '.' || text[i][currentIndex] == '!' || text[i][currentIndex] == '?' || text[i][currentIndex] == ',')
                 {
-                    Debug.Log(text[i][currentIndex]);
+           //         Debug.Log(text[i][currentIndex]);
                     yield return new WaitForSecondsRealtime(timePerSentence/3);
                 }
                 #endregion

@@ -1,19 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.InputSystem;
+using System;
 public class WeaponZoom : MonoBehaviour
 {
 
     [Header("Cameras")]
     [SerializeField] Camera weaponCamera;
     [SerializeField] Camera viewCamera;
-
-    [Header("Components")]
-    [SerializeField] PlayerMovement playerController;
     
-    [Header("Default options")]
-    [SerializeField] KeyCode zoomKeyCode = KeyCode.Mouse1;
     [Tooltip("Higher value equals weaker camera zoom")]
     private CamerasController camerasController;
     private Vector3 defaultWeaponPosition;
@@ -37,57 +33,74 @@ public class WeaponZoom : MonoBehaviour
     private bool isZoomed;
     public bool IsZoomed{get{return isZoomed;}}
     Animator animator;
+    [SerializeField] InputActionReference zoomAction;
     private void Awake() 
     {
         animator = GetComponent<Animator>();
         defaultWeaponPosition = GetComponent<WeaponAnimation>().defaultWeaponPosition;
     }
+    private void OnEnable() {
+        
+
+        
+
+        zoomAction.action.started += OnZoom;
+     //   zoomAction.action.performed += OnZoom;
+        zoomAction.action.canceled += OnZoom;
+        isTryingToZoom = false;
+        isZoomed = false;
+    }
     private void Start() {
-        playerController = PlayerMovement.Instance; 
         camerasController = CamerasController.Instance;
         viewCamera = camerasController.playerCamera;
         weaponCamera = camerasController.weaponCamera;
         
     }
-    private void OnEnable() {
-        
-        isTryingToZoom = false;
-        isZoomed = false;
-    }
+
     void Update() 
     {
        //Purpose of this line is that when player change weapon he needs to press again input(1) to zoom 
-        if(Input.GetKeyDown(zoomKeyCode) && canZoom == true)
-        {
-            isTryingToZoom = true;
-        }
-        if(Input.GetKey(zoomKeyCode) && isTryingToZoom == true && isZoomed == false)
+        if(zoomAction.action.IsPressed() && isTryingToZoom == true && isZoomed == false)
         {
             ZoomIn();
         }
-        else if(Input.GetKeyUp(zoomKeyCode) || canZoom == false)
+    }
+    void OnDisable() {
+    
+        resetOnChangeWeapon();
+        
+        zoomAction.action.started -= OnZoom;
+        zoomAction.action.performed -= OnZoom;
+        zoomAction.action.canceled -= OnZoom;
+    }
+    public void OnZoom(InputAction.CallbackContext ctx)
+    {
+        if(ctx.started)
         {
+            Debug.Log("weaponZooming started");
+            isTryingToZoom = true;
+        }
+        if(ctx.canceled)
+        {
+            Debug.Log("weaponZooming canceled");
+
             ZoomOut();
         }
     }
-    void OnDisable() {
-        resetOnChangeWeapon();
-    }
- 
     private void ZoomOut()
     { 
     
         isTryingToZoom = false;
         StartCoroutine(weaponToZoom(defaultWeaponPosition,weaponZoomDuration,false));
         StartCoroutine(cameraToZoom(camerasController.DefaultFov,cameraZoomDuration));
-   //     playerController.setDefaultMouseValues();
+        PlayerCamera.mouse.DefaultSensitivity();
     }
     private void resetOnChangeWeapon()
     {
         gameObject.transform.localRotation = Quaternion.Euler(0,0,0);
         transform.localPosition = defaultWeaponPosition;
         CamerasController.Instance.setDefaultFov();
- //       PlayerMovement.Instance.setDefaultMouseValues();
+        PlayerCamera.mouse.DefaultSensitivity();
 
     }
     private void ZoomIn()
@@ -99,7 +112,7 @@ public class WeaponZoom : MonoBehaviour
 
         StartCoroutine(weaponToZoom(weaponZoomInPosition,weaponZoomDuration,true));
         StartCoroutine(cameraToZoom(zoomInField,cameraZoomDuration));
- //       playerController.setCustomMouseValues(zoomInSensitivity.x,zoomInSensitivity.y);
+        PlayerCamera.mouse.SensitivityChange(zoomInSensitivity);
 
     }
 

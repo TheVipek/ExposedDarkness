@@ -24,11 +24,13 @@ public class RangeWeapon : Weapon
         WeaponShootingTypeChanger.onChangeShootingType -= SwapConstantShooting;
         
     }
-    private void Awake() {
+    protected override void Awake() {
+        base.Awake();
         weaponZoom = GetComponent<WeaponZoom>();
     }
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         ammoContainer = Ammo.Instance;
     }
     public override void PrimaryAction()

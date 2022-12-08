@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.InputSystem;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance {get;private set;}
     [SerializeField] GameObject player;
     [SerializeField] GameObject mainWeaponsContainer;
+    [SerializeField] InputActionAsset inputActions;
     // [SerializeField] MonoBehaviour[] playerWeaponsScripts;
     private Weapon currentWeapon;
     // private MonoBehaviour[] currentWeaponComponents;
@@ -36,27 +37,18 @@ public class GameManager : MonoBehaviour
     }
     public void freezePlayerActions()
     {
-        player.GetComponent<PlayerMovement>().enabled = false;
-        player.GetComponent<PlayerHealth>().enabled = false;
+        // player.GetComponent<PlayerMovement>().enabled = false;
+        // player.GetComponent<PlayerHealth>().enabled = false;
 
-        mainWeaponsContainer.gameObject.SetActive(false);
-        // foreach(MonoBehaviour _comp in playerWeaponsScripts) _comp.enabled = false;
-  
-        // currentWeapon = playerWeaponsMain.GetComponent<WeaponSwitcher>().CurrentWeapon;
-        // currentWeaponComponents = currentWeapon.GetComponents<MonoBehaviour>();
-
-        // foreach(MonoBehaviour _comp in currentWeaponComponents)
-        // {
-        //     if(_comp.GetType() == typeof(WeaponAnimation)) continue; 
-        //     _comp.enabled = false;
-        // }
-      
+        // mainWeaponsContainer.gameObject.SetActive(false);
+        inputActions.Disable();
     }
     public void unfreezePlayerActions()
     {
-        player.GetComponent<PlayerMovement>().enabled = true;
-        player.GetComponent<PlayerHealth>().enabled = true;
-        mainWeaponsContainer.gameObject.SetActive(true);
+        // player.GetComponent<PlayerMovement>().enabled = true;
+        // player.GetComponent<PlayerHealth>().enabled = true;
+        // mainWeaponsContainer.gameObject.SetActive(true);
+        inputActions.Enable();
 
         // foreach(MonoBehaviour _comp in playerWeaponsScripts) _comp.enabled = true;
 

@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.InputSystem;
 public enum FlashlightState
 {
     
@@ -15,43 +15,53 @@ public class FlashLightSystem : MonoBehaviour
     [SerializeField] MeshRenderer flashlightMesh;
     [SerializeField] Light Mylight;
     public bool needActivateBySelf = false;
-    [SerializeField] KeyCode flashlightKey;
     FlashlightState flashlightActivated = FlashlightState.ON;
     [SerializeField] WeaponZoom weapon;
     [SerializeField] DefaultSoundKit flashlightSound;
     [SerializeField] AudioSource audioSource;
+    [SerializeField] InputActionReference flashlightAction,zoomAction;
     private void OnEnable() {
         flashlightMesh.enabled = true;
         needActivateBySelf = false;
+        zoomAction.action.performed += OnZoom;
+        zoomAction.action.canceled += OnZoom;
+        flashlightAction.action.started += OnFlashLight;
     }
-    private void Start() {
-       // weapon = GetComponentInParent<WeaponZoom>();
-        //audioSource = GetComponent<AudioSource>();
+    private void OnDisable() {
+        zoomAction.action.performed -= OnZoom;
+        zoomAction.action.canceled -= OnZoom;
+        flashlightAction.action.started -= OnFlashLight;
     }
-    void Update()
+    public void OnFlashLight(InputAction.CallbackContext ctx)
     {
-        if(weapon.enabled == false) return;
-        if(Input.GetKeyDown(flashlightKey) && needActivateBySelf == false)
+        if(ctx.started)
         {
-            SwapFlashLighter();
-
-        }
-        if(weapon.IsZoomed == true && needActivateBySelf == false)
-        {
-            //Debug.Log("Zoomed in");
-            flashlightMesh.enabled = false;
-            SwapFlashLighter(0);
-            needActivateBySelf = true;
-        }else if(weapon.IsZoomed == false && needActivateBySelf == true)
-        {
-            //Debug.Log("Out!");
-            flashlightMesh.enabled = true;
-            SwapFlashLighter(1);
             needActivateBySelf = false;
+            SwapFlashLighter();
         }
-        
     }
-    public void SwapFlashLighter(int value = 2)
+    public void OnZoom(InputAction.CallbackContext ctx)
+    {
+        if(ctx.performed)
+        {
+            DeactivateFlashLight();
+        }
+        else if(ctx.canceled)
+        {
+            ActivateFlashLight();
+        }
+    }
+    private void ActivateFlashLight()
+    {
+        flashlightMesh.enabled = true;
+        SwapFlashLighter(1);
+    }
+    private void DeactivateFlashLight()
+    {
+        flashlightMesh.enabled = false;
+        SwapFlashLighter(0);
+    }
+    private void SwapFlashLighter(int value = 2)
     {
 
             AudioManager.playSound(audioSource,flashlightSound.Sound);

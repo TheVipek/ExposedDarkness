@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1128881135007706578}
   - component: {fileID: 1128881135007706577}
+  - component: {fileID: 1466701142}
   m_Layer: 0
   m_Name: WaveController
   m_TagString: Untagged
@@ -24,7 +25,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1128881135007706579}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 150.09396, y: -1.9975512, z: -42.551548}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -48,3 +49,46 @@ MonoBehaviour:
   UIToDisable:
   - {fileID: 0}
   - {fileID: 0}
+  waveContainer:
+    currentSubwave: 0
+    amountOfSubwaves: 0
+    spawnPoints: []
+    listOfEnemies: []
+    onSubwavesStartEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    onSubwavesEndEvent:
+      m_PersistentCalls:
+        m_Calls: []
+  timeBetweenMonster: 0.1
+  breakBetweenWaves: 15
+--- !u!114 &1466701142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1128881135007706579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Events:
+    m_Signals:
+    - {fileID: 11400000, guid: c802756d6bfa1414aa00c64390cbe0e7, type: 2}
+    m_Events:
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1128881135007706577}
+          m_TargetAssemblyTypeName: WaveController, Assembly-CSharp
+          m_MethodName: startWave
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2

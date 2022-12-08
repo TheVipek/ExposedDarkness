@@ -3,7 +3,13 @@ guid: 614f6d989ff8192439a8d0b19f34fc29
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - weaponAnimation: {instanceID: 0}
+  - primaryAction: {fileID: 5774324482834898595, guid: dbecc125ae805f54ebd57e40c44b667a, type: 3}
+  - audioSource: {instanceID: 0}
+  - attackVFX: {instanceID: 0}
+  - hitEffect: {instanceID: 0}
+  - weaponIcon: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

@@ -9445,6 +9445,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 897448236932336287}
   tMP_Text: {fileID: 5625918779077523822}
+  submitAction: {fileID: -8084977793049382796, guid: dbecc125ae805f54ebd57e40c44b667a, type: 3}
 --- !u!95 &897448236932336287
 Animator:
   serializedVersion: 4
@@ -11560,6 +11561,7 @@ MonoBehaviour:
   canInteractText: {fileID: 7464154233279329201}
   cantInteract: {fileID: 7851758324774229637}
   cantInteractText: {fileID: 530391876078268803}
+  interactionAction: {fileID: 2923806393448660300, guid: dbecc125ae805f54ebd57e40c44b667a, type: 3}
 --- !u!223 &249047430
 Canvas:
   m_ObjectHideFlags: 0

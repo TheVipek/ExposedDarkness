@@ -1397,13 +1397,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponCamera: {fileID: 0}
   viewCamera: {fileID: 0}
-  playerController: {fileID: 0}
   zoomKeyCode: 324
   zoomInField: 20
   zoomInSensitivity: {x: 0.6, y: 0.6}
   weaponZoomInPosition: {x: 0, y: -0.35, z: 0.8}
   cameraZoomDuration: 0.3
   weaponZoomDuration: 0.3
+  zoomAction: {fileID: -4896973177741197611, guid: dbecc125ae805f54ebd57e40c44b667a, type: 3}
 --- !u!114 &4176564732031091802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1417,6 +1417,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showWeaponOffset: -0.5
+  animator: {fileID: 0}
   defaultWeaponPosition: {x: 0.498, y: -0.583, z: 0.66}
 --- !u!114 &3407196875404373516
 MonoBehaviour:
@@ -1437,6 +1438,7 @@ MonoBehaviour:
   weaponType: 1
   weaponAnimation: {fileID: 4176564732031091802}
   weaponRole: 0
+  primaryAction: {fileID: 5774324482834898595, guid: dbecc125ae805f54ebd57e40c44b667a, type: 3}
   canConstantAttack: 1
   canAttack: 1
   audioSource: {fileID: 4176564732031091798}

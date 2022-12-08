@@ -1268,10 +1268,6 @@ MonoBehaviour:
     m_ActionName: Player/Look[/Mouse/delta]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 8ba9e452-a469-4614-aa6c-c973db9b8ee1
-    m_ActionName: Player/Fire[/Mouse/leftButton]
-  - m_PersistentCalls:
-      m_Calls: []
     m_ActionId: d179109c-3824-4bb4-b6ba-52bab2d7e63a
     m_ActionName: UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
   - m_PersistentCalls:
@@ -1322,6 +1318,38 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 609cb686-f40b-44a2-af8f-0ebc7b2ecdc2
     m_ActionName: Player/New action
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 3b031ac0-13fe-4d45-ac15-511dfb1072df
+    m_ActionName: Player/WeaponSwitchMouse[/Mouse/scroll/y]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 50fe0d11-1472-49d0-b480-fab214bf64ec
+    m_ActionName: Player/WeaponSwitchButtons[/Keyboard/1,/Keyboard/2,/Keyboard/3]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0463f16e-eed8-443e-9e47-54a252699ac9
+    m_ActionName: Player/SecondaryAttack[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 96d8fb92-aa21-47bb-b10d-c71686a73021
+    m_ActionName: Player/ChangeShootingType[/Keyboard/b]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: cd84936d-79b2-4fcf-bbb9-1d7f50a3b57d
+    m_ActionName: Player/PrimaryAttack[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: cee8a915-d598-4049-966f-349aff375c94
+    m_ActionName: Player/Flashlight[/Keyboard/f]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 36f31ef9-b62a-4713-86a5-d585ff3df25f
+    m_ActionName: Player/Reload[/Keyboard/r]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b674581f-c02d-4eb8-84e7-a66c187ff25c
+    m_ActionName: Player/Interaction[/Keyboard/e]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player
@@ -1368,6 +1396,10 @@ MonoBehaviour:
   crouchDuration: 0.2
   movementActions: 0
   jumping: 0
+  moveAction: {fileID: 8886794728308486092, guid: dbecc125ae805f54ebd57e40c44b667a, type: 3}
+  jumpAction: {fileID: -8853160568680579334, guid: dbecc125ae805f54ebd57e40c44b667a, type: 3}
+  sprintAction: {fileID: 1747021060469585812, guid: dbecc125ae805f54ebd57e40c44b667a, type: 3}
+  crouchAction: {fileID: -5613868176926595460, guid: dbecc125ae805f54ebd57e40c44b667a, type: 3}
 --- !u!114 &536835280683943630
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1402,8 +1434,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraView: {fileID: 536835279746590929}
   orientation: {fileID: 179595087}
-  mouseSensitivity: {x: 0.1, y: 0.1}
+  mouseSensitivity: {x: 0.8, y: 0.8}
   maxCameraXRotation: 45
+  lookAction: {fileID: 2567273598658860280, guid: dbecc125ae805f54ebd57e40c44b667a, type: 3}
 --- !u!1 &536835279943692642
 GameObject:
   m_ObjectHideFlags: 0
@@ -1421,7 +1454,7 @@ GameObject:
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &536835279943692645
 Transform:
   m_ObjectHideFlags: 0
@@ -1461,6 +1494,8 @@ MonoBehaviour:
   weaponShootingTypeChanger: {fileID: 605055342634251627}
   weaponSwitch: {fileID: 11400000, guid: bb02969a1cff483439d895ac3670f388, type: 2}
   audioSource: {fileID: 1590678765}
+  weaponSwitchMouse: {fileID: -9132789629330637228, guid: dbecc125ae805f54ebd57e40c44b667a, type: 3}
+  weaponSwitchButtons: {fileID: 7159283474596132109, guid: dbecc125ae805f54ebd57e40c44b667a, type: 3}
 --- !u!82 &1590678765
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1609,6 +1644,7 @@ MonoBehaviour:
   reloadImage: {fileID: 0}
   bgImage: {fileID: 0}
   currentlyReloading: 0
+  reloadAction: {fileID: -3081678923574877137, guid: dbecc125ae805f54ebd57e40c44b667a, type: 3}
 --- !u!114 &605055342634251627
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1621,7 +1657,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f99153ad02aa4e045b9f904b8531582f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  typeChanger: 98
+  shootingTypeAction: {fileID: -3493190346024132469, guid: dbecc125ae805f54ebd57e40c44b667a, type: 3}
 --- !u!114 &6924646194543681750
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1798,6 +1834,14 @@ PrefabInstance:
       propertyPath: playerController
       value: 
       objectReference: {fileID: 1850273173}
+    - target: {fileID: 1694016888246948000, guid: 608ad27ae11507e4993698101b83b223, type: 3}
+      propertyPath: zoomInSensitivity.x
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1694016888246948000, guid: 608ad27ae11507e4993698101b83b223, type: 3}
+      propertyPath: zoomInSensitivity.y
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 3263153249877481813, guid: 608ad27ae11507e4993698101b83b223, type: 3}
       propertyPath: lengthInSec
       value: 0.2
@@ -2085,6 +2129,14 @@ PrefabInstance:
       propertyPath: playerController
       value: 
       objectReference: {fileID: 1850273173}
+    - target: {fileID: 4176564732031091800, guid: 42cb65f8fe2de1a499fb6df8fd3a274f, type: 3}
+      propertyPath: zoomInSensitivity.x
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4176564732031091800, guid: 42cb65f8fe2de1a499fb6df8fd3a274f, type: 3}
+      propertyPath: zoomInSensitivity.y
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 4176564732031091800, guid: 42cb65f8fe2de1a499fb6df8fd3a274f, type: 3}
       propertyPath: weaponZoomOutPosition.z
       value: 1.05

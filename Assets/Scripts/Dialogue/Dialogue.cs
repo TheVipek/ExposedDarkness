@@ -46,7 +46,7 @@ public class Dialogue
         if(OnLocalDialogueStarted.Count == 0) return;
         for(int i=0;i<OnLocalDialogueStarted.Count;i++)
         {
-            Debug.Log("Calling Entry event...");
+   //         Debug.Log("Calling Entry event...");
             callEvent(OnLocalDialogueStarted[i]);
         }
     }

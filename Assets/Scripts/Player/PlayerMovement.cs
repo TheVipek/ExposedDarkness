@@ -99,10 +99,12 @@ public class PlayerMovement : MonoBehaviour
     
     public static PlayerMovement Instance { get; private set; }
     public static Action onSprinting;
-    private PlayerControls playerControls;
+    public static PlayerControls playerControls;
+    [SerializeField] InputActionReference moveAction,jumpAction,sprintAction,crouchAction;
 
     private void Awake()
     {
+        
         if (Instance != this && Instance != null)
         {
             Destroy(this);
@@ -110,13 +112,25 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             Instance = this;
+      //      playerControls = new PlayerControls();
+
         }
-        playerControls = new PlayerControls();
-        InitActions();
     }
     private void OnEnable()
     {
-        playerControls.Enable();
+     //  playerControls.Enable();
+        moveAction.action.started += OnMove;
+        moveAction.action.performed += OnMove;
+        moveAction.action.canceled += OnMove;
+
+        sprintAction.action.started += OnSprint;
+        sprintAction.action.canceled += OnSprint;
+
+        jumpAction.action.started += OnJump;
+
+        crouchAction.action.started += OnCrouch;
+        crouchAction.action.canceled += OnCrouch;
+     
     }
     void Start()
     {
@@ -126,6 +140,7 @@ public class PlayerMovement : MonoBehaviour
         capsuleCollider.height = defaultHeight;
         feet.localPosition = new Vector3(0,-capsuleCollider.height/2,0);
         currentStamina = staminaLength;
+        //InitActions();
     }
 
 
@@ -136,7 +151,7 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity += new Vector3(0,Physics.gravity.y * (fallMultiplier-1)*Time.deltaTime,0);
         }
         
-        if (playerControls.Player.Sprint.IsPressed() && moving && isGrounded && !isExhausted)
+        if (sprintAction.action.IsPressed() && moving && isGrounded && !isExhausted)
         {
             if(!sprinting) OnSprintingStart();
             
@@ -175,7 +190,18 @@ public class PlayerMovement : MonoBehaviour
     }
     private void OnDisable()
     {
-        playerControls.Disable();
+    //   playerControls.Disable();
+        moveAction.action.started -= OnMove;
+        moveAction.action.performed -= OnMove;
+        moveAction.action.canceled -= OnMove;
+
+        sprintAction.action.started -= OnSprint;
+        sprintAction.action.canceled -= OnSprint;
+
+        jumpAction.action.started -= OnJump;
+
+        crouchAction.action.started -= OnCrouch;
+        crouchAction.action.canceled -= OnCrouch;
     }
     void Movement()
     {
@@ -239,12 +265,15 @@ public class PlayerMovement : MonoBehaviour
     }
     public void OnJump(InputAction.CallbackContext ctx)
     {
-        if (isGrounded)
+        if(ctx.started)
         {
-            movementActions = MovementActions.JUMPING;
-            jumping = true;
-            SetSpeed(baseJumpMultiplier);
-            Jump();
+            if (isGrounded)
+            {
+                movementActions = MovementActions.JUMPING;
+                jumping = true;
+                SetSpeed(baseJumpMultiplier);
+                Jump();
+            }
         }
     }
     private void Jump() => rb.AddForce(new Vector3(0, Mathf.Sqrt(-2.0f * Physics2D.gravity.y * jumpHeight), 0), ForceMode.Impulse);
@@ -418,12 +447,12 @@ public class PlayerMovement : MonoBehaviour
     public void SetMoveBasedOnState()
     {
         //If sprint is pressed ,sprinting start will execute
-        if(playerControls.Player.Sprint.IsPressed())
+        if(sprintAction.action.IsPressed())
         {
             OnSprintingStart();
         }
         //If crouch is pressed ,crouching start will execute
-        else if(playerControls.Player.Crouch.IsPressed())
+        else if(crouchAction.action.IsPressed())
         {
             OnCrouchStarted();
         }
@@ -461,17 +490,17 @@ public class PlayerMovement : MonoBehaviour
     public void InitActions()
     {
 
-        playerControls.Player.Move.started += OnMove;
-        playerControls.Player.Move.performed += OnMove;
-        playerControls.Player.Move.canceled += OnMove;
+        moveAction.action.started += OnMove;
+        moveAction.action.performed += OnMove;
+        moveAction.action.canceled += OnMove;
 
-        playerControls.Player.Sprint.started += OnSprint;
-        playerControls.Player.Sprint.canceled += OnSprint;
+        sprintAction.action.started += OnSprint;
+        sprintAction.action.canceled += OnSprint;
 
-        playerControls.Player.Jump.started += OnJump;
+        jumpAction.action.started += OnJump;
 
-        playerControls.Player.Crouch.started += OnCrouch;
-        playerControls.Player.Crouch.canceled += OnCrouch;
+        crouchAction.action.started += OnCrouch;
+        crouchAction.action.canceled += OnCrouch;
     }
 }
 

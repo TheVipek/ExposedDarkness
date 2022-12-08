@@ -15,26 +15,44 @@ public class WeaponReloader : MonoBehaviour
     private Weapon weapon;
     private WeaponZoom weaponZoom;
     private Coroutine reloadInitializationCR;
-
     private bool couldShootBefore;
+    [SerializeField] InputActionReference reloadAction;
+
     private void Start() {
         weaponSwitcher = WeaponSwitcher.Instance; 
+        reloadAction.action.started += OnReload;
     }
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.R) && currentlyReloading == false) 
+        // if(Input.GetKeyDown(KeyCode.R) && currentlyReloading == false) 
+        // {
+        //     weapon = weaponSwitcher.CurrentWeapon;
+        //     RangeWeapon currentWeapon = weapon.GetComponent<RangeWeapon>();
+        //     weaponZoom = weapon.GetComponent<WeaponZoom>();
+        //     if(Ammo.Instance.GetAmmoInSlot(currentWeapon.AmmoType) != Ammo.Instance.GetAmmoPerSlot(currentWeapon.AmmoType) && Ammo.Instance.GetAmmoAmount(currentWeapon.AmmoType) > 0)
+        //     {
+        //         reloadInitializationCR = StartCoroutine(reloadInitialization(currentWeapon,currentWeapon.TimeToReload));
+        //     }
+
+            
+            
+
+        // }
+    }
+    private void OnReload(InputAction.CallbackContext ctx)
+    {
+        if(ctx.started)
         {
-            weapon = weaponSwitcher.CurrentWeapon;
-            RangeWeapon currentWeapon = weapon.GetComponent<RangeWeapon>();
-            weaponZoom = weapon.GetComponent<WeaponZoom>();
-            if(Ammo.Instance.GetAmmoInSlot(currentWeapon.AmmoType) != Ammo.Instance.GetAmmoPerSlot(currentWeapon.AmmoType) && Ammo.Instance.GetAmmoAmount(currentWeapon.AmmoType) > 0)
+            if(!currentlyReloading)
             {
-                reloadInitializationCR = StartCoroutine(reloadInitialization(currentWeapon,currentWeapon.TimeToReload));
+                weapon = weaponSwitcher.CurrentWeapon;
+                RangeWeapon currentWeapon = weapon.GetComponent<RangeWeapon>();
+                weaponZoom = weapon.GetComponent<WeaponZoom>();
+                if(Ammo.Instance.GetAmmoInSlot(currentWeapon.AmmoType) != Ammo.Instance.GetAmmoPerSlot(currentWeapon.AmmoType) && Ammo.Instance.GetAmmoAmount(currentWeapon.AmmoType) > 0)
+                {
+                    reloadInitializationCR = StartCoroutine(reloadInitialization(currentWeapon,currentWeapon.TimeToReload));
+                }
             }
-
-            
-            
-
         }
     }
     private void OnEnable() {
