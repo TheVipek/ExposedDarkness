@@ -41,7 +41,8 @@ public class GameManager : MonoBehaviour
         // player.GetComponent<PlayerHealth>().enabled = false;
 
         // mainWeaponsContainer.gameObject.SetActive(false);
-        inputActions.Disable();
+        inputActions.FindActionMap("Player",true).Disable();
+
     }
     public void unfreezePlayerActions()
     {
@@ -49,7 +50,7 @@ public class GameManager : MonoBehaviour
         // player.GetComponent<PlayerHealth>().enabled = true;
         // mainWeaponsContainer.gameObject.SetActive(true);
         inputActions.Enable();
-
+        inputActions.FindActionMap("Player",true).Enable();
         // foreach(MonoBehaviour _comp in playerWeaponsScripts) _comp.enabled = true;
 
         // foreach(MonoBehaviour _comp in currentWeaponComponents) _comp.enabled = true;

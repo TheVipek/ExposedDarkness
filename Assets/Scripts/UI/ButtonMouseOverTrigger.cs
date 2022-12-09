@@ -12,6 +12,7 @@ public class ButtonMouseOverTrigger : MonoBehaviour,IPointerEnterHandler,IPointe
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
+        Debug.Log("OnPointer");
         if(animator.GetBool("isOver") == false)
                 {
                     animator.SetBool("isOver",true);
@@ -19,6 +20,8 @@ public class ButtonMouseOverTrigger : MonoBehaviour,IPointerEnterHandler,IPointe
     }
     public void OnPointerExit(PointerEventData eventData)
     {
+        Debug.Log("PointerExit");
+
         if(animator.GetBool("isOver") == true)
                 {
                     animator.SetBool("isOver",false);

@@ -7,18 +7,16 @@ public class WeaponPickup : MonoBehaviour
     [SerializeField] GameObject weaponPrefab;
     [SerializeField] WeaponRole weaponRole;
     [SerializeField] GameObject weaponToReplace;
-    private WeaponSwitcher weaponSwitcher;
     public void GetWeapon()
     {
-        weaponSwitcher = WeaponSwitcher.Instance;
 //        Debug.Log(WeaponSwitcher.Instance.AllWeapons.Count);
-        foreach (Weapon item in WeaponSwitcher.Instance.AllWeapons)
+        foreach (Weapon item in WeaponsManager.Instance.AllWeapons)
         {
-            Debug.Log(item.name);
+           // Debug.Log(item.name);
             if(item.WeaponRole == weaponRole && item != null)
             {
                 Debug.Log(item.WeaponRole);
-                Debug.Log("Replace Item");
+                //Debug.Log("Replace Item");
                 ReplaceWeapon(item.gameObject);
 
 
@@ -26,8 +24,8 @@ public class WeaponPickup : MonoBehaviour
                 return;
             }
         }
-        Debug.Log("Set weapon");
-        SetWeapon(weaponSwitcher.CurrentWeapon.transform);
+        //Debug.Log("Set weapon");
+        SetWeapon(WeaponsManager.Instance.weaponSwitcher.CurrentWeapon.transform);
     }
     public void ReplaceWeapon(GameObject _weaponToReplace)
     {
@@ -67,8 +65,8 @@ public class WeaponPickup : MonoBehaviour
         }
         
 
-        weaponSwitcher.onWeaponPickup();
-        weaponSwitcher.weaponChange(idxToSet);
+        WeaponsManager.Instance.onWeaponPickup();
+        WeaponsManager.Instance.weaponSwitcher.weaponChange(idxToSet);
     }
        
     public void PutOnGround()

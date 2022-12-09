@@ -51,8 +51,8 @@ MonoBehaviour:
   dialogueEndPossibility: {fileID: 0}
   dialogueAnimator: {fileID: 0}
   dialogueTMP: {fileID: 0}
-  timePerCharacter: 0.1
-  timePerSentence: 3
+  timePerCharacter: 0.05
+  timePerSentence: 0.1
   currentDialogue:
     dialogueText: {fileID: 11400000, guid: a9fcfeed56520364f809603988bf4182, type: 2}
     forceExitDialogue: 0

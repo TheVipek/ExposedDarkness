@@ -32,10 +32,15 @@ public class DeathHandler : MonoBehaviour
     {
         if(PlayerHealth.instance.CurrentHealth<=0)
         {
+            PlayerMovement.Instance.PlayerMapActivate(false);
+            PlayerMovement.Instance.enabled = false;
+            PlayerCamera.Instance.enabled = false;
+            WeaponsManager.Instance.weaponSwitcher.gameObject.SetActive(false);
+            
+
+
             PlayerHealth.instance.IsDead = true;
             PlayerHealth.instance.animator.enabled = true;
-            PlayerMovement.Instance.enabled = false;
-            WeaponSwitcher.Instance.gameObject.SetActive(false);
             gameOverCanvas.enabled = true;
             Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
@@ -50,11 +55,16 @@ public class DeathHandler : MonoBehaviour
     }
     public void OutOfTime()
     {
+        PlayerMovement.Instance.PlayerMapActivate(false);
+        PlayerMovement.Instance.enabled = false;
+        PlayerCamera.Instance.enabled = false;
+        WeaponsManager.Instance.weaponSwitcher.gameObject.SetActive(false);
+        
+
+
         PlayerHealth.instance.IsDead = true;
         deathText.text = "YOU HAVE"+"\n"+"BEEN"+"\n"+"POISONED";
         PlayerHealth.instance.animator.enabled = true;
-        PlayerMovement.Instance.enabled = false;
-        WeaponSwitcher.Instance.gameObject.SetActive(false);
         gameOverCanvas.enabled = true;
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;

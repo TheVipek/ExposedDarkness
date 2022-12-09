@@ -10,7 +10,9 @@ public class FootstepsCollection : ScriptableObject {
     
     public AudioClip getRandomClip()
     {
-        return footstepsList[Random.Range(0,footstepsList.Count)];
+        AudioClip _clip = footstepsList[Random.Range(0,footstepsList.Count)];
+        Debug.Log(_clip);
+        return _clip;
     }
 }
 

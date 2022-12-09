@@ -19,16 +19,10 @@ public class WeaponDisplayer : MonoBehaviour
 
     private Ammo ammoContainer;
     private WeaponSwitcher weaponSwitcher;
-
-    public static WeaponDisplayer instance;
+    public static WeaponDisplayer Instance;
     private void Awake() {
-        if(instance!=this && instance != null)
-        {
-            Destroy(this);
-        }else
-        {
-            instance = this;
-        }
+        if(Instance!=this && Instance != null) Destroy(this);
+        else Instance = this;
     }
     private void OnEnable() 
     {
@@ -44,7 +38,7 @@ public class WeaponDisplayer : MonoBehaviour
     }
     private void Start() {
         ammoContainer = Ammo.Instance;
-        weaponSwitcher = WeaponSwitcher.Instance;
+        weaponSwitcher = WeaponsManager.Instance.weaponSwitcher;
     }
     public void DisplayChangeAmunition()
     {

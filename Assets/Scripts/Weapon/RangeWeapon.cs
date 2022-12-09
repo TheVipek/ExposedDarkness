@@ -59,6 +59,6 @@ public class RangeWeapon : Weapon
         if(canConstantAttack == false) return;
         isConstantAttacking = !isConstantAttacking;
         AudioManager.playSound(AudioSource,weaponSounds.ShootingTypeSound);
-        WeaponDisplayer.instance.DisplayChangeShootingType();
+        WeaponsManager.Instance.weaponDisplayer.DisplayChangeShootingType();
     }
 }

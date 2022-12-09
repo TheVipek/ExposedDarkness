@@ -86,7 +86,6 @@ public class PlayerMovement : MonoBehaviour
     private bool moving = false;
     public bool Moving { get { return moving; } }
     private bool sprinting = false;
-    private bool canSprinting = true;
     private bool isExhausted = false;
     public bool Sprinting { get { return sprinting; } }
     private bool isGrounded = false;
@@ -99,38 +98,17 @@ public class PlayerMovement : MonoBehaviour
     
     public static PlayerMovement Instance { get; private set; }
     public static Action onSprinting;
-    public static PlayerControls playerControls;
-    [SerializeField] InputActionReference moveAction,jumpAction,sprintAction,crouchAction;
+    [SerializeField] InputActionMap playerActionMap;
+    public InputActionReference moveAction,jumpAction,sprintAction,crouchAction;
 
     private void Awake()
     {
-        
-        if (Instance != this && Instance != null)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            Instance = this;
-      //      playerControls = new PlayerControls();
-
-        }
+        if (Instance != this && Instance != null) Destroy(this);
+        else Instance = this;
     }
     private void OnEnable()
     {
-     //  playerControls.Enable();
-        moveAction.action.started += OnMove;
-        moveAction.action.performed += OnMove;
-        moveAction.action.canceled += OnMove;
-
-        sprintAction.action.started += OnSprint;
-        sprintAction.action.canceled += OnSprint;
-
-        jumpAction.action.started += OnJump;
-
-        crouchAction.action.started += OnCrouch;
-        crouchAction.action.canceled += OnCrouch;
-     
+        InitActions();
     }
     void Start()
     {
@@ -140,7 +118,6 @@ public class PlayerMovement : MonoBehaviour
         capsuleCollider.height = defaultHeight;
         feet.localPosition = new Vector3(0,-capsuleCollider.height/2,0);
         currentStamina = staminaLength;
-        //InitActions();
     }
 
 
@@ -150,7 +127,6 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.velocity += new Vector3(0,Physics.gravity.y * (fallMultiplier-1)*Time.deltaTime,0);
         }
-        
         if (sprintAction.action.IsPressed() && moving && isGrounded && !isExhausted)
         {
             if(!sprinting) OnSprintingStart();
@@ -190,18 +166,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void OnDisable()
     {
-    //   playerControls.Disable();
-        moveAction.action.started -= OnMove;
-        moveAction.action.performed -= OnMove;
-        moveAction.action.canceled -= OnMove;
-
-        sprintAction.action.started -= OnSprint;
-        sprintAction.action.canceled -= OnSprint;
-
-        jumpAction.action.started -= OnJump;
-
-        crouchAction.action.started -= OnCrouch;
-        crouchAction.action.canceled -= OnCrouch;
+       RemoveActions();
     }
     void Movement()
     {
@@ -214,6 +179,8 @@ public class PlayerMovement : MonoBehaviour
         {
             moving = false;
         }
+        if(!moving && isGrounded) rb.Sleep();
+
      //   if(!moving && isGrounded) rb.Sleep();
         // Debug.Log($"jumping:{!jumping}");
         // Debug.Log($"moving:{!moving}");
@@ -269,6 +236,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (isGrounded)
             {
+                isGrounded = false;
                 movementActions = MovementActions.JUMPING;
                 jumping = true;
                 SetSpeed(baseJumpMultiplier);
@@ -317,8 +285,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-    }
-    
+    }   
     public void OnSprintingHolded()
     {
         if (moving && IsGrounded && !isExhausted)
@@ -407,9 +374,7 @@ public class PlayerMovement : MonoBehaviour
         feet.localPosition = new Vector3(0,-capsuleCollider.height/2 ,0);
         crouchTransition = null;
     }
-
-   
-    
+ 
     private bool OnSlope()
     {
         if(Physics.Raycast(transform.position,Vector3.down,out slopeHit, capsuleCollider.height * 0.5f + 0.3f,layerMask:groundLayer))
@@ -486,7 +451,6 @@ public class PlayerMovement : MonoBehaviour
         isExhausted = value;
         breathingSource.enabled = value;
     }
-
     public void InitActions()
     {
 
@@ -501,6 +465,25 @@ public class PlayerMovement : MonoBehaviour
 
         crouchAction.action.started += OnCrouch;
         crouchAction.action.canceled += OnCrouch;
+    }
+    public void RemoveActions()
+    {
+        moveAction.action.started -= OnMove;
+        moveAction.action.performed -= OnMove;
+        moveAction.action.canceled -= OnMove;
+
+        sprintAction.action.started -= OnSprint;
+        sprintAction.action.canceled -= OnSprint;
+
+        jumpAction.action.started -= OnJump;
+
+        crouchAction.action.started -= OnCrouch;
+        crouchAction.action.canceled -= OnCrouch;
+    }
+    public void PlayerMapActivate(bool activate)
+    {
+        if(activate) playerActionMap.Enable();
+        else playerActionMap.Disable();
     }
 }
 

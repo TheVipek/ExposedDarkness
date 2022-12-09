@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class WeaponShootingTypeChanger : MonoBehaviour
 {
     public static Action onChangeShootingType;
-    [SerializeField] InputActionReference shootingTypeAction;
+    public InputActionReference shootingTypeAction;
 
     void Update()
     {
