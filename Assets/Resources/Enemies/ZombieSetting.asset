@@ -14,26 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseDamage: 10
   baseHitpoints: 150
-  baseSpeed: 0.2
+  baseSpeed: 0.25
   baseChaseSpeed: 0.6
   baseDeathStateLength: 5
   baseAttackRange: 1
   baseChaseRange: 5
   baseCrouchRange: 3
   baseRotateSpeed: 5
-  attackSounds:
-  - {fileID: 8300000, guid: 5ce6bb262e363834db2b5cdef8a21155, type: 3}
-  - {fileID: 8300000, guid: 4fb45f9472f5e554c82a5a9c7ba4c739, type: 3}
-  patrollingSounds:
-  - {fileID: 8300000, guid: 10732d0c2b844ae4c9ce62eab3a4c9b3, type: 3}
-  damagedSounds:
-  - {fileID: 8300000, guid: bdb798b20d5ac2f438f3a562f4150019, type: 3}
-  - {fileID: 8300000, guid: 0547b940dba4d964e9e447af1dc0759a, type: 3}
-  deathSounds:
-  - {fileID: 8300000, guid: 5cd921b91deac4f47b05c451951f7a53, type: 3}
-  - {fileID: 8300000, guid: 27b98a8c68f991b408c5c6afff25358c, type: 3}
-  provokeSounds:
-  - {fileID: 8300000, guid: e66b136e063cc4049b96679b13228187, type: 3}
-  searchingSounds:
-  - {fileID: 8300000, guid: 821b6440d8e269c40b5a0eb8a44a079d, type: 3}
-  - {fileID: 8300000, guid: ff8240148ee026c4babb53949381e1cd, type: 3}

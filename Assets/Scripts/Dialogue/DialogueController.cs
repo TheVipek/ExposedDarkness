@@ -48,7 +48,9 @@ public class DialogueController : MonoBehaviour
     public IEnumerator DialogueStartPhase(Dialogue _dialogue, bool transitionInside = true)
     {
         currentDialogue = _dialogue;
-        
+        Debug.Log("Cleaning text...");
+        dialogueTMP.text = string.Empty;
+        Debug.Log($"{dialogueTMP.text} has been cleaned");
         OnGlobalDialogueStarted();
         currentDialogue.callStartEvents();
         
@@ -100,8 +102,8 @@ public class DialogueController : MonoBehaviour
         WaitForSecondsRealtime _animLength = new WaitForSecondsRealtime(animLength);
 
         yield return _animLength;
+       
         dialogueAnimator.enabled = false;
-
     }
 
     IEnumerator textTransition(Dialogue _dialogue)

@@ -5,13 +5,21 @@ using UnityEngine;
 public class completionMissionAction : MonoBehaviour,IAnyButton
 {
     bool used = false;
-     private void OnGUI() {
+    private void OnEnable() {
+        GameManager.Instance.freezePlayerActions();
+    }
+    private void OnGUI() 
+    {
         Event currentEvent = Event.current;
-        if(currentEvent.isKey || currentEvent.isMouse && used == false)
+        if( (currentEvent.isKey || currentEvent.isMouse) && used == false)
         {
+            Debug.Log("Mission complete clicked!");
             AnyButtonAction();
             used = true;
         }
+    }
+    private void OnDisable() {
+        GameManager.Instance.freezePlayerActions();
     }
     public void AnyButtonAction()
     {

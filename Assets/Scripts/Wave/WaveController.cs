@@ -12,6 +12,7 @@ public class WaveController : MonoBehaviour
 
     public static Action onWaveStartGlobal;
     public static Action onWaveEndGlobal;
+    [SerializeField] float onWaveEndDelay;
     public static Action onWave;
     public static Action onBreakStarted;
     public static Action onBreakEnded;
@@ -56,19 +57,12 @@ public class WaveController : MonoBehaviour
         EnemiesAliveCounter.maxEnemiesCount = i;
 
     }
-    // public IEnumerator BreakBetweenWaves()
-    // {
-    //     onBreakStarted();
-    //     float _breakTime = breakBetweenWaves;
-    //     while(_breakTime>0)
-    //     {
-    //         _breakTime -= Time.deltaTime;
-    //         yield return null;
-    //     }
-    //     onBreakEnded();
-    //     yield return null;
-    //     yield return StartCoroutine(spawnWave());
-    // }
+    public void CallOnWaveGlobalEnd()
+    {
+        onWaveEndGlobal();
+        //Invoke(onWaveEndGlobal.ToString(),onWaveEndDelay);
+        //Invoke("onWaveEndGlobal",onWaveEndDelay);
+    }
     public void spawnEnemy(GameObject enemy)
     {
         

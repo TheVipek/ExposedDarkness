@@ -13,7 +13,10 @@ public class GroundDetector : MonoBehaviour
     private void OnTriggerEnter(Collider other) {
         int othLayer = 1<<other.gameObject.layer;
         if(playerMovement.IsGrounded == false && playerMovement.groundLayer.value == othLayer && playerMovement.movementActions == MovementActions.JUMPING)
+        {
             playerMovement.movementActions = MovementActions.DEFAULT;
+            playerMovement.IsGrounded = true;
+        }
     }
      private void OnTriggerStay(Collider other) {
         int othLayer = 1<< other.gameObject.layer;

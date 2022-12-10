@@ -179,7 +179,11 @@ public class PlayerMovement : MonoBehaviour
         {
             moving = false;
         }
-        if(!moving && isGrounded) rb.Sleep();
+
+        if(movementActions != MovementActions.JUMPING)
+        {
+            if(!moving && isGrounded) rb.Sleep();
+        }
 
      //   if(!moving && isGrounded) rb.Sleep();
         // Debug.Log($"jumping:{!jumping}");
@@ -236,7 +240,6 @@ public class PlayerMovement : MonoBehaviour
         {
             if (isGrounded)
             {
-                isGrounded = false;
                 movementActions = MovementActions.JUMPING;
                 jumping = true;
                 SetSpeed(baseJumpMultiplier);

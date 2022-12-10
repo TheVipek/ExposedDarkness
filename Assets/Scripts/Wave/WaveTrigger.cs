@@ -36,7 +36,8 @@ public class WaveTrigger : MonoBehaviour
                 // StartCoroutine(waveController.spawnSubwave());
             }else
             {
-                WaveController.onWaveEndGlobal();
+                WaveController.Instance.CallOnWaveGlobalEnd();
+                //WaveController.onWaveEndGlobal();
 
                 // PRINT END OF WAVES
             }
