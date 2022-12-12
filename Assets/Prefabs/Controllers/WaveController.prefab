@@ -60,6 +60,7 @@ MonoBehaviour:
     onSubwavesEndEvent:
       m_PersistentCalls:
         m_Calls: []
+  onWaveEndDelay: 3
   timeBetweenMonster: 0.1
   breakBetweenWaves: 15
 --- !u!114 &1466701142

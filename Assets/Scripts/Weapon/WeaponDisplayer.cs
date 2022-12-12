@@ -66,8 +66,6 @@ public class WeaponDisplayer : MonoBehaviour
    
     public void DisplayChangeWeapon()
     {
-      //  Debug.Log(weaponName.text);
-     //   Debug.Log(weaponSwitcher.CurrentWeapon.name);
         if(weaponName.text != weaponSwitcher.CurrentWeapon.name)
             {
                 weaponName.text = weaponSwitcher.CurrentWeapon.name;

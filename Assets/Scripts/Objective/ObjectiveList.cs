@@ -8,14 +8,14 @@ public class ObjectiveList : MonoBehaviour
    [SerializeField] List<Objective> objectivesInGame;
    [SerializeField] GameObject objectivesUIBox;
    [SerializeField] GameObject objectivePrefab;
-   public static ObjectiveList instance;
+   public static ObjectiveList Instance;
    private void Awake() {
-      if(instance != this && instance != null)
+      if(Instance != this && Instance != null)
       {
          Destroy(this);
       }else
       {
-         instance = this;
+         Instance = this;
       }
    }
    private void Start() {

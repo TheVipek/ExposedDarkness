@@ -319,7 +319,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 717174629}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.9, z: 0}
+  m_LocalPosition: {x: 0, y: -0.85, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -506,7 +506,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 50
+  far clip plane: 10
   field of view: 80
   orthographic: 0
   orthographic size: 5
@@ -801,7 +801,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 536835279746954485}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0.02173537, y: -0.011380404, z: 0.005857722, w: -0.99968183}
   m_LocalPosition: {x: 0, y: 0.557, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -901,7 +901,7 @@ MonoBehaviour:
     keepAlpha: 0
   fog:
     enabled: 0
-    excludeSkybox: 1
+    excludeSkybox: 0
   debugLayer:
     lightMeter:
       width: 512
@@ -924,7 +924,7 @@ MonoBehaviour:
       colorBlindnessType: 0
       colorBlindnessStrength: 1
   m_Resources: {fileID: 11400000, guid: d82512f9c8e5d4a4d938b575d47f88d4, type: 2}
-  m_ShowToolkit: 0
+  m_ShowToolkit: 1
   m_ShowCustomSorter: 1
   breakBeforeColorGrading: 0
   m_BeforeTransparentBundles: []
@@ -1430,9 +1430,8 @@ MonoBehaviour:
   crouchHeight: 1
   crouchDuration: 0.2
   movementActions: 0
-  jumping: 0
   playerActionMap:
-    m_Name: 
+    m_Name: Player
     m_Id: f5c305dd-1496-432b-ab26-e1dbe3919d47
     m_Asset: {fileID: 0}
     m_Actions: []
@@ -1456,11 +1455,11 @@ MonoBehaviour:
   animator: {fileID: 845382118}
   maxHealth: 100
   currentHealth: 0
-  bloodOverFace: 0
-  poisonTriggered: 0
   bloodOverFaceValue: 35
   timeToRegenerate: 5
   regenerationSpeed: 0.8
+  bloodOverFace: 0
+  poisonTriggered: 0
 --- !u!114 &1843161998084528196
 MonoBehaviour:
   m_ObjectHideFlags: 0

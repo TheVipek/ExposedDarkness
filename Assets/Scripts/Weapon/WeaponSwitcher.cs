@@ -37,7 +37,7 @@ public class WeaponSwitcher : MonoBehaviour
     }
     void Start() 
     {
-       weaponChange();
+       SetWeaponActive(-1);
     }
     void Update() 
     {
