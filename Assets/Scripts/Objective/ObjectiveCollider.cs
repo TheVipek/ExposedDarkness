@@ -5,7 +5,6 @@ using UnityEngine;
 public class ObjectiveCollider : MonoBehaviour
 {
     [SerializeField] int objectiveID;
-    bool reached = false;
     [SerializeField] ObjectiveList objectiveList;
     private Objective objective;
     private void Start() {
@@ -17,7 +16,6 @@ public class ObjectiveCollider : MonoBehaviour
         {
             objectiveList.setObjectiveStatus(objective,ObjectiveStatus.DONE);
             gameObject.SetActive(false);
-            reached = true;
             
         }
         

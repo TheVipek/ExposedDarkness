@@ -10,7 +10,7 @@ public class EnemyAttack : MonoBehaviour
     public bool isAttackOver =true;
 
     private void Start() {
-        target = PlayerHealth.instance;
+        target = PlayerHealth.Instance;
     }
     public void AttackHitEvent()
     {

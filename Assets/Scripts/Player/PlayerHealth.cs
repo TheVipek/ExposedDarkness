@@ -1,50 +1,49 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
+using System;
 public class PlayerHealth : MonoBehaviour
 {
+    [Header("References")]
     public Animator animator;
+
+    [Header("Stats")]
     [SerializeField] float maxHealth = 100;
-    public float MaxHealth{get{return maxHealth;}}
     [SerializeField] float currentHealth;
-    public float CurrentHealth{get{return currentHealth;}}
-    
-    
-    public bool IsDead{get{return animator.GetBool("death");} set{animator.SetBool("death",value);}}
-    public bool IsDeadCasted{get{return animator.GetBool("deathCasted");} set{animator.SetBool("deathCasted",value);}}
-
-    public static PlayerHealth instance;
-    public bool bloodOverFace = false;
-    public bool poisonTriggered = false;
-
+    [Tooltip("At what currentHealth value trigger blood over face")]
     [SerializeField] float bloodOverFaceValue = 35f;
-
-
     [Tooltip("Time that needs elapse to start regenerating health")]
     [SerializeField] float timeToRegenerate = 5f;
     [Tooltip("Time that needs to elapse to regenerate 1HP")]
     [SerializeField] float regenerationSpeed = 0.2f;
+    public bool bloodOverFace = false;
+    public bool poisonTriggered = false;
+
+    public static Action onDamageTaken;
+    public static Action onFightOver;
+    
+    
+    
+    public float MaxHealth{get{return maxHealth;}}
+    public float CurrentHealth{get{return currentHealth;}}
+    public bool IsDead{get{return animator.GetBool("death");} set{animator.SetBool("death",value);}}
+    public bool IsDeadCasted{get{return animator.GetBool("deathCasted");} set{animator.SetBool("deathCasted",value);}}
+    
+    
+
+    public static PlayerHealth Instance;
+
+
+
     Coroutine regenerationChecker;
     Coroutine regenerationProcess;
-    public delegate void OnDamageTaken();
-    public static event OnDamageTaken onDamageTaken;
-
-    public delegate void OnFightOver();
-    public static event OnFightOver onFightOver;
 
 
     private void Awake() {
         
-        currentHealth = maxHealth;
-        if(instance != null && instance != this)
-        {
-            Destroy(this);
-        }else
-        {
-            instance = this;
-        }
+        if(Instance != null && Instance != this) Destroy(this);
+        else Instance = this;
         
+        currentHealth = maxHealth;
     }
     public void restoreHp()
     {
@@ -87,8 +86,6 @@ public class PlayerHealth : MonoBehaviour
         }
         else if(currentHealth > 0)
         {
-            //CAMERA SHAKE EFFECT
-            //StartCoroutine(PlayerCamera.instance.shakeCamera());
             //CALLS ALL FUNCTIONS SUBSCRIBED TO EVENT
             onDamageTaken();
 
@@ -99,12 +96,13 @@ public class PlayerHealth : MonoBehaviour
                 bloodOverFace = true;
                 StartCoroutine(VingetteBumping.instance.BloodBumping(VingetteBumping.instance.maxBloodValue,VingetteBumping.instance.entryValue));
             }
-            //Every time player is attacked by enemy timer starts counting and if it reach x value regenerating process starts
-            FightOver();
+            FightStart();
         }
        
     }
-    public void FightOver()
+
+    ///<summary> Reset regenerationChecker coroutine if there's any running and start new </summary>
+    public void FightStart()
     {
         
         if(regenerationChecker!=null)

@@ -9,8 +9,6 @@ public class ObjectiveList : MonoBehaviour
    [SerializeField] GameObject objectivesUIBox;
    [SerializeField] GameObject objectivePrefab;
    public static ObjectiveList instance;
-   public delegate void OnStatusChange();
-   public static event OnStatusChange onStatusChange;
    private void Awake() {
       if(instance != this && instance != null)
       {
@@ -52,10 +50,7 @@ public class ObjectiveList : MonoBehaviour
    {
       foreach (var item in objectivesInGame)
          {
-            if(item.id == id)
-            {
-               return item;
-            }
+            if(item.id == id) return item;
 
          }
       return null;

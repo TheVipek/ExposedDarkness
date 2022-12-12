@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+#if(UNITY_EDITOR)
 using UnityEngine;
-
 public class InventorySystem : MonoBehaviour
 {
     public delegate void OnAddToInventory();
@@ -13,12 +11,5 @@ public class InventorySystem : MonoBehaviour
         { "weapons" , new List<Inventory_Item>(){}},
         { "general" , new List<Inventory_Item>(){}},
     };*/
-    void Start()
-    {
-        
-    }
-    void Update()
-    {
-        
-    }
 }
+#endif

@@ -32,7 +32,7 @@ public class TimeCounter : MonoBehaviour
             if(remainingTime <= 60 && startedPoisoning == false)
             {
                 VingetteBumping.instance.StopAllCoroutines();
-                PlayerHealth.instance.poisonTriggered = true;
+                PlayerHealth.Instance.poisonTriggered = true;
                 StartCoroutine(VingetteBumping.instance.smoothColorChange(VingetteBumping.instance.poisonColor));
                 StartCoroutine(VingetteBumping.instance.TriggerPoison(VingetteBumping.instance.maxPoisonValue));
                 ChromaticAberrationTrigger.instance.enabled = true;

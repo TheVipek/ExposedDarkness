@@ -7,7 +7,6 @@ public class VolumeManager : MonoBehaviour
 {
     [SerializeField] AudioMixer audioMixer;
     [SerializeField] volumeController[] volControllers;
-    [SerializeField] float multiplier = 30f;
     private void Start() {
         foreach (var volController in volControllers)
         {

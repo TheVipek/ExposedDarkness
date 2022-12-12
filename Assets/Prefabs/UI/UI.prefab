@@ -3592,7 +3592,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actualHp: {fileID: 527036651}
-  smoothLoseHp: 0.5
   sliderFill: {fileID: 3071160396972746189}
 --- !u!1 &1327987776
 GameObject:

@@ -11,7 +11,7 @@ public abstract class enemyAI : MonoBehaviour
     EnemySoundKit enemySoundKit;
     AudioSource mainAudioSource;
     
-    protected Transform target;
+    protected PlayerHealth target;
     
     
     //Is set to infinity so there wont be any problem when AI script is initializing
@@ -67,9 +67,9 @@ public abstract class enemyAI : MonoBehaviour
     {
         //OVERRIDE IN EVERY SUBCLASS
         animator = enemy.getAnimator;
-        if(PlayerHealth.instance != null)
+        if(PlayerHealth.Instance != null)
         {
-            target = PlayerHealth.instance.transform;
+            target = PlayerHealth.Instance;
             Assert.IsNotNull(target,gameObject.name + " not set target");
         }
         if(patrollingWaypoints.Length>1)
@@ -89,7 +89,7 @@ public abstract class enemyAI : MonoBehaviour
             PatrollingArea();
         }
 
-        if(PlayerHealth.instance != null)
+        if(target != null)
         {
             if(isProvoked == true)
             {
@@ -100,7 +100,7 @@ public abstract class enemyAI : MonoBehaviour
                 BackToStartingPos();
             }
             
-            if(PlayerHealth.instance.IsDead == false)
+            if(target.IsDead == false)
             {
                 if(PlayerMovement.Instance.Crouch == false)
                 {
@@ -125,11 +125,12 @@ public abstract class enemyAI : MonoBehaviour
         if(target == null) return;
         distanceToTarget = Vector3.Distance(
             new Vector3(transform.position.x,0,transform.position.z),
-            new Vector3(target.position.x,0,target.position.z));
+            new Vector3(target.transform.position.x,0,target.transform.position.z));
     }
     public virtual void SanityMode()
     {
         tryingCatchTarget = Mathf.Infinity;
+        tryingCatchTargetBase = Mathf.Infinity;
         isProvoked = true;
     }
     public virtual void NormalMode()
@@ -138,7 +139,7 @@ public abstract class enemyAI : MonoBehaviour
     }
     public virtual void EngageTarget()
     {
-        if(PlayerHealth.instance.IsDead == true)
+        if(target.IsDead == true)
         {
             ChaseAnimateState(false);
             isProvoked = false;
@@ -193,12 +194,7 @@ public abstract class enemyAI : MonoBehaviour
                     isAttacking = false;
                 }
             }
-        }
-        
-        
-
-           
-        
+        }    
     }
     public virtual void ProvokeTrigger()
     {
@@ -215,11 +211,11 @@ public abstract class enemyAI : MonoBehaviour
         PatrollingAnimateState(false);
         ChaseAnimateState(true);
         Debug.Log(navMeshAgent.destination);
-        navMeshAgent.SetDestination(target.position);
+        navMeshAgent.SetDestination(target.transform.position);
     }
     public virtual void FaceTarget()
     {
-        Vector3 direction = (target.position - transform.position).normalized;
+        Vector3 direction = (target.transform.position - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x,0,direction.z));
         transform.rotation = Quaternion.Slerp(transform.rotation,lookRotation,Time.deltaTime*enemySetting.baseRotateSpeed);
     }

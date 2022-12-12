@@ -15,6 +15,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] PlayerCamera playerCamera;
     [SerializeField] Rigidbody rb;
     [SerializeField] CapsuleCollider capsuleCollider;
+    private float offSetY = 0.05f;
     [Tooltip("Ground collision detector")]
     [SerializeField] Transform feet;
     [SerializeField] AudioSource breathingSource;
@@ -72,17 +73,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float crouchHeight;
     [Tooltip("How long is crouch transition")]
     [SerializeField] float crouchDuration;
-    float crouchVelocity;
-    private float currentHeight;
-    
+
     [Header("Current MovementAction")]
     public MovementActions movementActions;
 
-
-
     private bool crouch = false;
     public bool Crouch { get { return crouch; } }
-    [HideInInspector] public bool jumping = false;
+    private bool jumping = false;
+    public bool Jumping {get {return jumping;}  set{jumping = value;}}
     private bool moving = false;
     public bool Moving { get { return moving; } }
     private bool sprinting = false;
@@ -91,15 +89,16 @@ public class PlayerMovement : MonoBehaviour
     private bool isGrounded = false;
     public bool IsGrounded{get{return isGrounded;} set{isGrounded = value;}}
     private Coroutine crouchTransition;
-
+    private Vector3 preCrouchPos;
     private Vector3 move;
-    private Vector3 moveMultiplier;
     private Vector3 moveDirection;
-    
-    public static PlayerMovement Instance { get; private set; }
+
     public static Action onSprinting;
+    
     [SerializeField] InputActionMap playerActionMap;
     public InputActionReference moveAction,jumpAction,sprintAction,crouchAction;
+    
+    public static PlayerMovement Instance { get; private set; }
 
     private void Awake()
     {
@@ -127,20 +126,16 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.velocity += new Vector3(0,Physics.gravity.y * (fallMultiplier-1)*Time.deltaTime,0);
         }
-        if (sprintAction.action.IsPressed() && moving && isGrounded && !isExhausted)
+
+
+        //SPRINTING 
+        if (sprintAction.action.IsPressed() && moving && IsGrounded && !isExhausted)
         {
-            if(!sprinting) OnSprintingStart();
-            
-            if (currentStamina > 0.0f)
-            {
-                currentStamina -= Time.deltaTime;
-            }
-            else
-            {
-                Debug.Log("Exhaustion!");
-                Exhaustion(true);
-                OnSprintingCanceled();
-            }
+            OnSprintingHolded();
+        }
+        else if(!moving && sprinting)
+        {
+            OnSprintingCanceled();
         }
         //If player was exhausted ,but stamina is regenerated fully variable isExhausted is set to false
         else if (currentStamina < staminaLength)
@@ -155,8 +150,6 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
         }
-        
-
         DragControl();
         SpeedController();
     }
@@ -202,6 +195,8 @@ public class PlayerMovement : MonoBehaviour
         else if(!isGrounded && !OnSlope()) rb.AddForce(moveDirection * currentSpeedForce, ForceMode.Acceleration);
     }
 
+    /// <summary> Making sure that speed is lower than currentMoveLimit </summary>
+    /// <paramref name="currentMoveLimit" />
     public void SpeedController()
     {
         if(OnSlope())
@@ -220,6 +215,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    /// <summary> Called when player is moving</summary>
     public void OnMove(InputAction.CallbackContext ctx)
     {
         //Making sure that player is moving with correct speed
@@ -234,6 +230,7 @@ public class PlayerMovement : MonoBehaviour
         move.x *= movingSidesSpeed;
         move.z = move.z > 0 ? move.z *= movingFrontSpeed : move.z < 0 ? move.z *= movingBackSpeed : 0;
     }
+    /// <summary> Called when player jump button is clicked</summary>
     public void OnJump(InputAction.CallbackContext ctx)
     {
         if(ctx.started)
@@ -247,7 +244,10 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
+    ///<summary> Jump impulse , height is equal to <see cref="jumpHeight"/> </summary>
     private void Jump() => rb.AddForce(new Vector3(0, Mathf.Sqrt(-2.0f * Physics2D.gravity.y * jumpHeight), 0), ForceMode.Impulse);
+    
+    /// <summary> Called when player sprint button is clicked / canceled  </summary>
     public void OnSprint(InputAction.CallbackContext ctx)
     {
         if (ctx.started)
@@ -260,14 +260,15 @@ public class PlayerMovement : MonoBehaviour
             OnSprintingCanceled();
         }
     }
+
     public void OnSprintingStart()
     {
-        Debug.Log("Sprint Started");
+      //  Debug.Log("OnSprintingStart called!");
 
         //If player isn't exhausted (exhaustion state is triggered when player is sprinting to 0 stamina) sprint is triggered
         if(movementActions == MovementActions.DEFAULT)
         {
-            if (currentStamina > 0.0f && !isExhausted)
+            if (currentStamina > 0.0f && !isExhausted && moving)
             {
                 movementActions = MovementActions.SPRINTING;
                 SetSpeed(baseSprintMultiplier);
@@ -278,6 +279,7 @@ public class PlayerMovement : MonoBehaviour
     }
     public void OnSprintingCanceled()
     {
+    //    Debug.Log("OnSprintingCanceled called!");
         if(movementActions == MovementActions.SPRINTING)
         {
             if (sprinting)
@@ -291,36 +293,24 @@ public class PlayerMovement : MonoBehaviour
     }   
     public void OnSprintingHolded()
     {
-        if (moving && IsGrounded && !isExhausted)
-        {
-            if(!sprinting) OnSprintingStart();
+      //  Debug.Log($"Sprint is holded and all conditions are meet: moving: {moving},IsGrounded: {IsGrounded},!isExhausted:{!isExhausted}");
+        if(!sprinting) OnSprintingStart();
 
-            if(sprinting)
-            {
-                if (currentStamina > 0.0f) currentStamina -= Time.deltaTime;
-                else
-                {
-                    Debug.Log("Exhaustion!");
-                    Exhaustion(true);
-                    OnSprintingCanceled();
-                }
-            }
-        }
-        //If player was exhausted ,but stamina is regenerated fully variable isExhausted is set to false
-        else if (currentStamina < staminaLength)
+        if(sprinting)
         {
-            currentStamina += Time.deltaTime * staminaRegenerartionSpeed;
-            if (currentStamina >= staminaLength)
+            if (currentStamina > 0.0f) currentStamina -= Time.deltaTime;
+            else
             {
-                currentStamina = staminaLength;
-                if (isExhausted == true)
-                {
-                    Exhaustion(false);
-                }
+                Debug.Log("Exhaustion!");
+                Exhaustion(true);
+                OnSprintingCanceled();
             }
         }
+        
+
+        
     }
-    
+    /// <summary> Called when player crouch button is clicked / canceled  </summary>
     public void OnCrouch(InputAction.CallbackContext ctx)
     {
         if (ctx.started)
@@ -340,6 +330,8 @@ public class PlayerMovement : MonoBehaviour
     {
         if (movementActions != MovementActions.JUMPING)
         {
+            preCrouchPos = transform.position;
+            Debug.Log("Crouch started");
             movementActions = MovementActions.CROUCHING;
             crouch = true;
             SetSpeed(baseCrouchMultiplier);
@@ -349,12 +341,19 @@ public class PlayerMovement : MonoBehaviour
     }
     public void OnCrouchCanceled()
     {
+        Debug.Log("Crouch canceled");
         crouch = false;
         movementActions = MovementActions.DEFAULT;
-        if(capsuleCollider.height != defaultHeight) capsuleCollider.height = defaultHeight;
+        if(capsuleCollider.height != defaultHeight)
+        {
+            //transform.localPosition = new Vector3(transform.localPosition.x,transform.localPosition.y + capsuleCollider.height/2,transform.localPosition.z);
+            capsuleCollider.height = defaultHeight;
+            if(transform.position.y != preCrouchPos.y) transform.position = new Vector3(transform.position.x,preCrouchPos.y,transform.position.z);
+        }
         feet.localPosition = new Vector3(0,-capsuleCollider.height/2,0);
         SetSpeed();
     }
+    /// <summary>Transition between stand and crouch "state"</summary>
     IEnumerator CrouchTransition(float desiredValue, float crouchDur)
     {
         float timeElapsed = 0f;
@@ -374,10 +373,13 @@ public class PlayerMovement : MonoBehaviour
             yield return null;
         }
         capsuleCollider.height = desiredValue; 
-        feet.localPosition = new Vector3(0,-capsuleCollider.height/2 ,0);
+        feet.localPosition = new Vector3(0,-capsuleCollider.height/2,0);
+        
         crouchTransition = null;
+        Debug.Log("Crouch transition ended");
     }
  
+    ///<summary> Calculate angle of current ground </summary>
     private bool OnSlope()
     {
         if(Physics.Raycast(transform.position,Vector3.down,out slopeHit, capsuleCollider.height * 0.5f + 0.3f,layerMask:groundLayer))
@@ -387,17 +389,10 @@ public class PlayerMovement : MonoBehaviour
         }
         return false;
     }
+    ///<summary> Get current ground slope</summary>
     private Vector3 GetSlopeMoveDirection()
     {
         return Vector3.ProjectOnPlane(moveDirection,slopeHit.normal).normalized;
-    }
-    private void CheckSlope()
-    {
-        RaycastHit slopeHit;
-        if (Physics.Raycast(capsuleCollider.bounds.center, Vector3.down, out slopeHit, capsuleCollider.bounds.extents.y + 0.1f))
-        {
-            //    Debug.Log(Vector3.Angle(Vector3.up,slopeHit.normal));
-        }
     }
 
     private void OnDrawGizmos()
@@ -414,26 +409,32 @@ public class PlayerMovement : MonoBehaviour
     ///<summary>Set value of speed - default is 1 which is equal to normal walk.Value can't be equal 0.</summary>
     public void SetMoveBasedOnState()
     {
-        //If sprint is pressed ,sprinting start will execute
-        if(sprintAction.action.IsPressed())
-        {
-            OnSprintingStart();
-        }
         //If crouch is pressed ,crouching start will execute
-        else if(crouchAction.action.IsPressed())
+        if(crouch)
         {
-            OnCrouchStarted();
+            movementActions = MovementActions.CROUCHING;
+            SetSpeed(baseCrouchMultiplier);
         }
         else if(jumping)
         {
+            movementActions = MovementActions.JUMPING;
             SetSpeed(baseJumpMultiplier);
+        }
+        //If sprint is pressed ,sprinting start will execute
+        else if(sprinting)
+        {
+            movementActions = MovementActions.SPRINTING;
+            SetSpeed(baseSprintMultiplier);
+            
         }
         //If any of above conditions isn't fullfiled ,move is going to default state 
         else
         {
+            movementActions = MovementActions.DEFAULT;
             SetSpeed();
         }
     }
+    ///<summary> Switching between in air and ground drag</summary>
     private void DragControl()
     {
         if(isGrounded) rb.drag = groundDrag;
@@ -454,6 +455,7 @@ public class PlayerMovement : MonoBehaviour
         isExhausted = value;
         breathingSource.enabled = value;
     }
+    ///<summary>Initializing functions to input actions</summary>
     public void InitActions()
     {
 
@@ -469,6 +471,7 @@ public class PlayerMovement : MonoBehaviour
         crouchAction.action.started += OnCrouch;
         crouchAction.action.canceled += OnCrouch;
     }
+    ///<summary>Removing functions to input actions</summary>
     public void RemoveActions()
     {
         moveAction.action.started -= OnMove;
@@ -483,6 +486,7 @@ public class PlayerMovement : MonoBehaviour
         crouchAction.action.started -= OnCrouch;
         crouchAction.action.canceled -= OnCrouch;
     }
+    ///<summary>Activating / Deactivating player action map</summary>
     public void PlayerMapActivate(bool activate)
     {
         if(activate) playerActionMap.Enable();

@@ -45,7 +45,7 @@ public class StepEffect : MonoBehaviour
     {
         Debug.Log($"Trying to get random clip");
         RaycastHit hit;
-        Debug.DrawRay(transform.position,Vector3.down,Color.red,15f);
+        Debug.DrawRay(transform.position,Vector3.down*.5f,Color.red,15f);
         if(Physics.Raycast(transform.position,Vector3.down,out hit,.5f,~layerToIgnore))
         {
             Debug.Log($"Ray touched something {hit.collider.gameObject.name}");

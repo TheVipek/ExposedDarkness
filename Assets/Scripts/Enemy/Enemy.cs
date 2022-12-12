@@ -72,7 +72,7 @@ public abstract class Enemy : MonoBehaviour {
     }
     protected virtual void Start()
     {
-        target = PlayerHealth.instance;
+        target = PlayerHealth.Instance;
         Assert.IsNotNull(target,gameObject.name + " not set target");
 
     }

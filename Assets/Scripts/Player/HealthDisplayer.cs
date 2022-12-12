@@ -6,8 +6,6 @@ using UnityEngine.UI;
 public class HealthDisplayer : MonoBehaviour,IDisplayUI
 {
     [SerializeField] TMP_Text actualHp;
-    [SerializeField] float smoothLoseHp = 2f;
-    float sliderComplete = 0f;
     [SerializeField] Slider sliderFill;
     private void OnEnable() {
         PlayerHealth.onDamageTaken += DisplayUI;
@@ -24,8 +22,8 @@ public class HealthDisplayer : MonoBehaviour,IDisplayUI
     }
     public void DisplayUI()
     {
-        actualHp.text = PlayerHealth.instance.CurrentHealth.ToString();
-        sliderFill.value = PlayerHealth.instance.CurrentHealth /100;
+        actualHp.text = PlayerHealth.Instance.CurrentHealth.ToString();
+        sliderFill.value = PlayerHealth.Instance.CurrentHealth /100;
         
     }
 

@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
+#if(UNITY_EDITOR)
+using UnityEngine;
 public class InventoryController : MonoBehaviour
 {
     public Inventory_Container container;
@@ -18,21 +17,5 @@ public class InventoryController : MonoBehaviour
             instance = this;
         }
     }
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    
-   
-    void getAllTypeItems()
-    {
-
-    }
 }
+#endif

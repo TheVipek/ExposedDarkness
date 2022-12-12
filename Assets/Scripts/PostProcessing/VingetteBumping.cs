@@ -71,13 +71,13 @@ public class VingetteBumping : MonoBehaviour
        }
        currentBump = toVal;
        vingette.intensity.value = currentBump;
-       if(PlayerHealth.instance.IsDead == false)
+       if(PlayerHealth.Instance.IsDead == false)
        {
-            if(PlayerHealth.instance.bloodOverFace == false && currentBump != 0)
+            if(PlayerHealth.Instance.bloodOverFace == false && currentBump != 0)
             {
                     yield return StartCoroutine(BloodBumping(fromVal:toVal,toVal:0));
             }
-            else if(PlayerHealth.instance.bloodOverFace == false && currentBump == 0)
+            else if(PlayerHealth.Instance.bloodOverFace == false && currentBump == 0)
             {
                     yield break;
             }else
