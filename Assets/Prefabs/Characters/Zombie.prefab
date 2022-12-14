@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 1982975518}
   - component: {fileID: 9024959718931369221}
   - component: {fileID: 701855159631860974}
+  - component: {fileID: 3247170020877839574}
   m_Layer: 0
   m_Name: Zombie
   m_TagString: Enemy
@@ -97,10 +98,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bf990b53ef033146b2a7562666f658a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 1077496283045738737}
+  target: {fileID: 11400000, guid: 6e8bb48a598ac404bacedf8e60e2b9e8, type: 2}
   capsuleCollider: {fileID: 701855159631860974}
   enemySetting: {fileID: 11400000, guid: 9b7854703c6cdc740ad4ab3fdef62f5e, type: 2}
   enemySoundKit: {fileID: 11400000, guid: 565105aa25069324c8f8b8e2c40eeb12, type: 2}
-  breathingAudioSource: {fileID: 0}
+  breathingAudioSource: {fileID: 1138049273303949993}
   canMove: 0
 --- !u!195 &658442827073341808
 NavMeshAgent:
@@ -151,6 +154,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78923e289405d6345bcd98ee781ccc42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  target: {fileID: 11400000, guid: 6e8bb48a598ac404bacedf8e60e2b9e8, type: 2}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 1024
   nextActionBreakBase: 2.5
   tryingCatchTargetBase: 5
 --- !u!95 &1077496283045738737
@@ -295,6 +302,19 @@ CapsuleCollider:
   m_Height: 1.9
   m_Direction: 1
   m_Center: {x: 0, y: 0.85, z: 0}
+--- !u!114 &3247170020877839574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2661494441099815045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15af5fbed543d4741b539242e0668354, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  runtimeObjectAddTo: {fileID: 11400000, guid: 9d855bef37249f842bfd2393cab709d3, type: 2}
 --- !u!1 &3095497833590764154
 GameObject:
   m_ObjectHideFlags: 0

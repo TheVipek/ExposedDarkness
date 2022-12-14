@@ -7,45 +7,41 @@ public class SprintingDisplayer : MonoBehaviour
     [SerializeField] Canvas sprintingCanvas;
     [SerializeField] Slider sprintingSlider;
     [SerializeField] Animator animator;
+    [SerializeField] PlayerMoveSettings playerSettings;
     private Coroutine sprintingCoroutine;
-    private void OnEnable() {
-        PlayerMovement.onSprinting += sprintCounterCall;
-    }
-    private void OnDisable() {
-        PlayerMovement.onSprinting -= sprintCounterCall;
-    }
-
-    public void sprintCounterCall()
+   // private void OnEnable() => PlayerMovement.onSprinting += sprintCounterCall;
+   // private void OnDisable() => PlayerMovement.onSprinting -= sprintCounterCall;
+    public void SprintCounterCall()
     {
-        Debug.Log(sprintingCoroutine);
+        if(playerSettings == null)
+        {
+            Debug.Log("Player is null");
+            return;
+        }
         if(sprintingCoroutine == null) 
         {
-            sprintingCoroutine = StartCoroutine(sprintingCounter()); 
+            sprintingCoroutine = StartCoroutine(SprintingCounter()); 
         }
         else
         {
             StopCoroutine(sprintingCoroutine);
-            sprintingCoroutine = StartCoroutine(sprintingCounter()); 
+            sprintingCoroutine = StartCoroutine(SprintingCounter()); 
 
         }
     }
-    public IEnumerator sprintingCounter()
+    public IEnumerator SprintingCounter()
     {
         //calling to avoid going out of while loop at start
         yield return null;
-        sprintingSlider.value = PlayerMovement.Instance.currentStamina/PlayerMovement.Instance.StaminaLength;
+        sprintingSlider.value = playerSettings.CurrentStamina/playerSettings.StaminaLength;
         animator.SetBool("appear",true);
-        while(PlayerMovement.Instance.CurrentStamina < PlayerMovement.Instance.StaminaLength)
+        while(playerSettings.CurrentStamina < playerSettings.StaminaLength)
         {
-            float currValue =  PlayerMovement.Instance.CurrentStamina / PlayerMovement.Instance.StaminaLength;
-       //     Debug.Log(currValue);
+            float currValue =  playerSettings.CurrentStamina / playerSettings.StaminaLength;
             sprintingSlider.value = currValue;
             yield return null;
         }
         sprintingCoroutine = null;
         animator.SetBool("appear",false);
-
-       // animator.SetBool("disappear",true);
-
     }
 }

@@ -2102,7 +2102,6 @@ GameObject:
   - component: {fileID: 849083600}
   - component: {fileID: 849083601}
   - component: {fileID: 4497335199087643695}
-  - component: {fileID: 1522175979622296778}
   m_Layer: 5
   m_Name: PickedUpContainer
   m_TagString: Untagged
@@ -2183,26 +2182,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &1522175979622296778
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 849083599}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 453f728528fbf8a49b1afd2d6a3394f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PickupContainer: {fileID: 849083599}
-  pickupChildrens:
-  - {fileID: 8116339173110782901}
-  - {fileID: 8116339173883561884}
-  - {fileID: 8116339172776130092}
-  - {fileID: 8116339173884335526}
-  - {fileID: 8116339172848161380}
-  - {fileID: 8116339172239323335}
 --- !u!1 &853971564
 GameObject:
   m_ObjectHideFlags: 0
@@ -3593,6 +3572,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actualHp: {fileID: 527036651}
   sliderFill: {fileID: 3071160396972746189}
+  healthSettings: {fileID: 11400000, guid: 6e8bb48a598ac404bacedf8e60e2b9e8, type: 2}
 --- !u!1 &1327987776
 GameObject:
   m_ObjectHideFlags: 0
@@ -3869,6 +3849,7 @@ GameObject:
   - component: {fileID: 1399947149}
   - component: {fileID: 1399947150}
   - component: {fileID: 1399947151}
+  - component: {fileID: 904799988}
   m_Layer: 5
   m_Name: sprintingStaminaContainer
   m_TagString: Untagged
@@ -3953,6 +3934,35 @@ MonoBehaviour:
   sprintingCanvas: {fileID: 1399947149}
   sprintingSlider: {fileID: 4545084866642593964}
   animator: {fileID: 1399947150}
+  playerSettings: {fileID: 11400000, guid: 6bc782b3edca4724b9f028facd885a24, type: 2}
+--- !u!114 &904799988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1399947147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98a8b223b5b2ac740ad5356b3841af16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventListenTo: {fileID: 11400000, guid: 17a15ddd17adf054ca29a8d58f735ebe, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1399947151}
+        m_TargetAssemblyTypeName: SprintingDisplayer, Assembly-CSharp
+        m_MethodName: SprintCounterCall
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1635242570
 GameObject:
   m_ObjectHideFlags: 0
@@ -5941,9 +5951,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   impactCanvas: {fileID: 1157037592769047495}
   bloodImage: {fileID: 998274713}
-  currentAlpha: 0
   impactTime: 5
-  elapsedTime: 0
 --- !u!1 &692504474209166933
 GameObject:
   m_ObjectHideFlags: 0
@@ -6252,6 +6260,8 @@ MonoBehaviour:
   timerText: {fileID: 8014545421835612940}
   startingTime: 600
   remainingTime: 0
+  onLowAmountOfTime: {fileID: 11400000, guid: fec40331b90245a4f8bcbba3bce87d24, type: 2}
+  onTimeout: {fileID: 11400000, guid: 46db02ab46be5b44eb78f06bb782529c, type: 2}
 --- !u!223 &319932959
 Canvas:
   m_ObjectHideFlags: 0
@@ -7794,6 +7804,8 @@ GameObject:
   - component: {fileID: 3332528557404153820}
   - component: {fileID: 698826720}
   - component: {fileID: 2081996741}
+  - component: {fileID: 1474299063}
+  - component: {fileID: 1474299064}
   m_Layer: 5
   m_Name: GameOverCanvas
   m_TagString: Untagged
@@ -7834,7 +7846,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3332528557404153818}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 0}
@@ -7900,6 +7912,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0e88f10a2061a458612cfc235ccea4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameOverCanvas: {fileID: 3332528557404153822}
   deathText: {fileID: 3332528558504187184}
   animator: {fileID: 2081996741}
   deathUI: {fileID: 7400000, guid: 30a5dc98c96d130439b529af9df5cc87, type: 2}
@@ -7923,6 +7936,74 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1474299063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3332528557404153818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98a8b223b5b2ac740ad5356b3841af16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventListenTo: {fileID: 11400000, guid: 5ac69c5c25b0eb64a8c90c92ed77c46f, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3332528557404153822}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 2081996741}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: deathUI
+          m_BoolArgument: 1
+        m_CallState: 2
+--- !u!114 &1474299064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3332528557404153818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98a8b223b5b2ac740ad5356b3841af16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventListenTo: {fileID: 11400000, guid: 46db02ab46be5b44eb78f06bb782529c, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3332528558504187184}
+        m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
+        m_MethodName: set_text
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: You Have   Been   Poisoned
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3332528557576108847
 GameObject:
   m_ObjectHideFlags: 0
@@ -11268,7 +11349,7 @@ GameObject:
   - component: {fileID: 4829905391466746646}
   - component: {fileID: 7639595776581023574}
   m_Layer: 5
-  m_Name: ObjectivesList
+  m_Name: ObjectivesListUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11560,6 +11641,7 @@ MonoBehaviour:
   cantInteract: {fileID: 7851758324774229637}
   cantInteractText: {fileID: 530391876078268803}
   interactionAction: {fileID: 2923806393448660300, guid: dbecc125ae805f54ebd57e40c44b667a, type: 3}
+  onInteracted: {fileID: 11400000, guid: ebe13a3d1d3905740b2a28e629eaff6a, type: 2}
 --- !u!223 &249047430
 Canvas:
   m_ObjectHideFlags: 0
@@ -12977,11 +13059,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4582629554695195158, guid: 51bbd124e9da28c47b6ad9e1e6502794, type: 3}
   m_PrefabInstance: {fileID: 403733511}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &8116339173110782901 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8116339173243971506, guid: 51bbd124e9da28c47b6ad9e1e6502794, type: 3}
-  m_PrefabInstance: {fileID: 403733511}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &639737902
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13086,11 +13163,6 @@ PrefabInstance:
 --- !u!224 &4582629555334933048 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4582629554695195158, guid: 51bbd124e9da28c47b6ad9e1e6502794, type: 3}
-  m_PrefabInstance: {fileID: 639737902}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &8116339173883561884 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8116339173243971506, guid: 51bbd124e9da28c47b6ad9e1e6502794, type: 3}
   m_PrefabInstance: {fileID: 639737902}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &641593876
@@ -13199,11 +13271,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4582629554695195158, guid: 51bbd124e9da28c47b6ad9e1e6502794, type: 3}
   m_PrefabInstance: {fileID: 641593876}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &8116339173884335526 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8116339173243971506, guid: 51bbd124e9da28c47b6ad9e1e6502794, type: 3}
-  m_PrefabInstance: {fileID: 641593876}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1143134069
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13310,11 +13377,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4582629554695195158, guid: 51bbd124e9da28c47b6ad9e1e6502794, type: 3}
   m_PrefabInstance: {fileID: 1143134069}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &8116339172239323335 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8116339173243971506, guid: 51bbd124e9da28c47b6ad9e1e6502794, type: 3}
-  m_PrefabInstance: {fileID: 1143134069}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1680069022
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13419,11 +13481,6 @@ PrefabInstance:
 --- !u!224 &4582629554227747720 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4582629554695195158, guid: 51bbd124e9da28c47b6ad9e1e6502794, type: 3}
-  m_PrefabInstance: {fileID: 1680069022}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &8116339172776130092 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8116339173243971506, guid: 51bbd124e9da28c47b6ad9e1e6502794, type: 3}
   m_PrefabInstance: {fileID: 1680069022}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1721224734
@@ -13632,11 +13689,6 @@ PrefabInstance:
 --- !u!224 &4582629554063474624 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4582629554695195158, guid: 51bbd124e9da28c47b6ad9e1e6502794, type: 3}
-  m_PrefabInstance: {fileID: 1811461590}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &8116339172848161380 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8116339173243971506, guid: 51bbd124e9da28c47b6ad9e1e6502794, type: 3}
   m_PrefabInstance: {fileID: 1811461590}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1254923648536905449

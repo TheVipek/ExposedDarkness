@@ -15,11 +15,14 @@ public class WeaponReloader : MonoBehaviour
     private WeaponZoom weaponZoom;
     private Coroutine reloadInitializationCR;
     private bool couldShootBefore;
-    WeaponSwitcher weaponSwitcher;
+    private WeaponSwitcher weaponSwitcher;
+    private Ammo ammo;
     public InputActionReference reloadAction;
-
+    [SerializeField] PlayerMovement playerMovement;
+    
     private void Start() {
         weaponSwitcher = WeaponsManager.Instance.weaponSwitcher; 
+        ammo = WeaponsManager.Instance.ammo;
         reloadAction.action.started += OnReload;
     }
     
@@ -32,7 +35,7 @@ public class WeaponReloader : MonoBehaviour
                 weapon = weaponSwitcher.CurrentWeapon;
                 RangeWeapon currentWeapon = weapon.GetComponent<RangeWeapon>();
                 weaponZoom = weapon.GetComponent<WeaponZoom>();
-                if(Ammo.Instance.GetAmmoInSlot(currentWeapon.AmmoType) != Ammo.Instance.GetAmmoPerSlot(currentWeapon.AmmoType) && Ammo.Instance.GetAmmoAmount(currentWeapon.AmmoType) > 0)
+                if(ammo.GetAmmoInSlot(currentWeapon.AmmoType) != ammo.GetAmmoPerSlot(currentWeapon.AmmoType) && ammo.GetAmmoAmount(currentWeapon.AmmoType) > 0)
                 {
                     reloadInitializationCR = StartCoroutine(reloadInitialization(currentWeapon,currentWeapon.TimeToReload));
                 }
@@ -52,11 +55,11 @@ public class WeaponReloader : MonoBehaviour
             weapon.CanAttack = couldShootBefore;
             weaponZoom.CanZoom = true;
             ResetUI();
-            if(!PlayerMovement.Instance.sprintAction.action.enabled)
+            if(!playerMovement.sprintAction.action.enabled)
             {
-                PlayerMovement.Instance.sprintAction.action.Enable();
-                Debug.Log($"sprintAction is: {PlayerMovement.Instance.sprintAction.action.enabled}");
-                PlayerMovement.Instance.SetSpeed();
+                playerMovement.sprintAction.action.Enable();
+                Debug.Log($"sprintAction is: {playerMovement.sprintAction.action.enabled}");
+                playerMovement.SetSpeed();
             }
         }
     }
@@ -74,8 +77,8 @@ public class WeaponReloader : MonoBehaviour
 
         currentlyReloading = true;
         float leftTime = timeToReload;
-        PlayerMovement.Instance.sprintAction.action.Disable();
-       PlayerMovement.Instance.SetSpeed(0.7f);
+        playerMovement.sprintAction.action.Disable();
+        playerMovement.SetSpeed(0.7f);
 //Reloading timer
         while(leftTime >= 0)
         {
@@ -89,9 +92,9 @@ public class WeaponReloader : MonoBehaviour
 //                Debug.Log(weapon.name + "is not " + weaponSwitcher.CurrentWeapon.name);
                 Debug.Log($"Swapped to different weapon - canceling reloading : {weapon} != {weaponSwitcher.CurrentWeapon}");
                 weapon.AudioSource.Stop();
-                PlayerMovement.Instance.sprintAction.action.Enable();
-                Debug.Log($"sprintAction is: {PlayerMovement.Instance.sprintAction.action.enabled}");
-                PlayerMovement.Instance.SetSpeed();
+                playerMovement.sprintAction.action.Enable();
+                Debug.Log($"sprintAction is: {playerMovement.sprintAction.action.enabled}");
+                playerMovement.SetSpeed();
 
 
 //                Debug.Log("Stopped playing");
@@ -115,8 +118,8 @@ public class WeaponReloader : MonoBehaviour
 
             weapon.CanAttack = couldShootBefore;
         }
-        PlayerMovement.Instance.sprintAction.action.Enable();
-        PlayerMovement.Instance.SetSpeed(1f);
+        playerMovement.sprintAction.action.Enable();
+        playerMovement.SetSpeed(1f);
         ResetUI();
         currentlyReloading = false;
         weaponZoom.CanZoom = true;

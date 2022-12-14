@@ -2,28 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectiveKiller : MonoBehaviour
+public class ObjectiveKiller : ObjectiveHandler
 {
-    [SerializeField] int objectiveID;
-    [SerializeField] ObjectiveList objectiveList;
-    private Objective objective;
 
     private void OnEnable() {
-        EnemiesAliveCounter.onEnemyAliveChange += setCompleted;
-    }
-    private void Start() {
-        objective = objectiveList.getObjective(objectiveID);
+        EnemiesManager.onEnemyAliveChange += setCompleted;
     }
 
     public void setCompleted()
     {
-        if(EnemiesAliveCounter.currentEnemiesCount == 0)
-        {
-            objectiveList.setObjectiveStatus(objective,ObjectiveStatus.DONE);
-            gameObject.SetActive(false);
-        }
+        if(!EnemiesManager.Instance.isAnyEnemyAlive()) gameObject.SetActive(false);
     }
-    private void OnDisable() {
-        EnemiesAliveCounter.onEnemyAliveChange -= setCompleted;
+    public override void OnDisable() {
+        base.OnDisable();
+        EnemiesManager.onEnemyAliveChange -= setCompleted;
     }
 }

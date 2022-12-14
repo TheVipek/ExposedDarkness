@@ -4,16 +4,20 @@ using UnityEngine;
 
 public class ObjectiveHandler : MonoBehaviour
 {
-    [SerializeField] int objectiveID;
-    private Objective objective;
-    private ObjectiveList objectiveList;
-    private void Start()
+    [SerializeField] protected int objectiveID;
+    protected Objective objective;
+    protected ObjectiveList objectiveList;
+    public virtual void Start()
     {
         objectiveList = ObjectiveList.Instance;
         objective = objectiveList.getObjective(objectiveID);
     }    
-    private void OnDisable()
+    public virtual void OnDisable()
     {
-        if(objectiveList != null) objectiveList.setObjectiveStatus(objective,ObjectiveStatus.DONE);
+        if(objectiveList != null && (objective != null && objective.objectiveUI != null)) 
+        {
+            Debug.Log($"objectiveList :{objectiveList} ,objective:{objective}");
+            objectiveList.setObjectiveStatus(objective,ObjectiveStatus.DONE);
+        }
     }
 }

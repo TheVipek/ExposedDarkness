@@ -3,28 +3,17 @@ using UnityEngine;
 
 public class Interaction : MonoBehaviour,IResponseInteraction
 {
-    public static Interaction Instance { get; private set; }
-    public GameObject interactionUI;
+    [SerializeField] GameObject interactionUI;
+    [SerializeField] interactionListener listener;
     [SerializeField] Camera playerViewCamera;
     [SerializeField] float interactionDistance;
-    [HideInInspector] public bool interactionActivated = false;
-    [HideInInspector] public bool interactionEnded = false;
-    [HideInInspector] public GameObject lookingAt = null;
+    private bool interactionActivated = false; 
+  //  [HideInInspector] public GameObject lookingAt = null;
   //  [HideInInspector] public GameObject lastInteracted = null;
     Ray ray;
     RaycastHit hit;
 
-    private void Awake()
-    {
-        if (Instance != this && Instance != null)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            Instance = this;
-        }
-    }
+
 
     void Update()
     {
@@ -36,13 +25,6 @@ public class Interaction : MonoBehaviour,IResponseInteraction
             {
                 if(interactionActivated == false)
                 {
-                    // Debug.Log("You're looking at interactable object!");
-                    // Debug.Log(lookingAt);
-                    // Debug.Log(lastInteracted);
-                    // if(hit.transform.gameObject != lastInteracted || lastInteracted == null)
-                    // {
-                    //     OnSelect(hit.transform.gameObject);
-                    // }
                     OnSelect(hit.transform.gameObject);
                 }
             }
@@ -60,13 +42,14 @@ public class Interaction : MonoBehaviour,IResponseInteraction
 
     public void OnSelect(GameObject _lookingAt)
     {
-        lookingAt = _lookingAt;
+        //lookingAt = _lookingAt;
+        listener.SetLookingAt(_lookingAt);
         interactionActivated = true;
         interactionUI.SetActive(true);
     }
     public void OnDeselect()
     {
-        lookingAt = null;
+        listener.SetLookingAt(null);
         interactionActivated = false;
         interactionUI.SetActive(false);
     }

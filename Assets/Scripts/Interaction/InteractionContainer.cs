@@ -2,11 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-[RequireComponent(typeof(AudioSource),typeof(BoxCollider),typeof(InteractionObject))]
+[RequireComponent(typeof(InteractionObject))]
 public abstract class InteractionContainer : MonoBehaviour,IInteractionActions
 {
+    [Tooltip("If source and clip won't be added and attached to script sound won't be played")]
     public AudioSource audioSource;
+    [Tooltip("If source and clip won't be added and attached to script sound won't be played")]
     public AudioClip interactionSound;
+    [Tooltip("Needs to be added to object and attached to script for raycast")]
     public BoxCollider boxCollider;
     public virtual void OnInteractionStart()
     {

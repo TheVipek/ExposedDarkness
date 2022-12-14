@@ -11,7 +11,7 @@ public class FootstepsCollection : ScriptableObject {
     public AudioClip getRandomClip()
     {
         AudioClip _clip = footstepsList[Random.Range(0,footstepsList.Count)];
-        Debug.Log(_clip);
+        //Debug.Log(_clip);
         return _clip;
     }
 }

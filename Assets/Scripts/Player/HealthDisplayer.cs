@@ -7,13 +7,14 @@ public class HealthDisplayer : MonoBehaviour,IDisplayUI
 {
     [SerializeField] TMP_Text actualHp;
     [SerializeField] Slider sliderFill;
+    [SerializeField] PlayerHealthSettings healthSettings;
     private void OnEnable() {
         PlayerHealth.onDamageTaken += DisplayUI;
-        PlayerHealth.onFightOver += DisplayUI;
+        PlayerHealth.onHealthRestore += DisplayUI;
     }
     private void OnDisable() {
         PlayerHealth.onDamageTaken -= DisplayUI;
-        PlayerHealth.onFightOver -= DisplayUI;
+        PlayerHealth.onHealthRestore -= DisplayUI;
         
     }
 
@@ -22,8 +23,8 @@ public class HealthDisplayer : MonoBehaviour,IDisplayUI
     }
     public void DisplayUI()
     {
-        actualHp.text = PlayerHealth.Instance.CurrentHealth.ToString();
-        sliderFill.value = PlayerHealth.Instance.CurrentHealth /100;
+        actualHp.text = healthSettings.CurrentHealth.ToString();
+        sliderFill.value = healthSettings.CurrentHealth /100;
         
     }
 

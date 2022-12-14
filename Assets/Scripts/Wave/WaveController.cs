@@ -47,14 +47,14 @@ public class WaveController : MonoBehaviour
     {
         
         WaitForSeconds _timeBetweenMonster = new WaitForSeconds(timeBetweenMonster);
-        EnemiesAliveCounter.maxEnemiesCount = 0;
+        //EnemiesAliveCounter.maxEnemiesCount = 0;
         int i;
         for(i=0; i<waveContainer.getAmountToSpawn(); i++)
         {
             spawnEnemy(waveContainer.listOfEnemies[i]);
             yield return _timeBetweenMonster;
         }
-        EnemiesAliveCounter.maxEnemiesCount = i;
+        //EnemiesAliveCounter.maxEnemiesCount = i;
 
     }
     public void CallOnWaveGlobalEnd()

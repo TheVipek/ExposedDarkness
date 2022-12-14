@@ -6,18 +6,8 @@ public class Ammo : MonoBehaviour
 {
     [Tooltip("Getting reference from inventory to get ammos")]
     [SerializeField] List<AmmoSlot> ammoSlots;
-    public static Ammo Instance{get; private set;}
-
     public static Action OnAmmoChange;
-    private void Awake() {
-        if(Instance != null && Instance != this)
-        {
-            Destroy(this);
-        }else
-        {
-            Instance = this;
-        }
-    }
+
     [System.Serializable]
     private class AmmoSlot
     {

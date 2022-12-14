@@ -12,12 +12,12 @@ public class interactionListener : MonoBehaviour
     [SerializeField] TMP_Text cantInteractText;
     private const string defaultCantInteractText = "Can't interact";
     [SerializeField] InputActionReference interactionAction;
-
     private GameObject lookingAt;
     private InteractionObject interactionObject;
+    public GameEvent onInteracted;
     private void OnEnable() {
-     //   interactionAction.action.started += OnInteraction;
-        lookingAt = Interaction.Instance.lookingAt;
+        interactionAction.action.started += OnInteraction;
+
         interactionObject = lookingAt.GetComponent<InteractionObject>();
         if(interactionObject.canInteract == true)
         {
@@ -39,42 +39,22 @@ public class interactionListener : MonoBehaviour
             if(interactionObject != null && interactionObject.canInteract == true)
             {
                 interactionObject.interactionContainer.OnInteractionStart();
-            //    interactionObject.canInteract = false;
-                //   Interaction.Instance.setLastInteracted();
-                Interaction.Instance.OnDeselect();
-                //Interaction.Instance.interactionActivated = false;
+                onInteracted.Raise();
             }
         }
     }
-    private void OnGUI() {
-        if(Event.current.isKey)
-        {
-            
-            Event currentEvent = Event.current;
-            if(currentEvent.keyCode == KeyCode.E)
-            {
-                if (currentEvent.type == EventType.KeyDown)
-                {
-                    if(interactionObject != null && interactionObject.canInteract == true)
-                    {
-                        interactionObject.interactionContainer.OnInteractionStart();
-                    //    interactionObject.canInteract = false;
-                     //   Interaction.Instance.setLastInteracted();
-                        Interaction.Instance.OnDeselect();
-                        //Interaction.Instance.interactionActivated = false;
-                    }
-                }
-            }
-        }
-    }
-    private void OnDisable() {
-     //   interactionAction.action.started -= OnInteraction;
+    private void OnDisable()
+    {
+        interactionAction.action.started -= OnInteraction;
+
         if(canInteract.activeSelf == true)
         {
             canInteract.SetActive(false);
-        }else
+        }
+        else
         {
             cantInteract.SetActive(false);
         }
-    }       
+    }
+    public void SetLookingAt(GameObject _lookingAt) => lookingAt = _lookingAt;
 }

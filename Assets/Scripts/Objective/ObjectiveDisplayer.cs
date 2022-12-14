@@ -14,10 +14,6 @@ public class ObjectiveDisplayer : MonoBehaviour,IDisplayUI
         WaveController.onWaveEndGlobal -= DisplayUI;
         
     }
-    void Start()
-    {
-        
-    }
 
     public void DisplayUI()
     {

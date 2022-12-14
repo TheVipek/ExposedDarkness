@@ -38,7 +38,6 @@ public class PlayerCamera : MonoBehaviour
     public static MouseLook mouse;
     private Vector2 cameraRotation;
     [SerializeField] InputActionReference lookAction;
-    public static PlayerCamera Instance {get; private set;}
     private void OnEnable() {
         lookAction.action.started += OnLook;
         lookAction.action.performed += OnLook;
@@ -52,8 +51,6 @@ public class PlayerCamera : MonoBehaviour
         
     }
     private void Awake() {
-        if(Instance!=this && Instance != null) Destroy(this);
-        else Instance = this;
         Cursor.lockState = CursorLockMode.Locked;
         mouse = new MouseLook(mouseSensitivity);
     }

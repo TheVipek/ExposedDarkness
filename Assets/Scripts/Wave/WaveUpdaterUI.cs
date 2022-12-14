@@ -22,23 +22,28 @@ public class WaveUpdaterUI : MonoBehaviour,IDisplayUI
     private Queue<IEnumerator> barCoroutines = new Queue<IEnumerator>();
     private Coroutine barCoroutine = null;
     
-    private WaveController _waveController;
+    private WaveController waveController;
+    private EnemiesManager enemiesManager;
     public static bool isSliderUpdating;
     
     private void Awake() {
-        _waveController = WaveController.Instance;
-        maxWaveUI.text = _waveController.waveContainer.amountOfSubwaves.ToString();
-        UpdateWaveValue();
     }
     private void OnEnable() {
-        EnemiesAliveCounter.onEnemyAliveChange += smoothBarMoveCaller;
+        EnemiesManager.onEnemyAliveChange += smoothBarMoveCaller;
         
         WaveController.onWave += UpdateWaveValue;
         WaveController.onBreakStarted += DisplayUI;
         WaveController.onBreakEnded += DisplayUI;
     }
+    private void Start() {
+        enemiesManager = EnemiesManager.Instance;
+        waveController = WaveController.Instance;
+        maxWaveUI.text = waveController.waveContainer.amountOfSubwaves.ToString();
+        UpdateWaveValue();
+        
+    }
     private void OnDisable() {
-        EnemiesAliveCounter.onEnemyAliveChange -= smoothBarMoveCaller;
+        EnemiesManager.onEnemyAliveChange -= smoothBarMoveCaller;
 
         WaveController.onWave -= UpdateWaveValue;
         WaveController.onBreakStarted -= DisplayUI;
@@ -48,10 +53,23 @@ public class WaveUpdaterUI : MonoBehaviour,IDisplayUI
 
     public void UpdateWaveValue()
     {
-        currentWaveUI.text = _waveController.waveContainer.currentSubwave.ToString();
+         if(waveController == null)
+        {
+            Debug.LogError($"waveController is null in {this.GetType()},please make sure to reference it correctly!");
+            return;
+        }
+
+        currentWaveUI.text = waveController.waveContainer.currentSubwave.ToString();
     }
     public void smoothBarMoveCaller()
     {
+        if(enemiesManager == null)
+        {
+            Debug.LogError($"enemiesManager is null in {this.GetType()},please make sure to reference it correctly!");
+            return;
+        }
+
+
         if(barCoroutine != null)
         {
             barCoroutines.Enqueue(smoothBarMove());
@@ -60,10 +78,6 @@ public class WaveUpdaterUI : MonoBehaviour,IDisplayUI
             barCoroutine = StartCoroutine(smoothBarMove());
         }
     }
-    // public void showWaveToDecrease()
-    // {
-    //     waveSlider.GetComponent<RectTransform>().
-    // }
     public void DisplayUI()
     {
         Debug.Log("Swapping wave UI");
@@ -77,7 +91,12 @@ public class WaveUpdaterUI : MonoBehaviour,IDisplayUI
         yield return null;
         Debug.Log("startValue" + waveSlider.value);
         startValue = waveSlider.value;
-        endValue = (float)EnemiesAliveCounter.currentEnemiesCount/(float)EnemiesAliveCounter.maxEnemiesCount;
+        Debug.Log($"currentEnemiesCount: {enemiesManager.CurrentEnemiesCount}, maxEnemiesCount: {enemiesManager.MaxEnemiesCount}");
+        if(enemiesManager.CurrentEnemiesCount != 0 && enemiesManager.MaxEnemiesCount != 0)
+        {
+            endValue = (float)enemiesManager.CurrentEnemiesCount/(float)enemiesManager.MaxEnemiesCount;
+        }
+        else endValue = 0;
         Debug.Log("endValue" + endValue);
       
         

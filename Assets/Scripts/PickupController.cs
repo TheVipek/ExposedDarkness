@@ -1,21 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 public class PickupController : MonoBehaviour
 {
     public static PickupController Instance{get; private set;}
     [SerializeField] GameObject PickupContainer;
-    [SerializeField] GameObject[] pickupChildrens;
+    private List<GameObject> pickupChildrens = new List<GameObject>();
 
     private void Awake() {
-        if(Instance != this && Instance != null)
+        if(Instance != this && Instance != null) Destroy(this);
+        else Instance = this;
+
+        foreach (Transform child in PickupContainer.transform)
         {
-            Destroy(gameObject);
-        }
-        else
-        {
-            Instance = this;
+            pickupChildrens.Add(child.gameObject);
         }
     }
     public void AddPickup(string itemCount,string itemName)
@@ -25,13 +23,17 @@ public class PickupController : MonoBehaviour
         {
             Pickup pickup = freeChildren.GetComponent<Pickup>();
             //pickup.pickupName.text = itemName;
-            pickup.pickupDescription.text = "Picked "+itemCount+"x "+itemName;
+            if(int.Parse(itemCount) == 1) 
+                pickup.pickupDescription.text = $"Picked {itemName}";
+            else
+                pickup.pickupDescription.text = $"Picked {itemCount}x {itemName}";
+                
             freeChildren.SetActive(true);
         }
     }
     public GameObject GetFreeChildren()
     {
-        for(int i=0;i<pickupChildrens.Length;i++)
+        for(int i=0;i<pickupChildrens.Count;i++)
         {
             if(pickupChildrens[i].activeSelf == false)
             {

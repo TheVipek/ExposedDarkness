@@ -31,7 +31,7 @@ public class RangeWeapon : Weapon
     protected override void Start()
     {
         base.Start();
-        ammoContainer = Ammo.Instance;
+        ammoContainer = WeaponsManager.Instance.ammo;
     }
     public override void PrimaryAction()
     {

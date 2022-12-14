@@ -17,6 +17,7 @@ public class WeaponsManager : MonoBehaviour
     public List<Weapon> AllWeapons {get {return allWeapons;}}
     [Header("References")]
     public WeaponReloader weaponReloader;
+    public Ammo ammo;
     public WeaponShootingTypeChanger weaponShootingTypeChanger;
     public WeaponSwitcher weaponSwitcher;
     public WeaponDisplayer weaponDisplayer;

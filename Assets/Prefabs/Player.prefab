@@ -161,6 +161,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 96860d4e7cdc1f746906da7b7bc7a388, type: 3}
   audioSource: {fileID: 717174631}
   distanceBetweenStep: 1.7
+  playerSettings: {fileID: 11400000, guid: 6bc782b3edca4724b9f028facd885a24, type: 2}
   layerToIgnore:
     serializedVersion: 2
     m_Bits: 1024
@@ -448,6 +449,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de65c0f8fb82cbb4fab692463bdd2037, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerMovement: {fileID: 1850273173}
 --- !u!1 &1321206687
 GameObject:
   m_ObjectHideFlags: 0
@@ -459,6 +461,7 @@ GameObject:
   - component: {fileID: 1321206688}
   - component: {fileID: 1321206690}
   - component: {fileID: 2068867793}
+  - component: {fileID: 1897180411}
   m_Layer: 8
   m_Name: WeaponsCamera
   m_TagString: Untagged
@@ -585,6 +588,34 @@ MonoBehaviour:
   m_BeforeTransparentBundles: []
   m_BeforeStackBundles: []
   m_AfterStackBundles: []
+--- !u!114 &1897180411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1321206687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98a8b223b5b2ac740ad5356b3841af16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventListenTo: {fileID: 11400000, guid: 5ac69c5c25b0eb64a8c90c92ed77c46f, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1321206687}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1415259373
 GameObject:
   m_ObjectHideFlags: 0
@@ -731,6 +762,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1945139523}
   - component: {fileID: 1945139524}
+  - component: {fileID: 7507981976420934014}
   m_Layer: 10
   m_Name: Interaction
   m_TagString: Untagged
@@ -766,11 +798,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactionUI: {fileID: 0}
+  listener: {fileID: 0}
   playerViewCamera: {fileID: 536835279746102993}
   interactionDistance: 5
   interactionActivated: 0
   interactionEnded: 0
   lookingAt: {fileID: 0}
+--- !u!114 &7507981976420934014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1945139522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98a8b223b5b2ac740ad5356b3841af16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventListenTo: {fileID: 11400000, guid: ebe13a3d1d3905740b2a28e629eaff6a, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1945139524}
+        m_TargetAssemblyTypeName: Interaction, Assembly-CSharp
+        m_MethodName: OnDeselect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &536835279746954485
 GameObject:
   m_ObjectHideFlags: 0
@@ -787,6 +848,9 @@ GameObject:
   - component: {fileID: 1667432348}
   - component: {fileID: 424487085}
   - component: {fileID: 801419535}
+  - component: {fileID: 801419541}
+  - component: {fileID: 801419548}
+  - component: {fileID: 801419549}
   m_Layer: 0
   m_Name: playerViewCamera
   m_TagString: MainCamera
@@ -947,12 +1011,10 @@ MonoBehaviour:
   entryValue: 0.15
   maxBloodValue: 0.25
   maxPoisonValue: 0.4
-  currentBump: 0
   bloodColor: {r: 0.6784314, g: 0, b: 0, a: 1}
   poisonColor: {r: 0.1764706, g: 0.6117647, b: 0, a: 1}
   duration: 2.5
   colorSwapDuration: 0.5
-  currentColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &424487085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1066,6 +1128,102 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &801419541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 536835279746954485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98a8b223b5b2ac740ad5356b3841af16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventListenTo: {fileID: 11400000, guid: 7221303a5688df94fae3eb6dfc4c89e6, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1667432348}
+        m_TargetAssemblyTypeName: VingetteBumping, Assembly-CSharp
+        m_MethodName: StartBloodBumping
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &801419548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 536835279746954485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98a8b223b5b2ac740ad5356b3841af16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventListenTo: {fileID: 11400000, guid: 8c55efeaf605b6c418632e7c5ff6882d, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1667432348}
+        m_TargetAssemblyTypeName: VingetteBumping, Assembly-CSharp
+        m_MethodName: StopBloodBumping
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &801419549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 536835279746954485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98a8b223b5b2ac740ad5356b3841af16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventListenTo: {fileID: 11400000, guid: fec40331b90245a4f8bcbba3bce87d24, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1667432348}
+        m_TargetAssemblyTypeName: VingetteBumping, Assembly-CSharp
+        m_MethodName: TriggerPoisoning
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 424487085}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!1 &536835279746954487
 GameObject:
   m_ObjectHideFlags: 0
@@ -1083,6 +1241,9 @@ GameObject:
   - component: {fileID: 1850273173}
   - component: {fileID: 536835280683943630}
   - component: {fileID: 1843161998084528196}
+  - component: {fileID: 661631556}
+  - component: {fileID: 661631557}
+  - component: {fileID: 661631558}
   m_Layer: 10
   m_Name: Player
   m_TagString: Player
@@ -1407,39 +1568,15 @@ MonoBehaviour:
   capsuleCollider: {fileID: 845382119}
   feet: {fileID: 717174630}
   breathingSource: {fileID: 650316372}
-  movingFrontSpeed: 2.5
-  movingBackSpeed: 1.5
-  movingSidesSpeed: 1.5
-  baseSpeedForce: 10
-  baseMoveSpeed: 5
-  baseSprintMultiplier: 1.5
-  baseCrouchMultiplier: 0.5
-  baseJumpMultiplier: 0.5
-  jumpHeight: 1.25
-  fallMultiplier: 2.25
-  staminaLength: 8
-  staminaRegenerartionSpeed: 0.6
-  currentStamina: 0
-  groundDrag: 5
-  airDrag: 2
-  maxSlopeAngle: 0
+  settings: {fileID: 11400000, guid: 6bc782b3edca4724b9f028facd885a24, type: 2}
   groundLayer:
     serializedVersion: 2
     m_Bits: 4096
-  defaultHeight: 1.8
-  crouchHeight: 1
-  crouchDuration: 0.2
-  movementActions: 0
-  playerActionMap:
-    m_Name: Player
-    m_Id: f5c305dd-1496-432b-ab26-e1dbe3919d47
-    m_Asset: {fileID: 0}
-    m_Actions: []
-    m_Bindings: []
   moveAction: {fileID: 8886794728308486092, guid: dbecc125ae805f54ebd57e40c44b667a, type: 3}
   jumpAction: {fileID: -8853160568680579334, guid: dbecc125ae805f54ebd57e40c44b667a, type: 3}
   sprintAction: {fileID: 1747021060469585812, guid: dbecc125ae805f54ebd57e40c44b667a, type: 3}
   crouchAction: {fileID: -5613868176926595460, guid: dbecc125ae805f54ebd57e40c44b667a, type: 3}
+  onSprinting: {fileID: 11400000, guid: 17a15ddd17adf054ca29a8d58f735ebe, type: 2}
 --- !u!114 &536835280683943630
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1453,13 +1590,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 845382118}
-  maxHealth: 100
-  currentHealth: 0
+  healthSettings: {fileID: 11400000, guid: 6e8bb48a598ac404bacedf8e60e2b9e8, type: 2}
   bloodOverFaceValue: 35
   timeToRegenerate: 5
   regenerationSpeed: 0.8
-  bloodOverFace: 0
-  poisonTriggered: 0
+  onLowHp: {fileID: 11400000, guid: 7221303a5688df94fae3eb6dfc4c89e6, type: 2}
+  onNormalHp: {fileID: 11400000, guid: 8c55efeaf605b6c418632e7c5ff6882d, type: 2}
+  onDeath: {fileID: 11400000, guid: 5ac69c5c25b0eb64a8c90c92ed77c46f, type: 2}
 --- !u!114 &1843161998084528196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1477,6 +1614,138 @@ MonoBehaviour:
   mouseSensitivity: {x: 0.8, y: 0.8}
   maxCameraXRotation: 45
   lookAction: {fileID: 2567273598658860280, guid: dbecc125ae805f54ebd57e40c44b667a, type: 3}
+--- !u!114 &661631556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 536835279746954487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98a8b223b5b2ac740ad5356b3841af16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventListenTo: {fileID: 11400000, guid: 5ac69c5c25b0eb64a8c90c92ed77c46f, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1850273173}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1843161998084528196}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1850273173}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: PlayerMapActivate
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 536835280683943630}
+        m_TargetAssemblyTypeName: PlayerHealth, Assembly-CSharp
+        m_MethodName: set_IsDead
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 845382118}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+--- !u!114 &661631557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 536835279746954487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98a8b223b5b2ac740ad5356b3841af16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventListenTo: {fileID: 11400000, guid: fec40331b90245a4f8bcbba3bce87d24, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 536835280683943630}
+        m_TargetAssemblyTypeName: PlayerHealth, Assembly-CSharp
+        m_MethodName: set_PoisonTriggered
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+--- !u!114 &661631558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 536835279746954487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98a8b223b5b2ac740ad5356b3841af16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventListenTo: {fileID: 11400000, guid: 46db02ab46be5b44eb78f06bb782529c, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: 5ac69c5c25b0eb64a8c90c92ed77c46f, type: 2}
+        m_TargetAssemblyTypeName: GameEvent, Assembly-CSharp
+        m_MethodName: Raise
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &536835279943692642
 GameObject:
   m_ObjectHideFlags: 0
@@ -1677,6 +1946,7 @@ MonoBehaviour:
   bgImage: {fileID: 0}
   currentlyReloading: 0
   reloadAction: {fileID: -3081678923574877137, guid: dbecc125ae805f54ebd57e40c44b667a, type: 3}
+  playerMovement: {fileID: 1850273173}
 --- !u!114 &605055342634251627
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1714,7 +1984,7 @@ MonoBehaviour:
   - ammoType: 1
     ammoInSlot: 8
     ammoPerSlot: 8
-    ammoAmount: 24
+    ammoAmount: 0
 --- !u!1 &7292866813437930171
 GameObject:
   m_ObjectHideFlags: 0

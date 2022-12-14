@@ -8,9 +8,9 @@ public class WeaponAnimation : MonoBehaviour
     [SerializeField] float showWeaponOffset = -0.5f;
     float timeToAccomplish = 0.1f;  
     [HideInInspector] public Animator animator;
+    [SerializeField] PlayerMoveSettings playerSettings;
     public Vector3 defaultWeaponPosition;
     private Vector3 defaultWeaponRotation;
-
     void Awake()
     {
         animator = GetComponent<Animator>();
@@ -19,35 +19,32 @@ public class WeaponAnimation : MonoBehaviour
     private void OnEnable() {
         animator.enabled = false;
         StartCoroutine(showWeapon(defaultWeaponPosition));
+        AnimationRelativeToMovementAction();
     }
     private void OnDisable() {
         transform.localPosition = defaultWeaponPosition;
         transform.localEulerAngles = defaultWeaponRotation;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void AnimationRelativeToMovementAction()
     {
-
-        if(PlayerMovement.Instance.Moving == true)
+        
+        if(playerSettings.MovementActions == MovementActions.DEFAULT)
         {
-            animator.SetBool("moving" , true);
-        }else
-        {
-            animator.SetBool("moving" , false);
+            animator.SetBool("moving",true);
+            if(animator.GetBool("sprinting") == true) animator.SetBool("sprinting" , false);;
         }
-        if(PlayerMovement.Instance.Sprinting == true)
+        else if(playerSettings.MovementActions == MovementActions.SPRINTING)
         {
-            animator.SetBool("sprinting" , true);
-        }else
+            animator.SetBool("moving",true);
+            animator.SetBool("sprinting",true);
+        }
+        else
         {
-            if(animator.GetBool("sprinting") == true)
-            {
-                animator.SetBool("sprinting" , false);
-            }
+            if(animator.GetBool("moving") == true) animator.SetBool("moving" , false);;
+            if(animator.GetBool("sprinting") == true) animator.SetBool("sprinting" , false);;
         }
     }
-    
     public IEnumerator showWeapon(Vector3 desiredVal)
     {
         float timeToElapse = 0f;

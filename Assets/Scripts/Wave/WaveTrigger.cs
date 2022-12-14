@@ -14,13 +14,13 @@ public class WaveTrigger : MonoBehaviour
     private void OnEnable() 
     {
         WaveController.onWaveStartGlobal();
-        EnemiesAliveCounter.onEnemyAliveChange += EndWaveListener;
+        EnemiesManager.onEnemyAliveChange += EndWaveListener;
         if(missionCompletionCanvas != null){
             WaveController.onWaveEndGlobal += missionCompletionTrigger; 
         }
     }
     private void OnDisable() {
-        EnemiesAliveCounter.onEnemyAliveChange -= EndWaveListener;
+        EnemiesManager.onEnemyAliveChange -= EndWaveListener;
         if(missionCompletionCanvas != null){
             WaveController.onWaveEndGlobal -= missionCompletionTrigger; 
         } 
@@ -28,7 +28,7 @@ public class WaveTrigger : MonoBehaviour
     }
     public void EndWaveListener()
     {
-        if(EnemiesAliveCounter.currentEnemiesCount == 0){
+        if(!EnemiesManager.Instance.isAnyEnemyAlive()){
             _waveController.waveContainer.currentSubwave +=1;
             if(_waveController.waveContainer.currentSubwave <= _waveController.waveContainer.amountOfSubwaves)
             {

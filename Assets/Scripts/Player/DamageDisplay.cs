@@ -6,9 +6,9 @@ public class DamageDisplay : MonoBehaviour
 {
     [SerializeField] Canvas impactCanvas;
     [SerializeField] Image bloodImage;
-    [SerializeField] float currentAlpha;
+    private float currentAlpha;
     [SerializeField] float impactTime = 2f;
-    [SerializeField] float elapsedTime;
+    private float elapsedTime;
     Coroutine showingBloodCoroutine; 
     
     private void OnEnable() {
@@ -17,10 +17,6 @@ public class DamageDisplay : MonoBehaviour
     private void OnDisable() {
         PlayerHealth.onDamageTaken -= DamageEffects;
 
-    }
-    private void Awake() {
-        //impactCanvas = GetComponent<Canvas>();
-        currentAlpha = bloodImage.color.a;
     }
     void Start() {
 
@@ -43,14 +39,15 @@ public class DamageDisplay : MonoBehaviour
     IEnumerator Bleeding(float fromValue,float toValue)
     {
         impactCanvas.enabled = true;
-        elapsedTime = 0;
+        currentAlpha = bloodImage.color.a;
+
         if(currentAlpha == toValue)
         {
             yield return new WaitForSeconds(impactTime);
         }
-        while(currentAlpha != toValue)
+        elapsedTime = 0;
+        while(elapsedTime < impactTime)
         {
-            //Debug.Log("Increasing alpha...");
             currentAlpha = Mathf.Lerp(currentAlpha,toValue,elapsedTime/impactTime);
             bloodImage.color = new Color(bloodImage.color.r,bloodImage.color.g,bloodImage.color.b,currentAlpha);
             elapsedTime += Time.deltaTime;

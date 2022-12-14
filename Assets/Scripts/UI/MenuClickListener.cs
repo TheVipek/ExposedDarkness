@@ -30,17 +30,14 @@ public class MenuClickListener : MonoBehaviour,IAnyButton
         menuCanvas.enabled = !menuCanvas.enabled;   
         if(menuCanvas.enabled == true)
         {
+            
             Cursor.lockState = CursorLockMode.Confined;
-            setCursor(true);
+            Cursor.visible = true;
             GameManager.Instance.freezeTime();
         }else
         {
-            setCursor(false);
+            Cursor.visible = false;
             GameManager.Instance.unfreezeTime();
         }
-    }
-    public void setCursor(bool _visible)
-    {
-        Cursor.visible = _visible;
     }
 }

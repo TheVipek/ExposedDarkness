@@ -12,22 +12,18 @@ public class StepEffect : MonoBehaviour
     private TerrainGroundDetector terrainGroundDetector;
     [SerializeField] float distanceBetweenStep = 1f;
     Vector3 lastStep;
-    private PlayerMovement playerMovement;
+    [SerializeField] PlayerMoveSettings playerSettings;
     [SerializeField] LayerMask layerToIgnore;
     private void Awake()
     {
         terrainGroundDetector = new TerrainGroundDetector();
         lastStep = new Vector3(transform.position.x,transform.position.y,transform.position.z);
     }
-    private void Start() {
-        playerMovement = PlayerMovement.Instance;
-        
-    }
     private void Update() {
 
         if(Vector3.Distance(lastStep,transform.position) > distanceBetweenStep)
         {
-            if(playerMovement.movementActions != MovementActions.JUMPING)
+            if(playerSettings.MovementActions != MovementActions.JUMPING)
             {
                 StepSound();
                 lastStep = transform.position;
@@ -43,16 +39,16 @@ public class StepEffect : MonoBehaviour
     }
     private AudioClip getClip()
     {
-        Debug.Log($"Trying to get random clip");
+     //   Debug.Log($"Trying to get random clip");
         RaycastHit hit;
         Debug.DrawRay(transform.position,Vector3.down*.5f,Color.red,15f);
         if(Physics.Raycast(transform.position,Vector3.down,out hit,.5f,~layerToIgnore))
         {
-            Debug.Log($"Ray touched something {hit.collider.gameObject.name}");
+       //     Debug.Log($"Ray touched something {hit.collider.gameObject.name}");
             if(hit.transform.GetComponent<Terrain>() != null)
             {
                 int terrainTextureIndex = terrainGroundDetector.GetTerrainAtPosition(transform.position);
-                Debug.Log($"Terrain: {terrainTextureIndex}");
+//                Debug.Log($"Terrain: {terrainTextureIndex}");
 
                 switch (terrainTextureIndex)
                     {
@@ -71,7 +67,7 @@ public class StepEffect : MonoBehaviour
             }
             else if(hit.transform.TryGetComponent(out groundType _groundType) != false)
             {
-                Debug.Log($"Not terrain: {_groundType}");
+        //        Debug.Log($"Not terrain: {_groundType}");
                 return _groundType.footstepsCollection.getRandomClip();
             }
             

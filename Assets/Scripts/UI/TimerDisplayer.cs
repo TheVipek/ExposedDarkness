@@ -6,20 +6,16 @@ public class TimerDisplayer : MonoBehaviour,IDisplayUI
 {
      [SerializeField] Canvas timerCanvas;
      [SerializeField] TimeCounter timeCounter;
-    private void OnEnable() {
+    private void OnEnable() 
+    {
         WaveController.onWaveStartGlobal += DisplayUI;
         WaveController.onWaveEndGlobal += DisplayUI;
     }
-    private void OnDisable() {
+    private void OnDisable() 
+    {
         WaveController.onWaveStartGlobal -= DisplayUI;
         WaveController.onWaveEndGlobal -= DisplayUI;
-        
     }
-    void Start()
-    {
-        
-    }
-
     public void DisplayUI()
     {
         if(timerCanvas == null) return;
@@ -32,7 +28,5 @@ public class TimerDisplayer : MonoBehaviour,IDisplayUI
         {
             timeCounter.startTimer();
         }
-
-        
     }
 }

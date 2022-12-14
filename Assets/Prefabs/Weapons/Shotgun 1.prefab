@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3127131980949910881}
   - component: {fileID: 3127131980492032519}
   - component: {fileID: 113994609992420747}
+  - component: {fileID: 6483113980197448987}
   m_Layer: 8
   m_Name: Shotgun 1
   m_TagString: Untagged
@@ -45,7 +46,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3176505457819664364}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -8166511654241624430, guid: 2efcbaf5689b95345834fc3c68000d0b, type: 2}
   m_audioClip: {fileID: 0}
@@ -144,10 +145,10 @@ Animator:
   m_GameObject: {fileID: 3176505457819664364}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 2d75e077c377d004e95e1bc293128a35, type: 2}
+  m_Controller: {fileID: 22100000, guid: 16f40f7f2132cdd40b2c868789197e29, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -188,6 +189,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   showWeaponOffset: -0.5
   animator: {fileID: 0}
+  playerSettings: {fileID: 11400000, guid: 6bc782b3edca4724b9f028facd885a24, type: 2}
   defaultWeaponPosition: {x: 0.498, y: -0.583, z: 0.66}
 --- !u!114 &113994609992420747
 MonoBehaviour:
@@ -196,15 +198,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3176505457819664364}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e19528151391528459eaa1aabb2b0da1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   primaryActionKey: 323
-  range: 15
-  primaryAttackDamage: 60
-  primaryAttackDelay: 1.5
+  range: 12
+  primaryAttackDamage: 150
+  primaryAttackDelay: 0.8
   weaponType: 1
   weaponAnimation: {fileID: 3127131980492032519}
   weaponRole: 0
@@ -219,6 +221,34 @@ MonoBehaviour:
   ammoContainer: {fileID: 0}
   ammoType: 1
   weaponSounds: {fileID: 11400000, guid: 99904eade6e07e44984d13f0ea86708a, type: 2}
+--- !u!114 &6483113980197448987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3176505457819664364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98a8b223b5b2ac740ad5356b3841af16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventListenTo: {fileID: 11400000, guid: 650a3958a9f1ac94bb5fb6701cdff648, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3127131980492032519}
+        m_TargetAssemblyTypeName: WeaponAnimation, Assembly-CSharp
+        m_MethodName: AnimationRelativeToMovementAction
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8522415296112129064
 GameObject:
   m_ObjectHideFlags: 0

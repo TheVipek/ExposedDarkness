@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 765dac714f48d264c97a0574d2091fd0, type: 3}
+  m_Name: PlayerMove
+  m_EditorClassIdentifier: 
+  movingFrontSpeed: 2.5
+  movingBackSpeed: 1.5
+  movingSidesSpeed: 1.5
+  baseSpeedForce: 10
+  baseMoveSpeed: 5
+  baseSprintMultiplier: 1.5
+  baseCrouchMultiplier: 0.6
+  crouchDuration: 0.25
+  baseJumpMultiplier: 0.6
+  jumpHeight: 1.5
+  fallMultiplier: 2.5
+  staminaRegenerartionSpeed: 0.6
+  staminaLength: 8
+  currentStamina: 8
+  groundDrag: 5
+  airDrag: 2
+  maxSlopeAngle: 0
+  defaultHeight: 1.8
+  crouchHeight: 1
+  movementActions: 0
+  onMovementActionChange: {fileID: 11400000, guid: 650a3958a9f1ac94bb5fb6701cdff648, type: 2}

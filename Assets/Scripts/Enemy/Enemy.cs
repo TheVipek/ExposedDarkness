@@ -17,9 +17,9 @@ public abstract class Enemy : MonoBehaviour {
     private WaitForSeconds idleWaitTime;
     private bool isDeath;
     // References
-    protected Animator animator;
-    PlayerHealth target;
+    [SerializeField] protected Animator animator;
 
+    [SerializeField] PlayerHealthSettings target;
     //Data backpack
     [SerializeField] CapsuleCollider capsuleCollider;
     public EnemySetting enemySetting; 
@@ -31,7 +31,6 @@ public abstract class Enemy : MonoBehaviour {
     [SerializeField] protected AudioSource breathingAudioSource;
     //Properties
     public Animator getAnimator{get{return animator;}}
-    public PlayerHealth Target{get{return target;}}
     [SerializeField] protected bool canMove;
     //Events
     public delegate void OnDamageTaken();
@@ -45,7 +44,6 @@ public abstract class Enemy : MonoBehaviour {
     protected virtual void Awake() {
         //Debug.Log("baseHitpoints Awake: " + baseHitpoints);
        // InitStats();
-        animator = GetComponentInChildren<Animator>();
         mainAudioSource = GetComponent<AudioSource>();
         //Make sure every enemy has it's own animation 
         Assert.IsNotNull(animator.runtimeAnimatorController,gameObject.name + " not set runtimeAnimatorController");
@@ -60,30 +58,22 @@ public abstract class Enemy : MonoBehaviour {
        isDeath = false;
 
        StartCoroutine(playIdleSounds(enemySoundKit.PatrollingSounds));
-       
-       EnemiesAliveCounter.increaseEnemiesCount();
 
-
-    }
-    protected virtual void OnDisable()
-    {
-       // Debug.Log("baseHitpoints onDisable: " + baseHitpoints);
 
     }
     protected virtual void Start()
     {
-        target = PlayerHealth.Instance;
-        Assert.IsNotNull(target,gameObject.name + " not set target");
+//        Assert.IsNotNull(target,gameObject.name + " not set target");
 
     }
     public virtual void Attack()
     {
         //If player dont exist or is dead dont call anything;
-        if(target == null || target.IsDead == true) return;
+        if(target == null || target.PlayerHealth.IsDead == true) return;
         AudioManager.playSound(mainAudioSource,AudioManager.GetRandom(enemySoundKit.AttackSound));
         
         //Player damage dealing
-        target.TakeDamage(baseDamage);
+        target.PlayerHealth.TakeDamage(baseDamage);
         
     }
     //Zombie health reducing

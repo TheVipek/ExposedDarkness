@@ -10,17 +10,8 @@ public class ChromaticAberrationTrigger : MonoBehaviour
     public float minVal = 0;
     [SerializeField] float currentVal;
     [SerializeField] float duration = 5f;
-    public static ChromaticAberrationTrigger instance;
      private void Awake() {
-        if(instance!=this && instance!=null)
-        {
-            Destroy(this);
-        }else
-        {
-            instance = this;
-            volume.profile.TryGetSettings(out chromaticAberration);
-        }
-       
+        volume.profile.TryGetSettings(out chromaticAberration);
     }
     private void OnEnable() {
         StartCoroutine(chromaticAberrationBump(minVal,maxVal));

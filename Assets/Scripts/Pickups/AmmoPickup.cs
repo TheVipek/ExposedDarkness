@@ -12,7 +12,7 @@ public class AmmoPickup : MonoBehaviour
     
     public void GetAmmo()
     {
-        Ammo.Instance.AddAmmo(ammoType,ammoCount);
+        WeaponsManager.Instance.ammo.AddAmmo(ammoType,ammoCount);
 
     }
 }

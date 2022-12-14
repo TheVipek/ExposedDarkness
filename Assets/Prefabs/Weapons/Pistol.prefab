@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1694016888246948000}
   - component: {fileID: 875745954}
   - component: {fileID: 3817949913807836986}
+  - component: {fileID: 1638482451085425055}
   m_Layer: 8
   m_Name: Pistol
   m_TagString: Untagged
@@ -169,7 +170,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponCamera: {fileID: 0}
   viewCamera: {fileID: 0}
-  zoomKeyCode: 324
   zoomInField: 20
   zoomInSensitivity: {x: 0.6, y: 0.6}
   weaponZoomInPosition: {x: 0, y: -0.18, z: 1}
@@ -190,6 +190,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   showWeaponOffset: -0.5
   animator: {fileID: 0}
+  playerSettings: {fileID: 11400000, guid: 6bc782b3edca4724b9f028facd885a24, type: 2}
   defaultWeaponPosition: {x: 0.498, y: -0.583, z: 0.72}
 --- !u!114 &3817949913807836986
 MonoBehaviour:
@@ -221,6 +222,34 @@ MonoBehaviour:
   ammoContainer: {fileID: 0}
   ammoType: 0
   weaponSounds: {fileID: 11400000, guid: 47d3676cb1192a94c9e39c5408c52c51, type: 2}
+--- !u!114 &1638482451085425055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1221728325957719288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98a8b223b5b2ac740ad5356b3841af16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventListenTo: {fileID: 11400000, guid: 650a3958a9f1ac94bb5fb6701cdff648, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 875745954}
+        m_TargetAssemblyTypeName: WeaponAnimation, Assembly-CSharp
+        m_MethodName: AnimationRelativeToMovementAction
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8451379395394265204
 GameObject:
   m_ObjectHideFlags: 0

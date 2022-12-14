@@ -5,6 +5,7 @@ using UnityEngine;
 public class WeaponPickup : MonoBehaviour
 {
     [SerializeField] GameObject weaponPrefab;
+    public string WeaponName{get{return weaponPrefab.name;}}
     [SerializeField] WeaponRole weaponRole;
     [SerializeField] GameObject weaponToReplace;
     public void GetWeapon()

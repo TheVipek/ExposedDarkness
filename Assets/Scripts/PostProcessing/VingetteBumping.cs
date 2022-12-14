@@ -10,25 +10,13 @@ public class VingetteBumping : MonoBehaviour
     public float entryValue = 0.1f;
     public float maxBloodValue = 0.25f;
     public float maxPoisonValue = 0.5f;
-    public float currentBump;
     public Color bloodColor,poisonColor;
-    //[SerializeField] float speed = 0.1f;
     [SerializeField] float duration =2f;
     [SerializeField] float colorSwapDuration = 0.5f;
-    int deathPumps = 1;
-    public Color currentColor;
-    public static VingetteBumping instance;
+    Coroutine bloodBumpingCR = null; 
 
     private void Awake() {
-        if(instance!=this && instance!=null)
-        {
-            Destroy(this);
-        }else
-        {
-            instance = this;
-            volume.profile.TryGetSettings(out vingette);
-        }
-       
+        volume.profile.TryGetSettings(out vingette);
     }
     private void OnEnable() {
         WaveController.onWaveStartGlobal += disableVingeteEffect;
@@ -42,20 +30,28 @@ public class VingetteBumping : MonoBehaviour
     }
     public void disableVingeteEffect()
     {
-        Debug.Log(vingette.active);
-        Debug.Log("Disabling vingette...");
         vingette.active = false;
-        Debug.Log(vingette.active);
-
     }
     public void enableVingetteEffect()
     {
         vingette.active = true;
     }
-    public IEnumerator BloodBumping(float toVal,float fromVal = 0)
+    public void StartBloodBumping()
+    {
+        bloodBumpingCR = StartCoroutine(BloodBumping(maxBloodValue,false));
+        Debug.Log("Blood bumping started!");
+    }
+    public void StopBloodBumping()
+    {
+        Debug.Log($"bloodBumpingCR:{bloodBumpingCR}");
+        if(bloodBumpingCR != null) StopCoroutine(bloodBumpingCR);
+        StartCoroutine(BloodBumping(0,true));
+
+    }
+    public IEnumerator BloodBumping(float toVal,bool immadiatelyExit = false)
     {
        float complete = 0f;
-
+       float currentVal = vingette.intensity.value; 
        if(!audioSource.isPlaying)
        {
             audioSource.Play();
@@ -63,70 +59,54 @@ public class VingetteBumping : MonoBehaviour
        while(complete < duration)
        {
             
-            currentBump = Mathf.Lerp(currentBump,toVal,complete/duration);
-            vingette.intensity.value = currentBump;
+            vingette.intensity.value = Mathf.Lerp(currentVal,toVal,complete/duration);
             complete+=Time.deltaTime;
-            
             yield return null;
        }
-       currentBump = toVal;
-       vingette.intensity.value = currentBump;
-       if(PlayerHealth.Instance.IsDead == false)
+       vingette.intensity.value = toVal;
+       if(immadiatelyExit)
        {
-            if(PlayerHealth.Instance.bloodOverFace == false && currentBump != 0)
-            {
-                    yield return StartCoroutine(BloodBumping(fromVal:toVal,toVal:0));
-            }
-            else if(PlayerHealth.Instance.bloodOverFace == false && currentBump == 0)
-            {
-                    yield break;
-            }else
-            {
-                    yield return StartCoroutine(BloodBumping(fromVal:toVal,toVal:fromVal));
-            }
+            if(toVal == 0) yield break;
+            else yield return StartCoroutine(BloodBumping(toVal:0,immadiatelyExit:immadiatelyExit));
        }
-       else
+       else 
        {
-            if(deathPumps>=0)
-            {
-                deathPumps -=1;
-                yield return StartCoroutine(BloodBumping(fromVal:toVal,toVal:fromVal));
-            }
-            else
-            {
-                Debug.Log("Player is dead - no heart beat");
-                yield return null;
-            }
+            bloodBumpingCR = StartCoroutine(BloodBumping(toVal:currentVal));
        }
-
-       
     }
     public IEnumerator smoothColorChange(Color toColor)
     {
         float complete = 0f;
+        Color currentColor = vingette.color.value;
         while(complete < colorSwapDuration)
         {
-            currentColor = Color.Lerp(currentColor,toColor,complete/colorSwapDuration);
-            vingette.color.value = currentColor;
+            vingette.color.value = Color.Lerp(currentColor,toColor,complete/colorSwapDuration);
             complete += Time.deltaTime;
             yield return null;
         }
-        currentColor = toColor;
-        vingette.color.value = currentColor;
+        vingette.color.value = toColor;
 
     }
     public IEnumerator TriggerPoison(float toVal)
     {
        float complete = 0f;
+       float currentVal = vingette.intensity.value;
        while(complete < duration)
        {
             
-            currentBump = Mathf.Lerp(currentBump,toVal,complete/duration);
-            vingette.intensity.value = currentBump;
+            vingette.intensity.value = Mathf.Lerp(currentVal,toVal,complete/duration);
             complete+=Time.deltaTime;
             yield return null;
        }
-       currentBump = maxPoisonValue;
-       vingette.intensity.value = currentBump;
+       vingette.intensity.value = toVal;
     }
+    public void TriggerPoisoning()
+    {
+        StopAllCoroutines();
+        StartCoroutine(smoothColorChange(poisonColor));
+        StartCoroutine(TriggerPoison(maxPoisonValue));
+    }
+
 }
+
+

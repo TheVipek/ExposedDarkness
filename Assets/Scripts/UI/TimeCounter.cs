@@ -12,6 +12,8 @@ public class TimeCounter : MonoBehaviour
     bool startedPoisoning = false;
     public float RemainingTime{get{return remainingTime;}}
     private Coroutine timerCoroutine;
+    public GameEvent onLowAmountOfTime;
+    public GameEvent onTimeout;
 
     private void Awake() {
         remainingTime = startingTime;
@@ -31,15 +33,11 @@ public class TimeCounter : MonoBehaviour
             displayTimer();
             if(remainingTime <= 60 && startedPoisoning == false)
             {
-                VingetteBumping.instance.StopAllCoroutines();
-                PlayerHealth.Instance.poisonTriggered = true;
-                StartCoroutine(VingetteBumping.instance.smoothColorChange(VingetteBumping.instance.poisonColor));
-                StartCoroutine(VingetteBumping.instance.TriggerPoison(VingetteBumping.instance.maxPoisonValue));
-                ChromaticAberrationTrigger.instance.enabled = true;
+                onLowAmountOfTime.Raise();
             }
             yield return new WaitForSeconds(1);
         }
-        DeathHandler.instance.OutOfTime();
+        onTimeout.Raise();
     }
     public void stopTimer()
     {
@@ -58,7 +56,6 @@ public class TimeCounter : MonoBehaviour
         if(seconds<10)
         {
             timerText.GetComponent<TMP_Text>().text = minutes+":0"+seconds;
-
         }
         else
         {

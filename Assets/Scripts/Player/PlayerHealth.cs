@@ -7,49 +7,43 @@ public class PlayerHealth : MonoBehaviour
     public Animator animator;
 
     [Header("Stats")]
-    [SerializeField] float maxHealth = 100;
-    [SerializeField] float currentHealth;
+    [SerializeField] PlayerHealthSettings healthSettings;
     [Tooltip("At what currentHealth value trigger blood over face")]
     [SerializeField] float bloodOverFaceValue = 35f;
     [Tooltip("Time that needs elapse to start regenerating health")]
     [SerializeField] float timeToRegenerate = 5f;
     [Tooltip("Time that needs to elapse to regenerate 1HP")]
     [SerializeField] float regenerationSpeed = 0.2f;
-    public bool bloodOverFace = false;
-    public bool poisonTriggered = false;
+    private bool bloodOverFace;
+    public bool BloodOverFace{get{return bloodOverFace;}set{bloodOverFace = value;}}
+    private bool poisonTriggered;
+    public bool PoisonTriggered{get{return poisonTriggered;}set{poisonTriggered = value;}}
+
 
     public static Action onDamageTaken;
-    public static Action onFightOver;
+    public static Action onHealthRestore;
+    //Hp drops below bloodOverFaceValue
+    public GameEvent onLowHp;
+    //Hp is above bloodOverFaceValue
+    public GameEvent onNormalHp;
+    public GameEvent onDeath;
     
-    
-    
-    public float MaxHealth{get{return maxHealth;}}
-    public float CurrentHealth{get{return currentHealth;}}
     public bool IsDead{get{return animator.GetBool("death");} set{animator.SetBool("death",value);}}
-    public bool IsDeadCasted{get{return animator.GetBool("deathCasted");} set{animator.SetBool("deathCasted",value);}}
-    
-    
-
-    public static PlayerHealth Instance;
-
-
-
     Coroutine regenerationChecker;
     Coroutine regenerationProcess;
 
 
-    private void Awake() {
-        
-        if(Instance != null && Instance != this) Destroy(this);
-        else Instance = this;
-        
-        currentHealth = maxHealth;
-    }
-    public void restoreHp()
+    private void Awake() 
     {
-        currentHealth = maxHealth;
-        onFightOver();
+        healthSettings.SetPlayerHealth(this);
+    }
+
+    public void RestoreHp()
+    {
+        healthSettings.Restore();
+        onHealthRestore();
     } 
+
     IEnumerator RegeneratingChecker()
     {
         float timer =0f;
@@ -61,40 +55,45 @@ public class PlayerHealth : MonoBehaviour
         }
         if(IsDead == false) yield return regenerationProcess = StartCoroutine(RegeneratingProcess());
     }
+
     IEnumerator RegeneratingProcess()
     {
-        while(currentHealth<maxHealth)
+        WaitForSeconds _regenerationSpeed = new WaitForSeconds(regenerationSpeed); 
+
+        while(healthSettings.CurrentHealth<healthSettings.MaxHealth)
         {
-            currentHealth +=1;
-            onFightOver();
-            if(currentHealth > bloodOverFaceValue && bloodOverFace == true && poisonTriggered == false)
+            healthSettings.AddHp(1);
+            //Update UI
+            onHealthRestore();
+            if(healthSettings.CurrentHealth > bloodOverFaceValue && bloodOverFace == true && poisonTriggered == false)
             {
                 bloodOverFace = false;
+                onNormalHp.Raise();
             }
-            yield return new WaitForSeconds(regenerationSpeed);
+            yield return _regenerationSpeed;
         }
         yield return null;
     }
-    public void TakeDamage(float damage){
 
-        currentHealth-=damage;
-        if(currentHealth <= 0)
+
+    public void TakeDamage(float damage){
+        healthSettings.TakeHp(damage);
+        //CALLS ALL FUNCTIONS SUBSCRIBED TO EVENT
+        onDamageTaken();
+        if(healthSettings.CurrentHealth <= 0)
         {
-            currentHealth = 0;
-            onDamageTaken();
+            onDeath.Raise();
             return;
         }
-        else if(currentHealth > 0)
+        else if(healthSettings.CurrentHealth > 0)
         {
-            //CALLS ALL FUNCTIONS SUBSCRIBED TO EVENT
-            onDamageTaken();
 
             //VINGETTE EFFECT
             //which means if player has less than x Hp and dont have already blood over face casted
-            if(currentHealth < bloodOverFaceValue && bloodOverFace == false && poisonTriggered == false)
+            if(healthSettings.CurrentHealth < bloodOverFaceValue && bloodOverFace == false && poisonTriggered == false)
             {
                 bloodOverFace = true;
-                StartCoroutine(VingetteBumping.instance.BloodBumping(VingetteBumping.instance.maxBloodValue,VingetteBumping.instance.entryValue));
+                onLowHp.Raise();
             }
             FightStart();
         }
@@ -116,12 +115,5 @@ public class PlayerHealth : MonoBehaviour
         regenerationChecker = StartCoroutine(RegeneratingChecker());
         
     }
-    public void SetDeathCasted()
-    {
-        IsDeadCasted = true;
-    }
-    public void CallDeathUI()
-    {
-        DeathHandler.instance.DeathUIanimation();
-    }
+
 }
