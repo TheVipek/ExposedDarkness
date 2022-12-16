@@ -14,7 +14,7 @@ public class WaveContainer
     public UnityEvent onSubwavesStartEvent;
     public UnityEvent onSubwavesEndEvent;
 
-    public int getAmountToSpawn()
+    public int GetAmount()
     {
         float amount = (currentSubwave * listOfEnemies.Count) / amountOfSubwaves;
         return (int)Mathf.Floor(amount);

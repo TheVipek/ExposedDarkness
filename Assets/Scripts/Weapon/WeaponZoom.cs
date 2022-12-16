@@ -21,7 +21,7 @@ public class WeaponZoom : MonoBehaviour
     [Tooltip("Lower value equals lower mouse sensitivity during zoom")]
     [SerializeField] Vector2 zoomInSensitivity = new Vector2(0.6f,0.6f);
     [SerializeField] Vector3 weaponZoomInPosition;
-    
+    private Vector3 startZoomPos;
     
     [Header("Options for IN and OUT")]
     [SerializeField] float cameraZoomDuration = 1f;
@@ -34,16 +34,14 @@ public class WeaponZoom : MonoBehaviour
     public bool IsZoomed{get{return isZoomed;}}
     Animator animator;
     [SerializeField] InputActionReference zoomAction;
+
     private void Awake() 
     {
         animator = GetComponent<Animator>();
+        
         defaultWeaponPosition = GetComponent<WeaponAnimation>().defaultWeaponPosition;
     }
     private void OnEnable() {
-        
-
-        
-
         zoomAction.action.started += OnZoom;
      //   zoomAction.action.performed += OnZoom;
         zoomAction.action.canceled += OnZoom;
@@ -51,6 +49,7 @@ public class WeaponZoom : MonoBehaviour
         isZoomed = false;
     }
     private void Start() {
+        resetOnChangeWeapon();
         camerasController = CamerasController.Instance;
         viewCamera = camerasController.playerCamera;
         weaponCamera = camerasController.weaponCamera;
@@ -66,30 +65,30 @@ public class WeaponZoom : MonoBehaviour
         }
     }
     void OnDisable() {
-    
         resetOnChangeWeapon();
-        
         zoomAction.action.started -= OnZoom;
-        zoomAction.action.performed -= OnZoom;
+       // zoomAction.action.performed -= OnZoom;
         zoomAction.action.canceled -= OnZoom;
     }
     public void OnZoom(InputAction.CallbackContext ctx)
     {
         if(ctx.started)
         {
-            Debug.Log("weaponZooming started");
+//            Debug.Log("weaponZooming started");
             isTryingToZoom = true;
         }
         if(ctx.canceled)
         {
-            Debug.Log("weaponZooming canceled");
+     //       Debug.Log("weaponZooming canceled");
 
             ZoomOut();
         }
     }
     private void ZoomOut()
     { 
-    
+        startZoomPos = transform.localPosition;
+        
+        
         isTryingToZoom = false;
         StartCoroutine(weaponToZoom(defaultWeaponPosition,weaponZoomDuration,false));
         StartCoroutine(cameraToZoom(camerasController.DefaultFov,cameraZoomDuration));
@@ -106,10 +105,12 @@ public class WeaponZoom : MonoBehaviour
     private void ZoomIn()
     {
         //Rebind so when next time animator is enabled animation is going from first frame, not from last ended 
+        startZoomPos = transform.localPosition;
+        //animator.Update(0f);
         animator.Rebind();
         animator.enabled = false;
 
-
+        
         StartCoroutine(weaponToZoom(weaponZoomInPosition,weaponZoomDuration,true));
         StartCoroutine(cameraToZoom(zoomInField,cameraZoomDuration));
         PlayerCamera.mouse.SensitivityChange(zoomInSensitivity);
@@ -126,17 +127,18 @@ public class WeaponZoom : MonoBehaviour
     //Fourth: setting localPos to desiredPos
     IEnumerator weaponToZoom(Vector3 desiredPosition,float zoomOverTime,bool isZoomingIn)
     {
-        gameObject.transform.localRotation = Quaternion.Euler(0,0,0);
+        transform.localRotation = Quaternion.Euler(0,0,0);
         bool _zooming = isTryingToZoom;
-        Vector3 startPos = transform.localPosition;
+        //startZoomPos = transform.localPosition;
+     //   Debug.Log($"StartPos:{startZoomPos}");
+      //  Debug.Log($"DesiredPos:{desiredPosition}");
         float timeElapsed = 0f;
         if(isZoomingIn == true) isZoomed = true;
-        //zoomed = isZoomingIn;
-
         while(timeElapsed<= zoomOverTime && _zooming == isTryingToZoom)
         {
-            float t = timeElapsed / zoomOverTime; 
-            transform.localPosition = Vector3.Lerp(startPos,desiredPosition,t);
+            float t = timeElapsed / zoomOverTime;
+            transform.localPosition = Vector3.Lerp(startZoomPos,desiredPosition,t);
+//            Debug.Log($"Value:{Vector3.Lerp(startZoomPos,desiredPosition,t)}");
             timeElapsed += Time.deltaTime;
             yield return null;
         }

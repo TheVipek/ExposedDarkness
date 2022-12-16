@@ -1,28 +1,62 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Events;
+using UnityEngine.InputSystem;
 public class completionMissionAction : MonoBehaviour,IAnyButton
 {
-    bool used = false;
-    private void OnEnable() {
-        GameManager.Instance.freezePlayerActions();
+    private bool canBeUsed = false;
+    public bool CanBeUsed{get{return canBeUsed;} set{canBeUsed = value;}}
+    public UnityEvent completeMissionEvent;
+    InputAction clickAction;
+    [SerializeField] AnimationClip showingClip;
+    private void Awake() {
+        clickAction = new InputAction(binding:"/Keyboard/anyKey");
+        clickAction.AddBinding("/Mouse/leftButton");
+        clickAction.AddBinding("/Mouse/rightButton");
+        clickAction.Enable();
+
+       showingClip.AddEvent(new AnimationEvent(){
+        time = showingClip.length,
+        functionName = "TriggerUsage"
+       });
     }
-    private void OnGUI() 
+    private void OnEnable() {
+        completeMissionEvent.Invoke();
+        clickAction.started += OnClicked;
+    }
+
+    private void OnDisable() {
+        clickAction.started -= OnClicked;
+        clickAction.Disable();
+        
+    }
+    public void OnClicked(InputAction.CallbackContext ctx)
     {
-        Event currentEvent = Event.current;
-        if( (currentEvent.isKey || currentEvent.isMouse) && used == false)
+        if(ctx.started)
         {
-            Debug.Log("Mission complete clicked!");
-            AnyButtonAction();
-            used = true;
+            
+            
+                Debug.Log("Pressed this frame.");
+                if(canBeUsed == true) 
+                {
+                    canBeUsed = false;
+                    Debug.Log("Clicked.");
+                    AnyButtonAction();
+                }
+                else
+                {
+                    Debug.Log("You clicked already.");
+                }
+
+            
         }
     }
-    private void OnDisable() {
-        GameManager.Instance.freezePlayerActions();
-    }
+    
     public void AnyButtonAction()
     {
-        SceneController.Instance.GoToScene("MainMenu");
+            SceneController.Instance.GoToScene("MainMenu");
     }
+    public void TriggerUsage() => canBeUsed = true;
+    //public void enableInput() => clickAction.Enable();
 }

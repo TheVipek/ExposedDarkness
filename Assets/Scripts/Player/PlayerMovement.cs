@@ -31,6 +31,8 @@ public class PlayerMovement : MonoBehaviour
     private bool moving = false;
     public bool Moving { get { return moving; } }
     private bool sprinting = false;
+    private bool staminaRegenerating = true;
+    private Coroutine staminaRegenerationCR = null;
     private bool isExhausted = false;
     public bool Sprinting { get { return sprinting; } }
     private bool isGrounded = false;
@@ -77,7 +79,7 @@ public class PlayerMovement : MonoBehaviour
             OnSprintingCanceled();
         }
         //If player was exhausted ,but stamina is regenerated fully variable isExhausted is set to false
-        else if (settings.CurrentStamina < settings.StaminaLength)
+        else if (settings.CurrentStamina < settings.StaminaLength && staminaRegenerating)
         {
             settings.CurrentStamina += Time.deltaTime * settings.StaminaRegenerartionSpeed;
             if (settings.CurrentStamina >= settings.StaminaLength)
@@ -223,10 +225,27 @@ public class PlayerMovement : MonoBehaviour
                 sprinting = false;
                 settings.SetMovementAction(MovementActions.DEFAULT);
                 SetSpeed();
+                Debug.Log(staminaRegenerationCR);
+                if(staminaRegenerationCR == null)
+                {
+                    staminaRegenerationCR = StartCoroutine(StaminaRegenerationTimer());
+                }
+                else
+                {
+                    StopCoroutine(staminaRegenerationCR);
+                    staminaRegenerationCR = StartCoroutine(StaminaRegenerationTimer());
+                }
             }
         }
 
     }   
+    public IEnumerator StaminaRegenerationTimer()
+    {
+        staminaRegenerating = false;
+        yield return new WaitForSeconds(settings.StaminRegenerationDelay);
+        staminaRegenerating = true;
+        staminaRegenerationCR = null;
+    }
     public void OnSprintingHolded()
     {
       //  Debug.Log($"Sprint is holded and all conditions are meet: moving: {moving},IsGrounded: {IsGrounded},!isExhausted:{!isExhausted}");

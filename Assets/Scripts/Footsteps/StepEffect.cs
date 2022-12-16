@@ -10,25 +10,41 @@ public class StepEffect : MonoBehaviour
     [SerializeField] List<AudioClip> grassSounds;
     [SerializeField] AudioSource audioSource;
     private TerrainGroundDetector terrainGroundDetector;
-    [SerializeField] float distanceBetweenStep = 1f;
+    [SerializeField] float distanceBetweenStep;
+    private float distanceTraveledSinceStep;
+    Vector3 previousPosition;
     Vector3 lastStep;
     [SerializeField] PlayerMoveSettings playerSettings;
     [SerializeField] LayerMask layerToIgnore;
     private void Awake()
     {
+        previousPosition = transform.position;
         terrainGroundDetector = new TerrainGroundDetector();
         lastStep = new Vector3(transform.position.x,transform.position.y,transform.position.z);
     }
-    private void Update() {
-
-        if(Vector3.Distance(lastStep,transform.position) > distanceBetweenStep)
+    private void Update() 
+    {
+        if(previousPosition != transform.position)
         {
-            if(playerSettings.MovementActions != MovementActions.JUMPING)
+            distanceTraveledSinceStep += Vector3.Distance(previousPosition,transform.position);
+            previousPosition = transform.position;
+            if(distanceTraveledSinceStep >= distanceBetweenStep)
             {
-                StepSound();
-                lastStep = transform.position;
+                if(playerSettings.MovementActions != MovementActions.JUMPING)
+                {
+                    StepSound();
+                    distanceTraveledSinceStep = 0;
+                }
             }
         }
+        // if(Vector3.Distance(lastStep,transform.position) > distanceBetweenStep)
+        // {
+        //     if(playerSettings.MovementActions != MovementActions.JUMPING)
+        //     {
+        //         StepSound();
+        //         lastStep = transform.position;
+        //     }
+        // }
         
     }
     private void StepSound()

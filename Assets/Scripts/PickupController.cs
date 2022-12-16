@@ -3,20 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 public class PickupController : MonoBehaviour
 {
-    public static PickupController Instance{get; private set;}
-    [SerializeField] GameObject PickupContainer;
-    private List<GameObject> pickupChildrens = new List<GameObject>();
+    [SerializeField] GameObject pickupContainer;
+    private static List<GameObject> pickupChildrens = new List<GameObject>();
 
     private void Awake() {
-        if(Instance != this && Instance != null) Destroy(this);
-        else Instance = this;
+        if(!pickupContainer) Debug.LogWarning($"Not all objects assigned in {GetType()}");
 
-        foreach (Transform child in PickupContainer.transform)
+        Debug.Log($"Before:{pickupChildrens.Count}");
+        if(pickupChildrens.Count>0) pickupChildrens.Clear();
+        foreach (Transform child in pickupContainer.transform)
         {
             pickupChildrens.Add(child.gameObject);
         }
+        Debug.Log($"After:{pickupChildrens.Count}");
+
     }
-    public void AddPickup(string itemCount,string itemName)
+    public static void AddPickup(string itemCount,string itemName)
     {
         GameObject freeChildren = GetFreeChildren();
         if(freeChildren != null)
@@ -31,7 +33,7 @@ public class PickupController : MonoBehaviour
             freeChildren.SetActive(true);
         }
     }
-    public GameObject GetFreeChildren()
+    public static GameObject GetFreeChildren()
     {
         for(int i=0;i<pickupChildrens.Count;i++)
         {

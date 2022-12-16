@@ -34,6 +34,7 @@ public class PlayerMoveSettings : ScriptableObject
     [SerializeField] float jumpHeight;
     [SerializeField] float fallMultiplier;
     [Header("Stamina")]
+    [SerializeField] float staminaRegenerationDelay;
     [SerializeField] float staminaRegenerartionSpeed;
     [SerializeField] float staminaLength;
     [SerializeField] float currentStamina;
@@ -70,6 +71,7 @@ public class PlayerMoveSettings : ScriptableObject
     public float JumpHeight{get{return jumpHeight;}}
     public float FallMultiplier{get{return fallMultiplier;}}
     public float StaminaRegenerartionSpeed{get{return staminaRegenerartionSpeed;}}
+    public float StaminRegenerationDelay{get{return staminaRegenerationDelay;}}
     public float StaminaLength{get{return staminaLength;}}
     public float CurrentStamina{get{return currentStamina;} set{currentStamina = value;}}
     public float GroundDrag{get{return groundDrag;}}

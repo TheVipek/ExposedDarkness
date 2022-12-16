@@ -10,7 +10,7 @@ public class GroundDetector : MonoBehaviour
    //     Debug.Log($"CollisionEnter {othLayer}");
         if(playerMovement.IsGrounded == false && playerMovement.groundLayer.value == othLayer)
         {
-        //    Debug.Log("Grounded in Enter");
+            Debug.Log("Grounded in Enter");
 
             playerMovement.IsGrounded = true;
             if(playerMovement.Jumping)
@@ -28,15 +28,20 @@ public class GroundDetector : MonoBehaviour
         // Debug.Log($"groundLayer:{playerMovement.groundLayer.value} | otherLayer:{othLayer}");
         if(playerMovement.IsGrounded == false && playerMovement.groundLayer.value == othLayer)
         {
-        //    Debug.Log("Grounded in Stay");
+            Debug.Log("Grounded in Stay");
             playerMovement.IsGrounded = true;
+            if(playerMovement.Jumping)
+            {
+                playerMovement.Jumping = false;
+            }
+            playerMovement.SetMoveBasedOnState();
 
         }
     }
     
     private void OnTriggerExit(Collider other) {
         
-   //     Debug.Log("Exit:"+other.gameObject.name);
+        Debug.Log("Exit:"+other.gameObject.name);
         if(playerMovement.IsGrounded == true)
         {
          //   Debug.Log("Not grounded in Exit");

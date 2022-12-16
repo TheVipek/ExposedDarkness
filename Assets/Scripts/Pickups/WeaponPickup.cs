@@ -16,7 +16,7 @@ public class WeaponPickup : MonoBehaviour
            // Debug.Log(item.name);
             if(item.WeaponRole == weaponRole && item != null)
             {
-                Debug.Log(item.WeaponRole);
+//                Debug.Log(item.WeaponRole);
                 //Debug.Log("Replace Item");
                 ReplaceWeapon(item.gameObject);
 
@@ -43,9 +43,12 @@ public class WeaponPickup : MonoBehaviour
         Vector3 weaponPrefabPosition = weaponPrefab.GetComponent<WeaponAnimation>().defaultWeaponPosition; 
 
        // Debug.Log(weaponPrefabPosition);
-        weaponPrefab.transform.parent = posToSet.transform.parent;
+     //   Debug.Log($"weaponParent:{weaponPrefab.transform.parent}");
+      //  Debug.Log($"posToSet parent : {posToSet.transform.parent}");
+        weaponPrefab.transform.SetParent(posToSet.transform.parent);
+      //  Debug.Log($"weaponParent:{weaponPrefab.transform.parent}");
         weaponPrefab.transform.localPosition = weaponPrefabPosition;
-      //  Debug.Log(weaponPrefab.transform.localPosition);
+  //      Debug.Log(weaponPrefab.transform.localPosition);
         weaponPrefab.transform.localRotation = Quaternion.Euler(0,weaponPrefab.transform.localRotation.y,0); 
         foreach(Behaviour comp in weaponPrefab.GetComponents<Behaviour>())
         {
@@ -74,7 +77,7 @@ public class WeaponPickup : MonoBehaviour
     {
         foreach(Behaviour comp in weaponToReplace.GetComponents<Behaviour>())
         {
-            Debug.Log(comp);
+        //    Debug.Log(comp);
             comp.enabled = false;
         }
         if(!weaponToReplace.activeSelf) weaponToReplace.SetActive(true);

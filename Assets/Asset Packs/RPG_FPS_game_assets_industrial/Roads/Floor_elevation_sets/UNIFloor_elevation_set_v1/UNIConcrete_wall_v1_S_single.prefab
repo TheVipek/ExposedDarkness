@@ -12,12 +12,13 @@ GameObject:
   - component: {fileID: 33000011133010136}
   - component: {fileID: 23000012798183584}
   - component: {fileID: 64000012985298304}
-  m_Layer: 0
+  - component: {fileID: 1340668617}
+  m_Layer: 12
   m_Name: UNIConcrete_wall_v1_S_single
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 40
   m_IsActive: 1
 --- !u!4 &4000010565855796
 Transform:
@@ -28,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 1000013531074198}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1.9091}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -95,6 +96,19 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300082, guid: c6d026d6367d43a438c71a59c9da8290, type: 3}
+--- !u!114 &1340668617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000013531074198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e682356a6acde674ea64772074633545, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  footstepsCollection: {fileID: 11400000, guid: 7668a791631f5c940b39da5113ae8e09, type: 2}

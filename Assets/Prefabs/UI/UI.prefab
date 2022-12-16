@@ -229,7 +229,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &156181661
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3332,17 +3332,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 637400621}
-        m_TargetAssemblyTypeName: MenuClickListener, Assembly-CSharp
-        m_MethodName: setCursor
-        m_Mode: 6
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: activeCursor
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
+          m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1208855413
 MonoBehaviour:
@@ -4157,9 +4157,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1685616607}
-  - component: {fileID: 1685616608}
   - component: {fileID: 1685616610}
   - component: {fileID: 1685616609}
+  - component: {fileID: 320177750}
   m_Layer: 5
   m_Name: AnyKey
   m_TagString: Untagged
@@ -4187,18 +4187,6 @@ RectTransform:
   m_AnchoredPosition: {x: 616.5, y: -435}
   m_SizeDelta: {x: 687.1, y: 210.1}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1685616608
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1685616606}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e36a0720994df474488b876af1fb8e27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!222 &1685616610
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4296,6 +4284,26 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!95 &320177750
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1685616606}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c6b769bc84de7af43bcc872a5cbcd6df, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1691258773
 GameObject:
   m_ObjectHideFlags: 0
@@ -4685,7 +4693,7 @@ MonoBehaviour:
   maxWaveUI: {fileID: 5020583861313045428}
   panelWithBar: {fileID: 6670685571717576058}
   panelWithTimer: {fileID: 6210532309663453386}
-  lerpDuration: 1
+  lerpDuration: 0.5
 --- !u!1 &1781400191
 GameObject:
   m_ObjectHideFlags: 0
@@ -5498,13 +5506,14 @@ GameObject:
   - component: {fileID: 2136080007}
   - component: {fileID: 2136080006}
   - component: {fileID: 1970113349}
+  - component: {fileID: 2103196598054967044}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2136080005
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5555,7 +5564,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5585,6 +5594,58 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2103196598054967044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2136080004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e36a0720994df474488b876af1fb8e27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  completeMissionEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: activeCursor
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: freezePlayerActions
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 637400621}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  showingClip: {fileID: 7400000, guid: 424f556b7ac089b4c9260a89041960f7, type: 2}
 --- !u!1 &214516263679084451
 GameObject:
   m_ObjectHideFlags: 0
@@ -9411,7 +9472,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 480, y: -403.1}
+  m_AnchoredPosition: {x: 479.99713, y: -403.1002}
   m_SizeDelta: {x: 959.99, y: 138.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7024213189913169237
@@ -11408,7 +11469,7 @@ MonoBehaviour:
   m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
-  m_ReverseArrangement: 0
+  m_ReverseArrangement: 1
 --- !u!1 &6875784413200884475
 GameObject:
   m_ObjectHideFlags: 0

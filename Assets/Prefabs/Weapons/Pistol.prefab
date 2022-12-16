@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 1216001255471311812}
   - component: {fileID: 1385271541}
   - component: {fileID: 914297122}
-  - component: {fileID: 1694016888246948000}
   - component: {fileID: 875745954}
   - component: {fileID: 3817949913807836986}
+  - component: {fileID: 1694016888246948000}
   - component: {fileID: 1638482451085425055}
   m_Layer: 8
   m_Name: Pistol
@@ -149,33 +149,13 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 2d75e077c377d004e95e1bc293128a35, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &1694016888246948000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1221728325957719288}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3344024077305a64986844ee358ca397, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponCamera: {fileID: 0}
-  viewCamera: {fileID: 0}
-  zoomInField: 20
-  zoomInSensitivity: {x: 0.6, y: 0.6}
-  weaponZoomInPosition: {x: 0, y: -0.18, z: 1}
-  cameraZoomDuration: 0.3
-  weaponZoomDuration: 0.3
-  zoomAction: {fileID: -4896973177741197611, guid: dbecc125ae805f54ebd57e40c44b667a, type: 3}
 --- !u!114 &875745954
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,6 +202,26 @@ MonoBehaviour:
   ammoContainer: {fileID: 0}
   ammoType: 0
   weaponSounds: {fileID: 11400000, guid: 47d3676cb1192a94c9e39c5408c52c51, type: 2}
+--- !u!114 &1694016888246948000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1221728325957719288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3344024077305a64986844ee358ca397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponCamera: {fileID: 0}
+  viewCamera: {fileID: 0}
+  zoomInField: 20
+  zoomInSensitivity: {x: 0.6, y: 0.6}
+  weaponZoomInPosition: {x: 0, y: -0.18, z: 1}
+  cameraZoomDuration: 0.3
+  weaponZoomDuration: 0.3
+  zoomAction: {fileID: -4896973177741197611, guid: dbecc125ae805f54ebd57e40c44b667a, type: 3}
 --- !u!114 &1638482451085425055
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -10,11 +10,15 @@ public enum ObjectiveStatus
 [System.Serializable]
 public class Objective
 {
-    public int id;
-    public string description;
-    public ObjectiveStatus status;
+    private int id;
+    public int Id{get{return id;}}
+    private string description;
+    public string Description{get{return description;}}
+    public ObjectiveStatus status = ObjectiveStatus.DOING;
 
-    [HideInInspector] public GameObject objectiveUI;
-
-    
+    public Objective(int _id,string _description)
+    {
+        id = _id;
+        description = _description;
+    }
 }

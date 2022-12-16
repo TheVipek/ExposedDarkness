@@ -1,12 +1,12 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Events;
 public class WaveTrigger : MonoBehaviour
 {
     public WaveContainer waveToTrigger;
     private WaveController _waveController;
-    [SerializeField] GameObject missionCompletionCanvas;
+    [SerializeField] float endWavesDelay;
+    public UnityEvent OnTriggeredEndEvents;
     private void Awake() {
         _waveController = WaveController.Instance;
         _waveController.initWave(waveToTrigger);
@@ -14,49 +14,46 @@ public class WaveTrigger : MonoBehaviour
     private void OnEnable() 
     {
         WaveController.onWaveStartGlobal();
-        EnemiesManager.onEnemyAliveChange += EndWaveListener;
-        if(missionCompletionCanvas != null){
-            WaveController.onWaveEndGlobal += missionCompletionTrigger; 
-        }
+        EnemiesManager.OnEnemyAliveChange += EndWaveListener;
     }
     private void OnDisable() {
-        EnemiesManager.onEnemyAliveChange -= EndWaveListener;
-        if(missionCompletionCanvas != null){
-            WaveController.onWaveEndGlobal -= missionCompletionTrigger; 
-        } 
+        EnemiesManager.OnEnemyAliveChange -= EndWaveListener;
 
     }
-    public void EndWaveListener()
+    public void EndWaveListener(int enemiesAlive)
     {
-        if(!EnemiesManager.Instance.isAnyEnemyAlive()){
+        if(enemiesAlive == 0){
             _waveController.waveContainer.currentSubwave +=1;
             if(_waveController.waveContainer.currentSubwave <= _waveController.waveContainer.amountOfSubwaves)
             {
                 StartCoroutine(StartingBreak());
-                // StartCoroutine(waveController.spawnSubwave());
-            }else
+            }
+            else if(_waveController.waveContainer.currentSubwave > _waveController.waveContainer.amountOfSubwaves)
             {
-                WaveController.Instance.CallOnWaveGlobalEnd();
-                //WaveController.onWaveEndGlobal();
-
-                // PRINT END OF WAVES
+                StartCoroutine(CallEndWave());
             }
         }
     }
-    public void missionCompletionTrigger()
-    {
-        missionCompletionCanvas.gameObject.SetActive(true);
-    }
     IEnumerator StartingBreak()
     {
-        yield return null;
         while(WaveUpdaterUI.isSliderUpdating == true)
         {
             yield return null;
         }
-        yield return new WaitForSeconds(2f);
+        Debug.Log("Slider is not updating");
         WaveController.onBreakStarted();
         
     } 
+    IEnumerator CallEndWave()
+    {
+        if(WaveUpdaterUI.isSliderUpdating == true)
+        {
+            yield return null;
+        }
+        Debug.Log("Slider is not updating");
+        yield return new WaitForSeconds(endWavesDelay);
+        _waveController.CallOnWaveGlobalEnd();
+        OnTriggeredEndEvents.Invoke();
+    }
 
 }

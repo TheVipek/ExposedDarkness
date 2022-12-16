@@ -20,10 +20,17 @@ public class WeaponReloader : MonoBehaviour
     public InputActionReference reloadAction;
     [SerializeField] PlayerMovement playerMovement;
     
-    private void Start() {
+    private void OnEnable() 
+    {
+        reloadAction.action.started += OnReload;
+        reloadInitializationCR = null;
+        currentlyReloading = false;
+
+    }
+    private void Start() 
+    {
         weaponSwitcher = WeaponsManager.Instance.weaponSwitcher; 
         ammo = WeaponsManager.Instance.ammo;
-        reloadAction.action.started += OnReload;
     }
     
     private void OnReload(InputAction.CallbackContext ctx)
@@ -42,13 +49,11 @@ public class WeaponReloader : MonoBehaviour
             }
         }
     }
-    private void OnEnable() {
-        reloadInitializationCR = null;
-        currentlyReloading = false;
+    private void OnDisable() 
+    {
+        reloadAction.action.started -= OnReload;
 
-    }
-    private void OnDisable() {
-        Debug.Log("WeaponReloader disabled");
+        //Debug.Log("WeaponReloader disabled");
         if(reloadInitializationCR != null)
         {
             StopCoroutine(reloadInitializationCR);
@@ -58,7 +63,7 @@ public class WeaponReloader : MonoBehaviour
             if(!playerMovement.sprintAction.action.enabled)
             {
                 playerMovement.sprintAction.action.Enable();
-                Debug.Log($"sprintAction is: {playerMovement.sprintAction.action.enabled}");
+                //Debug.Log($"sprintAction is: {playerMovement.sprintAction.action.enabled}");
                 playerMovement.SetSpeed();
             }
         }

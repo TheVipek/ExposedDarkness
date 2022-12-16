@@ -16,7 +16,7 @@ MonoBehaviour:
   baseHitpoints: 150
   baseSpeed: 0.25
   baseChaseSpeed: 0.6
-  baseDeathStateLength: 2
+  baseDeathStateLength: 1
   baseAttackRange: 1
   baseChaseRange: 5
   baseCrouchRange: 3

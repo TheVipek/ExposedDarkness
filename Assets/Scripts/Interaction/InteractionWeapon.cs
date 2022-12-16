@@ -10,7 +10,7 @@ public class InteractionWeapon : InteractionContainer
     public override void OnInteractionStart()
     {
         base.OnInteractionStart();
-        PickupController.Instance.AddPickup("1",weaponPickup.WeaponName);
+        PickupController.AddPickup("1",weaponPickup.WeaponName);
         weaponPickup.GetWeapon();
     }
 }

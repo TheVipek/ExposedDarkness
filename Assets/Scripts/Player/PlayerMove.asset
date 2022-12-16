@@ -21,8 +21,9 @@ MonoBehaviour:
   baseCrouchMultiplier: 0.6
   crouchDuration: 0.25
   baseJumpMultiplier: 0.6
-  jumpHeight: 1.5
+  jumpHeight: 2
   fallMultiplier: 2.5
+  staminaRegenerationDelay: 1
   staminaRegenerartionSpeed: 0.6
   staminaLength: 8
   currentStamina: 8

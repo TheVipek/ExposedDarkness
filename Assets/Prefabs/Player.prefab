@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 179595087}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Orientation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 637805307}
   - component: {fileID: 637805308}
-  m_Layer: 10
+  m_Layer: 14
   m_Name: Step
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -160,11 +160,11 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 97b97fae0b55ce141bff2005c510492e, type: 3}
   - {fileID: 8300000, guid: 96860d4e7cdc1f746906da7b7bc7a388, type: 3}
   audioSource: {fileID: 717174631}
-  distanceBetweenStep: 1.7
+  distanceBetweenStep: 2.2
   playerSettings: {fileID: 11400000, guid: 6bc782b3edca4724b9f028facd885a24, type: 2}
   layerToIgnore:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 17408
 --- !u!1 &650316370
 GameObject:
   m_ObjectHideFlags: 0
@@ -175,7 +175,7 @@ GameObject:
   m_Component:
   - component: {fileID: 650316371}
   - component: {fileID: 650316372}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -305,7 +305,7 @@ GameObject:
   - component: {fileID: 717174631}
   - component: {fileID: 1468411468}
   - component: {fileID: 1468411467}
-  m_Layer: 10
+  m_Layer: 14
   m_Name: Feet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -763,7 +763,7 @@ GameObject:
   - component: {fileID: 1945139523}
   - component: {fileID: 1945139524}
   - component: {fileID: 7507981976420934014}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Interaction
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -801,9 +801,6 @@ MonoBehaviour:
   listener: {fileID: 0}
   playerViewCamera: {fileID: 536835279746102993}
   interactionDistance: 5
-  interactionActivated: 0
-  interactionEnded: 0
-  lookingAt: {fileID: 0}
 --- !u!114 &7507981976420934014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1548,7 +1545,7 @@ MonoBehaviour:
     m_ActionName: Player/Interaction[/Keyboard/e]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
-  m_DefaultActionMap: 63d726f9-f342-49bb-ba7c-a271f32bc062
+  m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!114 &1850273173
@@ -1645,18 +1642,6 @@ MonoBehaviour:
       - m_Target: {fileID: 1843161998084528196}
         m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
         m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1850273173}
-        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
-        m_MethodName: PlayerMapActivate
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2040,10 +2025,6 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 22100000, guid: 94875804476598c478d62e98ab1b538d, type: 2}
-    - target: {fileID: 914297122, guid: 608ad27ae11507e4993698101b83b223, type: 3}
-      propertyPath: m_ApplyRootMotion
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1285526897, guid: 608ad27ae11507e4993698101b83b223, type: 3}
       propertyPath: m_Volume
       value: 0.4
@@ -2551,10 +2532,6 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 22100000, guid: 03cc5c11508d2ae448ae4727b9ed1c6b, type: 2}
-    - target: {fileID: 4176564732031091803, guid: 42cb65f8fe2de1a499fb6df8fd3a274f, type: 3}
-      propertyPath: m_ApplyRootMotion
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7983599459750615441, guid: 42cb65f8fe2de1a499fb6df8fd3a274f, type: 3}
       propertyPath: ShapeModule.type
       value: 2

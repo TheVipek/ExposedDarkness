@@ -5,16 +5,18 @@ using UnityEngine;
 public class ObjectiveKiller : ObjectiveHandler
 {
 
-    private void OnEnable() {
-        EnemiesManager.onEnemyAliveChange += setCompleted;
+    protected override void OnEnable() {
+        base.OnEnable();
+        EnemiesManager.OnEnemyAliveChange += setCompleted;
     }
 
-    public void setCompleted()
+    public void setCompleted(int enemiesAlive)
     {
-        if(!EnemiesManager.Instance.isAnyEnemyAlive()) gameObject.SetActive(false);
+        if(enemiesAlive == 0) SetToCompleted();
     }
-    public override void OnDisable() {
+
+    protected override void OnDisable() {
         base.OnDisable();
-        EnemiesManager.onEnemyAliveChange -= setCompleted;
+        EnemiesManager.OnEnemyAliveChange -= setCompleted;
     }
 }

@@ -12,7 +12,6 @@ public class DialogueController : MonoBehaviour
     [Header("Typing sound")]
     [SerializeField] AudioClip audioClip;
     [SerializeField] AudioSource audioSource;
-    public static DialogueController Instance { get; private set; }
     [Header("Object / components references")]
     [SerializeField] Image dialoguePanel;    
     [SerializeField] GameObject dialogueEndPossibility;
@@ -27,18 +26,15 @@ public class DialogueController : MonoBehaviour
     public Dialogue currentDialogue;
     public static event Action OnGlobalDialogueStarted;
     public static event Action OnGlobalDialogueEnded;
+    public static DialogueController Instance { get; private set; }
     private void Awake()
     {
+        if (Instance != this && Instance != null) Destroy(this);
+        else Instance = this;
 
-        if (Instance != this && Instance != null)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            Instance = this;
-        }
         audioSource.ignoreListenerPause = true;
+        
+        if(!dialoguePanel || !dialogueEndPossibility || !dialogueAnimator || !dialogueTMP)  Debug.LogWarning($"Not all objects assigned in {GetType()}");
     }
     private void OnEnable() {
         waitForTimePerCharacter = new WaitForSecondsRealtime(timePerCharacter);

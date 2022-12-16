@@ -4,20 +4,32 @@ using UnityEngine;
 
 public class ObjectiveHandler : MonoBehaviour
 {
-    [SerializeField] protected int objectiveID;
+    public string objectiveDescription;
+    protected ObjectiveManager objectiveManager;
     protected Objective objective;
-    protected ObjectiveList objectiveList;
-    public virtual void Start()
+    public Objective Objective{get{return objective;}}
+    protected virtual void OnEnable()
     {
-        objectiveList = ObjectiveList.Instance;
-        objective = objectiveList.getObjective(objectiveID);
-    }    
-    public virtual void OnDisable()
+
+    }
+    private void Start() {
+        objectiveManager = ObjectiveManager.Instance;
+        if(!objectiveManager) Debug.LogWarning($"Not all objects assigned in {GetType()}");
+        objective = new Objective(GetInstanceID(),objectiveDescription);   
+        Debug.Log($"objectiveId:{objective.Id},objectiveDescription:{objective.Description}");
+        objectiveManager.AddObjective(objective); 
+    }
+    public virtual void SetToCompleted()
     {
-        if(objectiveList != null && (objective != null && objective.objectiveUI != null)) 
+        if(objectiveManager != null) 
         {
-            Debug.Log($"objectiveList :{objectiveList} ,objective:{objective}");
-            objectiveList.setObjectiveStatus(objective,ObjectiveStatus.DONE);
+            Debug.Log($"objectiveID:{objective.Id}");
+            objectiveManager.setObjectiveStatus(objective.Id,ObjectiveStatus.DONE);
+            gameObject.SetActive(false);
         }
+
+    }
+    protected virtual void OnDisable() {
+        objective = null;
     }
 }

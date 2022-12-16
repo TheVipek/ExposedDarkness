@@ -11,7 +11,7 @@ public class InteractionAmmo : InteractionContainer
 
         base.OnInteractionStart();
         ammoPickup.GetAmmo();
-        PickupController.Instance.AddPickup(ammoPickup.AmmoCount.ToString(),ammoPickup.AmmoType.ToString());
+        PickupController.AddPickup(ammoPickup.AmmoCount.ToString(),ammoPickup.AmmoType.ToString());
         StartCoroutine(interactionWaiter(interactionSound.length));
     }
     public override IEnumerator interactionWaiter(float delay)

@@ -13,7 +13,7 @@ public class WeaponsManager : MonoBehaviour
     const int meeleContainerWeaponIndex = 1;
     [SerializeField] List<GameObject> weaponsContainers = new List<GameObject>();
     public List<GameObject> WeaponsContainers {get {return weaponsContainers;}}
-    [SerializeField] List<Weapon> allWeapons = new List<Weapon>();
+    private List<Weapon> allWeapons = new List<Weapon>();
     public List<Weapon> AllWeapons {get {return allWeapons;}}
     [Header("References")]
     public WeaponReloader weaponReloader;
@@ -28,6 +28,9 @@ public class WeaponsManager : MonoBehaviour
     private void Awake() {
         if(Instance!= this && Instance != null) Destroy(this);
         else Instance = this;
+        
+        if(weaponsContainers.Count == 0 || !weaponReloader || !ammo || !weaponShootingTypeChanger || !weaponSwitcher || !weaponDisplayer)  Debug.LogWarning($"Not all objects assigned in {GetType()}");
+        getAllWeapons();
     }
     private void OnEnable() {
         
@@ -56,11 +59,6 @@ public class WeaponsManager : MonoBehaviour
     public Weapon getCurrentWeapon() => AllWeapons.First(x => x.gameObject.activeSelf == true);
     public Weapon getWeapon(int weaponIdx) => AllWeapons[weaponIdx];
     public void WeaponActivate(int weaponIdx,bool activate) => allWeapons[weaponIdx].gameObject.SetActive(activate);
-
-    public void WeaponsControls(bool activate)
-    {
-        
-    }
 
 }
 

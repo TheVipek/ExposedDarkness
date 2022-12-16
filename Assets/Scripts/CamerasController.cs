@@ -12,14 +12,8 @@ public class CamerasController : MonoBehaviour
     public float DefaultFov{ get {return defaultFov;}}
     
     private void Awake() {
-        if(Instance != this && Instance != null)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            Instance = this;
-        }
+        if(Instance != this && Instance != null) Destroy(this);
+        else Instance = this;
     }
     public void setDefaultFov()
     {

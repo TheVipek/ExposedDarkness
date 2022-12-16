@@ -8,6 +8,10 @@ public class SkyBoxController : MonoBehaviour
     private float startRotation;
     private int rotationProp;
     [SerializeField] float rotateSpeed;
+
+    private void Awake() {
+        if(rotateSpeed == 0)  Debug.LogWarning($"Sky won't move,beacuse of assigned value 0, {GetType()}");
+    }
     private void Start() {
         rotationProp = Shader.PropertyToID("_Rotation");
         skyboxMaterial = RenderSettings.skybox;

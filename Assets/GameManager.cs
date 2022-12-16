@@ -10,9 +10,12 @@ public class GameManager : MonoBehaviour
     private void Awake() {
         if(Instance != null && Instance != this) Destroy(this);
         else Instance = this;
+
+        if(!playerInputActions) Debug.LogWarning($"Not all objects assigned in {GetType()}");
     }
     public void freezeTime()
     {
+        
         AudioListener.pause = true;
         freezePlayerActions();
         Time.timeScale = 0;
@@ -24,8 +27,18 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
 
     }
-    public void freezePlayerActions() => playerInputActions.FindActionMap("Player",true).Disable();
-    public void unfreezePlayerActions() => playerInputActions.FindActionMap("Player",true).Enable();
+    public void freezePlayerActions()
+    {
+        playerInputActions.FindActionMap("Player",true).Disable();
+        Debug.Log(playerInputActions.FindActionMap("Player").enabled);
+
+    }
+    public void unfreezePlayerActions()
+    {
+        playerInputActions.FindActionMap("Player",true).Enable();
+        Debug.Log(playerInputActions.FindActionMap("Player").enabled);
+
+    }
     public void activeCursor()
     {
         Cursor.visible = true;

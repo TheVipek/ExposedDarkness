@@ -7,7 +7,7 @@ public class ObjectiveCollider : ObjectiveHandler
 {
     private void OnTriggerEnter(Collider other) {
 
-        if(other.gameObject.tag == "Player") gameObject.SetActive(false);
+        if(other.gameObject.tag == "Player") SetToCompleted();
         
     }
     

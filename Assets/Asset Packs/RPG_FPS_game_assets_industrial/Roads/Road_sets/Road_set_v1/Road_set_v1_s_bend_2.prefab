@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 23000011349794528}
   - component: {fileID: 64000013236190884}
   - component: {fileID: 916897081}
-  - component: {fileID: 803784291}
   m_Layer: 12
   m_Name: Road_set_v1_s_bend_2
   m_TagString: Ground
@@ -101,19 +100,6 @@ MeshCollider:
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300076, guid: c7f7a9ec09a97d144963b6dd16448dc3, type: 3}
 --- !u!114 &916897081
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1000014023512016}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e682356a6acde674ea64772074633545, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  footstepsCollection: {fileID: 11400000, guid: 7668a791631f5c940b39da5113ae8e09, type: 2}
---- !u!114 &803784291
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

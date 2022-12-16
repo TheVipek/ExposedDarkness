@@ -5,7 +5,6 @@ using System;
 using UnityEngine.Events;
 public class WaveController : MonoBehaviour
 {
-    public static WaveController Instance{get; private set;}
     public GameObject wavePanel;
     public List<GameObject> UIToDisable; 
     public WaveContainer waveContainer;
@@ -18,15 +17,12 @@ public class WaveController : MonoBehaviour
     public static Action onBreakEnded;
     public float timeBetweenMonster;
     public float breakBetweenWaves;
+    public static WaveController Instance{get; private set;}
     private void Awake() {
-        if(Instance != this && Instance != null)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            Instance = this;
-        }
+        if(Instance != this && Instance != null) Destroy(this);
+        else Instance = this;
+
+        if(!wavePanel || UIToDisable.Count == 0) Debug.LogWarning($"Not all objects assigned in {GetType()}");
     }
     private void OnEnable() {
         onBreakEnded += startWave;
@@ -47,15 +43,12 @@ public class WaveController : MonoBehaviour
     {
         
         WaitForSeconds _timeBetweenMonster = new WaitForSeconds(timeBetweenMonster);
-        //EnemiesAliveCounter.maxEnemiesCount = 0;
         int i;
-        for(i=0; i<waveContainer.getAmountToSpawn(); i++)
+        for(i=0; i<waveContainer.GetAmount(); i++)
         {
             spawnEnemy(waveContainer.listOfEnemies[i]);
             yield return _timeBetweenMonster;
         }
-        //EnemiesAliveCounter.maxEnemiesCount = i;
-
     }
     public void CallOnWaveGlobalEnd()
     {

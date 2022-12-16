@@ -47,11 +47,8 @@ MonoBehaviour:
   weaponsContainers:
   - {fileID: 0}
   - {fileID: 0}
-  allWeapons:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   weaponReloader: {fileID: 0}
+  ammo: {fileID: 0}
   weaponShootingTypeChanger: {fileID: 0}
   weaponSwitcher: {fileID: 0}
   weaponDisplayer: {fileID: 0}

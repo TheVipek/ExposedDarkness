@@ -8,7 +8,7 @@ public class Interaction : MonoBehaviour,IResponseInteraction
     [SerializeField] Camera playerViewCamera;
     [SerializeField] float interactionDistance;
     private bool interactionActivated = false; 
-  //  [HideInInspector] public GameObject lookingAt = null;
+    private GameObject lookingAt = null;
   //  [HideInInspector] public GameObject lastInteracted = null;
     Ray ray;
     RaycastHit hit;
@@ -21,21 +21,34 @@ public class Interaction : MonoBehaviour,IResponseInteraction
         if (Physics.Raycast(ray, out hit, maxDistance: interactionDistance))
         {
             // Debug.DrawLine(ray.origin,hit.point,Color.red);
+            //Debug.Log($"activeSelf: {hit.transform.gameObject.activeSelf}");
+            //Debug.Log($"activeInHierarchy: {hit.transform.gameObject.activeInHierarchy}");
+            //Debug.Log($"Name:{hit.transform.name}");
+
             if (hit.transform.gameObject.CompareTag("interactionObject"))
             {
                 if(interactionActivated == false)
                 {
+                    lookingAt = hit.transform.gameObject;
                     OnSelect(hit.transform.gameObject);
                 }
+                else if(lookingAt != hit.transform.gameObject)
+                {
+                    lookingAt = null;
+                    OnDeselect();
+                }
+
             }
             else
             {
+                lookingAt = null;
                 if(interactionActivated == true) OnDeselect();
             }
 
         }
         else
         {
+            lookingAt = null;
             if(interactionActivated == true) OnDeselect();
         }
     }
