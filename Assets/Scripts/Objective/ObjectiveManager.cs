@@ -31,7 +31,7 @@ public class ObjectiveManager : MonoBehaviour
    {
       Objective objective = getObjective(objectiveID); 
       GameObject objectiveUI = objectivesInGame[objective];
-      if(objective.status==status || objective == null) return;
+      if(objective.status==status || objective == null || objectiveUI == null) return;
       if(status == ObjectiveStatus.DONE)
       {
          ObjectiveText objText = objectiveUI.GetComponent<ObjectiveText>();

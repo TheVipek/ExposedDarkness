@@ -19,20 +19,17 @@ public class AudioManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
     }
-    public static void playSound(AudioSource _source,AudioClip _clip,bool loop = false)
+    public static void playSound(AudioSource _source,AudioClip _clip,bool loop = false,float pitch = 0)
     {
         if(_source == null || _clip == null) return;
-        if(_source.isPlaying) _source.Stop();
-        if(loop == true)
-        {
-            _source.loop = true;
-        }
-        else
-        {
-            _source.loop = false;
-        }
 
-        _source.pitch = Random.Range(0.9f,1.1f);
+        if(_source.isPlaying) _source.Stop();
+
+        if(loop) _source.loop = true;
+        else _source.loop = false;
+        
+        if(pitch == 0) _source.pitch = Random.Range(0.9f,1.1f);
+       else _source.pitch = pitch;
 //        Debug.Log(_source.pitch);
         //  _source.clip = _clip;
         //  _source.Play();

@@ -23,12 +23,10 @@ public class PlayerHealthSettings : ScriptableObject
     }
     public void SetPlayerHealth(PlayerHealth _playerHealth)
     {
+        currentHealth = maxHealth;
         playerHealth = _playerHealth;
     }
     public void Restore() => currentHealth = maxHealth;
-    private void OnEnable() {
-        currentHealth = maxHealth;
-    }
     private void OnDisable() {
         playerHealth = null;
     }

@@ -32,9 +32,7 @@ public class PlayerHealth : MonoBehaviour
     Coroutine regenerationChecker;
     Coroutine regenerationProcess;
 
-
-    private void Awake() 
-    {
+    private void Awake() {
         healthSettings.SetPlayerHealth(this);
     }
 

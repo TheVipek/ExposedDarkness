@@ -200,7 +200,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnSprintingStart()
     {
-      //  Debug.Log("OnSprintingStart called!");
+        Debug.Log("OnSprintingStart called!");
 
         //If player isn't exhausted (exhaustion state is triggered when player is sprinting to 0 stamina) sprint is triggered
         if(settings.MovementActions == MovementActions.DEFAULT)
@@ -210,14 +210,14 @@ public class PlayerMovement : MonoBehaviour
                 settings.SetMovementAction(MovementActions.SPRINTING);
                 SetSpeed(settings.BaseSprintMultiplier);
                 sprinting = true;
-                
+                staminaRegenerating = false;
                 onSprinting.Raise();             
             }
         }
     }
     public void OnSprintingCanceled()
     {
-    //    Debug.Log("OnSprintingCanceled called!");
+       Debug.Log("OnSprintingCanceled called!");
         if(settings.MovementActions == MovementActions.SPRINTING)
         {
             if (sprinting)

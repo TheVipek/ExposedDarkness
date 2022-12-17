@@ -5,7 +5,11 @@ using UnityEngine.UI;
 public class MenuClickListener : MonoBehaviour,IAnyButton
 {
     [SerializeField] Canvas menuCanvas;
+    [SerializeField] AudioSource audioSource;
     bool used = false;
+    private void Awake() {
+        audioSource.ignoreListenerPause = true;
+    }
     private void OnGUI() {
         if(Event.current.isKey)
         {
