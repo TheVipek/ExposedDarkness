@@ -22,6 +22,8 @@ public class completionMissionAction : MonoBehaviour,IAnyButton
        });
     }
     private void OnEnable() {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.Confined;
         completeMissionEvent.Invoke();
         clickAction.started += OnClicked;
     }
@@ -44,10 +46,7 @@ public class completionMissionAction : MonoBehaviour,IAnyButton
                     Debug.Log("Clicked.");
                     AnyButtonAction();
                 }
-                else
-                {
-                    Debug.Log("You clicked already.");
-                }
+                
 
             
         }

@@ -21,5 +21,6 @@ public class endDialogueListener : MonoBehaviour
    
    private void OnDisable() {
         tMP_Text.color = new Color32(255,255,255,0);
+        gameObject.SetActive(false);
    }
 }

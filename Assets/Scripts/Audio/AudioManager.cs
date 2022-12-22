@@ -19,7 +19,7 @@ public class AudioManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
     }
-    public static void playSound(AudioSource _source,AudioClip _clip,bool loop = false,float pitch = 0)
+    public static void playSound(AudioSource _source,AudioClip _clip,bool loop = false,float pitch = 0,bool playOneShot = true)
     {
         if(_source == null || _clip == null) return;
 
@@ -33,7 +33,13 @@ public class AudioManager : MonoBehaviour
 //        Debug.Log(_source.pitch);
         //  _source.clip = _clip;
         //  _source.Play();
-        _source.PlayOneShot(_clip,_source.volume); 
+        if(playOneShot == true) 
+            _source.PlayOneShot(_clip,_source.volume);
+        else
+        {
+            _source.clip = _clip;
+            _source.Play();
+        }
     }
     public static void musicSoundTransition(AudioSource source,bool mute,float transitionLength = 1f)
     {

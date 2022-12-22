@@ -5,4 +5,6 @@ using UnityEngine.Events;
 public class dialogueConversation : MonoBehaviour
 {
     public Dialogue dialogue;
+
+
 }

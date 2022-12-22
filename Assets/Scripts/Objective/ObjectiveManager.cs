@@ -9,15 +9,15 @@ public class ObjectiveManager : MonoBehaviour
    [SerializeField] GameObject objectivesUIBox;
    [SerializeField] GameObject objectivePrefab;
    public static ObjectiveManager Instance{get; private set;}
-   [SerializeField] ObjectiveHandler[] objectivesInScene; 
+   [SerializeField] ObjectiveHandler[] objectivesToTriggerAtStart; 
    private void Awake() {
       if(Instance != this && Instance != null) Destroy(this);
       else Instance = this;
    }
    private void Start() {
-      for(int i = objectivesInScene.Length-1;i>=0;i--)
+      for(int i = objectivesToTriggerAtStart.Length-1;i>=0;i--)
       {
-         objectivesInScene[i].enabled = true;
+         objectivesToTriggerAtStart[i].enabled = true;
       }
       
    }
