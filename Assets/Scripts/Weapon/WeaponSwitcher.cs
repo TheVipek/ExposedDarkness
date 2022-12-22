@@ -37,7 +37,7 @@ public class WeaponSwitcher : MonoBehaviour
     }
     void Start() 
     {
-       SetWeaponActive(-1);
+       SetWeaponActive();
     }
     void Update() 
     {
@@ -83,7 +83,7 @@ public class WeaponSwitcher : MonoBehaviour
         }
     }
     /// <summary> Setting weapon that has the same index as currentWeaponIndex </summary>
-    private void SetWeaponActive(int weaponToSet)
+    private void SetWeaponActive(int weaponToSet = -1)
     {
         
         //Set currentWeapon and currentWeaponIdx to previous variables 
